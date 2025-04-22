@@ -20,6 +20,10 @@ class FunASRGUIClient(tk.Tk):
         self.title("FunASR GUI Client V2")
         self.geometry("800x600")
         self.connection_status = False  # 连接状态标志
+        
+        # 配置文件路径设置
+        self.current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.config_file = os.path.join(self.current_dir, 'config.json')
 
         # --- 服务器连接配置区 ---
         server_frame = ttk.LabelFrame(self, text="服务器连接配置")
@@ -90,9 +94,65 @@ class FunASRGUIClient(tk.Tk):
         self.status_var = tk.StringVar(value="准备就绪")
         self.status_bar = ttk.Label(self, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W)
         self.status_bar.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        # 加载配置文件（在创建控件后调用，以便可以设置控件值）
+        self.load_config()
+        
+        # 绑定窗口关闭事件，以便在关闭时保存配置
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         # 检查必要的依赖
         self.check_dependencies()
+
+    def load_config(self):
+        """加载上次保存的配置"""
+        try:
+            if os.path.exists(self.config_file):
+                with open(self.config_file, 'r', encoding='utf-8') as f:
+                    config = json.load(f)
+                    
+                # 更新界面控件值
+                if 'ip' in config and config['ip']:
+                    self.ip_var.set(config['ip'])
+                if 'port' in config and config['port']:
+                    self.port_var.set(config['port'])
+                if 'use_itn' in config:
+                    self.use_itn_var.set(config['use_itn'])
+                if 'use_ssl' in config:
+                    self.use_ssl_var.set(config['use_ssl'])
+                    
+                self.update_output("已加载上次保存的配置\n")
+            else:
+                self.update_output("未找到配置文件，将使用默认设置\n")
+        except Exception as e:
+            self.update_output(f"加载配置文件时出错: {e}\n")
+            self.update_output("将使用默认设置\n")
+    
+    def save_config(self):
+        """保存当前配置"""
+        try:
+            config = {
+                'ip': self.ip_var.get(),
+                'port': self.port_var.get(),
+                'use_itn': self.use_itn_var.get(),
+                'use_ssl': self.use_ssl_var.get()
+            }
+            
+            with open(self.config_file, 'w', encoding='utf-8') as f:
+                json.dump(config, f, ensure_ascii=False, indent=4)
+                
+            self.status_var.set("已保存配置")
+        except Exception as e:
+            self.status_var.set(f"保存配置失败: {e}")
+    
+    def on_closing(self):
+        """窗口关闭时的处理"""
+        try:
+            self.save_config()
+            self.destroy()
+        except Exception as e:
+            messagebox.showerror("错误", f"关闭窗口时出错: {e}")
+            self.destroy()
 
     def check_dependencies(self):
         """检查必要的依赖是否已安装"""
@@ -442,7 +502,8 @@ class FunASRGUIClient(tk.Tk):
                     uri, 
                     subprotocols=["binary"], 
                     ping_interval=None, 
-                    ssl=ssl_context
+                    ssl=ssl_context,
+                    proxy=None  # 显式禁用代理
                 )
                 
                 # 使用wait_for添加超时，但不作为上下文管理器

@@ -48,7 +48,7 @@ parser.add_argument("--audio_fs",
                     help="audio_fs")
 parser.add_argument("--send_without_sleep",
                     action="store_true",
-                    default=False,
+                    default=True,
                     help="if audio_in is set, send_without_sleep")
 parser.add_argument("--thread_num",
                     type=int,
@@ -195,9 +195,10 @@ async def record_from_scp(chunk_begin, chunk_size):
                 log("发送结束标志")
                 await websocket.send(message)
 
-            # 在非离线模式下每个块之间需要等待
-            sleep_duration = 0.001 if args.mode == "offline" else 60 * args.chunk_size[1] / args.chunk_interval / 1000
-            await asyncio.sleep(sleep_duration)
+            # 发送间隔控制
+            if not args.send_without_sleep and args.mode != "offline":
+                sleep_duration = 60 * args.chunk_size[1] / args.chunk_interval / 1000
+                await asyncio.sleep(sleep_duration)
     
     if not args.mode == "offline":
         await asyncio.sleep(2)
