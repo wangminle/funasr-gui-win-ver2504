@@ -108,19 +108,25 @@
         *   **位置**: `grid(row=0, column=1, padx=5, pady=2, sticky=tk.W)`
         *   **操作**: 用户勾选/取消勾选。
         *   **映射**: 勾选时传递 `--ssl 1`，不勾选时传递 `--ssl 0`。
+    *   **打开日志文件 按钮 (`ttk.Button`)**
+        *   **控件变量名**: `self.open_log_button`
+        *   **文本**: "打开日志文件"
+        *   **位置**: `grid(row=0, column=2, padx=15, pady=2, sticky=tk.W)`
+        *   **操作**: 点击后调用 `self.open_log_file` 方法。
+        *   **效果**: 根据操作系统尝试打开日志文件 (`funasr_gui_client.log`) 或其所在目录。
 
-## 6. 状态与结果显示
+## 6. 运行日志与结果
 
-*   **框架变量名**: `result_frame`
-*   **文本**: "状态与结果"
+*   **框架变量名**: `log_frame` (原 `result_frame`)
+*   **文本**: "运行日志与结果" (原 "状态与结果")
 *   **布局**: `pack(padx=10, pady=5, fill=tk.BOTH, expand=True)` (填充剩余空间)
 
-    *   **输出文本框 (`scrolledtext.ScrolledText`)**
-        *   **控件变量名**: `self.output_text`
+    *   **日志/输出 文本框 (`scrolledtext.ScrolledText`)**
+        *   **控件变量名**: `self.log_text` (原 `self.output_text`)
         *   **大小**: `height=15`, 自动换行 (`wrap=tk.WORD`), 可垂直和水平扩展 (`pack(fill=tk.BOTH, expand=True, padx=5, pady=5)`)。
-        *   **状态**: 初始和大部分时间为禁用 (`state='disabled'`)，只在 `self.update_output` 更新内容时临时启用。
-        *   **操作**: 显示程序运行日志、依赖检查信息、连接状态、识别过程中的标准输出/错误，以及最终的识别结果文本。
-        *   **效果**: 文本会自动滚动到最底部 (`self.output_text.see(tk.END)`)。
+        *   **状态**: 初始和大部分时间为禁用 (`state='disabled'`)，由 `GuiLogHandler` 在更新内容时临时启用。
+        *   **操作**: 显示程序运行日志（所有级别）、依赖检查信息、连接状态、识别过程中的标准输出/错误（标记为脚本输出/错误），以及最终的识别结果文本（特殊标记）。
+        *   **效果**: 文本会自动滚动到最底部 (`self.log_text.see(tk.END)`)。
 
 ## 7. 状态栏
 

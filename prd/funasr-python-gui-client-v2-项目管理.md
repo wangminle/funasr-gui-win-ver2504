@@ -67,12 +67,12 @@
     - [x] 或考虑修改 `simple_funasr_client.py` 移除 offline 模式下的 `sleep`。
 - [ ] **(P2) 暴露并发参数:**
     - [ ] 在高级选项中添加 `--thread_num` 的配置，用于 `.scp` 文件处理。
-- [ ] **(P0) 生成独立的日志文件:**
-    - [ ] 引入 Python `logging` 模块。
-    - [ ] 将日志同时输出到"运行日志"区域和本地文件 (`funasr_gui_client.log`)。
-    - [ ] 日志包含时间戳和级别。
-    - [ ] （可选）实现日志轮转 (`RotatingFileHandler`)。
-    - [ ] 提供"打开日志目录"或"查看日志文件"的按钮/菜单项。
+- [x] **(P0) 生成独立的日志文件:**
+    - [x] 引入 Python `logging` 模块。
+    - [x] 将日志同时输出到"运行日志"区域和本地文件 (`funasr_gui_client.log`)。
+    - [x] 日志包含时间戳、级别和类别前缀。
+    - [x] 已实现日志轮转 (`RotatingFileHandler`)。
+    - [x] 已提供"打开日志文件"的按钮。
 - [ ] **(P3) (高级) 直接 WebSocket 集成:**
     - [ ] 评估将 WebSocket 逻辑直接整合到 GUI 后台线程的可行性和收益。
     - [ ] （如果实施）重构后台处理逻辑，移除 `subprocess` 调用。

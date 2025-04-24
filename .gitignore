@@ -1,3 +1,8 @@
 /src/python-gui-client/results
 .DS_Store
 /.venv
+/demo
+src/python-gui-client/funasr_gui_client.log.1
+src/python-gui-client/funasr_gui_client.log
+src/python-gui-client/funasr_gui_client.log.2
+/src/python-gui-client/__pycache__
