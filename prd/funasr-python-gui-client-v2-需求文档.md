@@ -71,6 +71,7 @@
 *   **改进建议:**
     *   **区分模式:** 首先要明确，`--chunk_size` 和 `--chunk_interval` 主要影响的是 `online` 和 `2pass` 模式下的**实时性（延迟）**，而非 `offline` 模式下的**总上传速度**。对于 `offline` 模式，目标是尽快上传完整文件。
     *   **优化 Offline 上传:**
+        *   *(注：近期已修正 `simple_funasr_client.py`，确保其在 offline 模式下发送的初始配置消息符合协议，不包含 chunk 参数)*
         *   在 GUI 调用 `simple_funasr_client.py` 进行 `offline` 识别时，应考虑传递 `--send_without_sleep` 参数，或者修改 `simple_funasr_client.py`，在 offline 模式下移除块间 `sleep`，让 WebSocket 库或操作系统 TCP 栈自行处理流控，理论上能更快地发送数据。
         *   暴露 `--thread_num` 参数：如果用户处理 `.scp` 文件（多文件列表），允许多线程上传 (`--thread_num`) 可以显著提高整体处理速度。可以在"高级选项"中添加一个数字输入框来设置并发线程数。
     *   **暴露 Online/2Pass 参数 (如果支持这些模式):** 如果未来 GUI 支持 `online` 或 `2pass` 模式，那么需要在"高级选项"中允许用户配置 `--chunk_size` 和 `--chunk_interval`，并提供合理的默认值和说明（例如，解释它们如何影响延迟和计算量）。

@@ -130,8 +130,14 @@ async def record_from_scp(chunk_begin, chunk_size):
     
     for wav in wavs:
         wav_splits = wav.strip().split()
-        wav_name = wav_splits[0] if len(wav_splits) > 1 else "demo"
-        wav_path = wav_splits[1] if len(wav_splits) > 1 else wav_splits[0]
+        if len(wav_splits) > 1:
+            # 来自 scp 文件，格式为 "name path"
+            wav_name = wav_splits[0]
+            wav_path = wav_splits[1]
+        else:
+            # 单个文件路径输入
+            wav_path = wav_splits[0]
+            wav_name = os.path.basename(wav_path) # 使用实际文件名
         
         if not len(wav_path.strip()) > 0:
             continue
@@ -159,23 +165,28 @@ async def record_from_scp(chunk_begin, chunk_size):
                 audio_bytes = f.read()
                 log(f"已读取其他格式文件，大小: {len(audio_bytes)/1024/1024:.2f}MB")
 
-        # 计算每个音频块的大小
-        stride = int(60 * args.chunk_size[1] / args.chunk_interval / 1000 * sample_rate * 2)
+        # 计算每个音频块的大小 (仅在非 offline 模式下实际使用)
+        stride = int(60 * args.chunk_size[1] / args.chunk_interval / 1000 * sample_rate * 2) if args.mode != "offline" else 65536 # offline 模式给一个默认较大的stride
         chunk_num = (len(audio_bytes) - 1) // stride + 1
-        log(f"分块数: {chunk_num}, 每块大小: {stride/1024:.2f}KB")
+        log(f"分块数: {chunk_num}, 每块大小: {stride/1024:.2f}KB (注：offline模式下stride值仅用于分块，不影响协议)")
 
-        # 发送初始化消息
-        message = json.dumps({
-            "mode": args.mode, 
-            "chunk_size": args.chunk_size, 
-            "chunk_interval": args.chunk_interval, 
+        # --- 构造初始化消息 (区分模式) ---
+        message_dict = {
+            "mode": args.mode,
             "audio_fs": sample_rate,
-            "wav_name": wav_name, 
-            "wav_format": wav_format, 
-            "is_speaking": True, 
-            "hotwords": hotword_msg, 
+            "wav_name": wav_name,
+            "wav_format": wav_format,
+            "is_speaking": True,
+            "hotwords": hotword_msg,
             "itn": use_itn
-        })
+        }
+        # 只有 online 或 2pass 模式才添加 chunk_size 和 chunk_interval
+        if args.mode != "offline":
+            message_dict["chunk_size"] = args.chunk_size
+            message_dict["chunk_interval"] = args.chunk_interval
+            
+        message = json.dumps(message_dict)
+        # --- 结束构造初始化消息 ---
 
         log(f"发送WebSocket: {message}", type="指令")
         await websocket.send(message)
