@@ -70,6 +70,8 @@ parser.add_argument("--use_itn",
                     type=int,
                     default=1,
                     help="1 for using itn, 0 for not itn")
+parser.add_argument("--no-itn", action='store_false', dest='use_itn', default=None, help="disable ITN")
+parser.add_argument("--no-ssl", action='store_false', dest='ssl', default=None, help="disable SSL")
 parser.add_argument("--mode",
                     type=str,
                     default="offline",
@@ -81,12 +83,10 @@ args = parser.parse_args()
 args.chunk_size = [int(x) for x in args.chunk_size.split(",")]
 websocket = None
 offline_msg_done = False
-debug = True  # 开启详细日志
 
-def log(msg):
-    """调试日志输出"""
-    if debug:
-        print(f"[DEBUG] {msg}")
+def log(msg, type="调试"):
+    """日志输出, type可以是 '调试' 或 '指令'"""
+    print(f"[{type}] {msg}", flush=True)
 
 async def record_from_scp(chunk_begin, chunk_size):
     """从音频文件读取数据并发送"""
@@ -177,22 +177,32 @@ async def record_from_scp(chunk_begin, chunk_size):
             "itn": use_itn
         })
 
-        log(f"发送初始化消息: {message}")
+        log(f"发送WebSocket: {message}", type="指令")
         await websocket.send(message)
         
         # 发送音频数据
         is_speaking = True
+        total_bytes_sent = 0 # Track sent bytes for progress calculation
+        last_logged_percent = -1 # 初始化上次记录的百分比
         for i in range(chunk_num):
             beg = i * stride
-            data = audio_bytes[beg:beg + stride]
+            end = min(beg + stride, len(audio_bytes))
+            data = audio_bytes[beg:end]
             await websocket.send(data)
-            log(f"已发送音频块 {i+1}/{chunk_num} ({(i+1)/chunk_num*100:.1f}%)")
-            
+            total_bytes_sent += len(data)
+
+            # 计算并打印整数上传进度
+            current_progress_percent = int(total_bytes_sent / len(audio_bytes) * 100)
+            # 只有当进度是2的倍数且与上次不同时才打印
+            if current_progress_percent % 2 == 0 and current_progress_percent != last_logged_percent:
+                 print(f"上传进度: {current_progress_percent}%", flush=True) # 直接打印到stdout，并刷新
+                 last_logged_percent = current_progress_percent # 更新上次记录的百分比
+
             # 最后一块发送结束标志
             if i == chunk_num - 1:
                 is_speaking = False
                 message = json.dumps({"is_speaking": is_speaking})
-                log("发送结束标志")
+                log(f"发送WebSocket: {message}", type="指令")
                 await websocket.send(message)
 
             # 发送间隔控制
@@ -220,82 +230,97 @@ async def record_from_scp(chunk_begin, chunk_size):
 async def message(id):
     """接收服务器返回的消息并处理"""
     global websocket, offline_msg_done
-    text_print = ""
-    text_print_2pass_online = ""
-    text_print_2pass_offline = ""
-    
     if args.output_dir is not None:
         os.makedirs(args.output_dir, exist_ok=True)
         ibest_writer = open(os.path.join(args.output_dir, f"text.{id}"), "a", encoding="utf-8")
+        base_name = os.path.splitext(os.path.basename(args.audio_in))[0]
+        json_file_path = os.path.join(args.output_dir, f"{base_name}.{id}.json")
+        json_writer = open(json_file_path, "w", encoding="utf-8")
+        all_results_for_json = [] # 用于存储所有JSON结果以便最后写入
     else:
         ibest_writer = None
+        json_writer = None
         
     try:
         while True:
             # 设置超时
             try:
-                meg = await asyncio.wait_for(websocket.recv(), timeout=60)
+                meg = await asyncio.wait_for(websocket.recv(), timeout=120)
                 meg = json.loads(meg)
                 
                 wav_name = meg.get("wav_name", "demo")
                 text = meg.get("text", "")
                 timestamp = ""
-                offline_msg_done = meg.get("is_final", False)
+                
+                # 在离线模式下，不依赖is_final字段，而是根据收到非空text字段来判断识别完成
+                if args.mode == "offline" and text.strip():
+                    log("离线模式收到非空文本，识别完成")
+                    offline_msg_done = True
+                else:
+                    # 非离线模式仍然使用is_final字段
+                    offline_msg_done = meg.get("is_final", False)
                 
                 if "timestamp" in meg:
                     timestamp = meg["timestamp"]
                 
-                log(f"接收到消息: {meg}")
+                # log(f"接收到消息: {meg}") # 原始消息日志可能过于详细
 
                 # 写入结果文件
-                if ibest_writer is not None:
-                    if timestamp != "":
-                        text_write_line = f"{wav_name}\t{text}\t{timestamp}\n"
+                if ibest_writer is not None and text != "":
+                    if len(timestamp) > 0:
+                        ibest_writer.write(wav_name + "\t" + json.dumps(timestamp) + "\t" + text + "\n")
                     else:
-                        text_write_line = f"{wav_name}\t{text}\n"
-                    ibest_writer.write(text_write_line)
+                        ibest_writer.write(wav_name + "\t" + text + "\n")
+                    ibest_writer.flush() # 确保立即写入
+                    
+                # 存储JSON结果
+                if json_writer is not None:
+                    # 只存储包含文本或时间戳的有效消息
+                    if text or timestamp:
+                        all_results_for_json.append(meg)
 
-                # 根据不同模式处理输出
-                if 'mode' not in meg:
-                    continue
+                # -- 修改：直接打印当前收到的文本 --
+                current_output = ""
+                if args.mode == "2pass":
+                    if "text_2pass_offline" in meg:
+                        current_output = f"[2pass离线] {text}"
+                    elif "text_2pass_online" in meg:
+                        current_output = f"[2pass在线] {text}"
+                    elif text: # 普通中间结果
+                        current_output = text
+                elif text: # 非2pass模式直接使用text
+                    current_output = text
                     
-                if meg["mode"] == "online":
-                    text_print += f"{text}"
-                    text_print = text_print[-args.words_max_print:]
-                    print(f"\rpid{id}: {text_print}")
-                    
-                elif meg["mode"] == "offline":
-                    if timestamp != "":
-                        text_print = f"{text} timestamp: {timestamp}"
-                    else:
-                        text_print = f"{text}"
-                    print(f"\rpid{id}: {wav_name}: {text_print}")
-                    offline_msg_done = True
-                    
-                else:  # 2pass模式
-                    if meg["mode"] == "2pass-online":
-                        text_print_2pass_online += f"{text}"
-                        text_print = text_print_2pass_offline + text_print_2pass_online
-                    else:
-                        text_print_2pass_online = ""
-                        text_print = text_print_2pass_offline + f"{text}"
-                        text_print_2pass_offline += f"{text}"
-                    text_print = text_print[-args.words_max_print:]
-                    print(f"\rpid{id}: {text_print}")
-                    
-            except asyncio.TimeoutError:
-                log(f"等待服务器响应超时...")
+                if current_output:
+                     # 直接打印当前结果到stdout
+                     print(f"识别结果: {current_output}", flush=True)
+                     # log(f"识别结果片段: {current_output}") # 可选的调试日志
+
+                # 检查是否是最后的消息
                 if offline_msg_done:
+                    log("收到结束标志或完整结果，退出消息循环")
                     break
-            except websockets.exceptions.ConnectionClosedOK as e:
-                # 连接正常关闭，不作为错误处理
-                log(f"连接已正常关闭: {e}")
+            except asyncio.TimeoutError:
+                log("消息接收超时")
+                offline_msg_done = True # 超时也认为结束
+                break
+            except websockets.exceptions.ConnectionClosed:
+                log("WebSocket 连接已关闭")
+                offline_msg_done = True # 连接关闭也认为结束
+                break
+            except Exception as e:
+                log(f"处理消息时发生错误: {e}\n{traceback.format_exc()}")
                 offline_msg_done = True
                 break
-                    
-    except Exception as e:
-        log(f"接收消息异常: {e}")
-        traceback.print_exc()
+    finally:
+        if ibest_writer is not None:
+            ibest_writer.close()
+            log("文本结果文件已关闭")
+        if json_writer is not None:
+            # 写入完整的JSON列表
+            json.dump(all_results_for_json, json_writer, ensure_ascii=False, indent=4)
+            json_writer.close()
+            log(f"JSON结果文件已写入并关闭: {json_file_path}")
 
 async def ws_client(id, chunk_begin, chunk_size):
     """创建WebSocket客户端并开始通信"""

@@ -356,17 +356,22 @@ class FunASRGUIClient(tk.Tk):
             self.connect_button.config(state=tk.NORMAL)
 
     def _find_script_path(self):
-        """查找funasr_wss_client.py脚本路径"""
+        """查找simple_funasr_client.py脚本路径"""
         # 获取当前工作目录
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        # 优先查找项目根目录下的samples文件夹
+        # 优先查找项目根目录下的samples文件夹 (这个逻辑可能不再需要，但保留以防万一)
         project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
         samples_dir = os.path.join(project_root, "samples")
         
-        if os.path.exists(samples_dir) and os.path.exists(os.path.join(samples_dir, "funasr_wss_client.py")):
-            return os.path.join(samples_dir, "funasr_wss_client.py")
-        elif os.path.exists(os.path.join(current_dir, "funasr_wss_client.py")):
-            return os.path.join(current_dir, "funasr_wss_client.py")
+        target_script_name = "simple_funasr_client.py" # 定义目标脚本名称
+
+        # 检查当前目录下是否存在
+        if os.path.exists(os.path.join(current_dir, target_script_name)):
+            return os.path.join(current_dir, target_script_name)
+        # 检查 samples 目录（作为后备）
+        elif os.path.exists(samples_dir) and os.path.exists(os.path.join(samples_dir, target_script_name)):
+             logging.warning(f"系统警告: 在当前目录未找到 {target_script_name}，但在 {samples_dir} 中找到。建议将脚本放在主程序同目录下。")
+             return os.path.join(samples_dir, target_script_name)
         else:
             return None
             
@@ -375,7 +380,9 @@ class FunASRGUIClient(tk.Tk):
         self.status_var.set("正在选择文件...")
         # 注意：此处需要根据 funasr_wss_client.py 支持的格式调整 filetypes
         filetypes = (
-            ("音频/视频/脚本文件", "*.wav *.mp3 *.pcm *.mp4 *.mkv *.avi *.flv *.scp"),
+            ("音频文件", "*.mp3 *.wma *.wav *.ogg *.ac3 *.m4a *.opus *.aac *.pcm"),
+            ("视频文件", "*.mp4 *.wmv *.avi *.mov *.mkv *.mpg *.mpeg *.webm *.ts *.flv"),
+            ("所有支持的文件", "*.mp3 *.wma *.wav *.ogg *.ac3 *.m4a *.opus *.aac *.pcm *.mp4 *.wmv *.avi *.mov *.mkv *.mpg *.mpeg *.webm *.ts *.flv"),
             ("所有文件", "*.*")
         )
         filepath = filedialog.askopenfilename(title="选择音频/视频文件", filetypes=filetypes)
@@ -436,163 +443,131 @@ class FunASRGUIClient(tk.Tk):
         thread.start()
 
     def _run_script(self, ip, port, audio_in):
-        """在后台线程中执行 funasr_wss_client.py 脚本"""
-        try:
-            # 检查并安装依赖
-            required_packages = ['websockets', 'asyncio']
-            missing_packages = []
-            
-            for package in required_packages:
-                try:
-                    importlib.import_module(package)
-                except ImportError:
-                    missing_packages.append(package)
-            
-            if missing_packages:
-                logging.warning(f"系统警告: 识别前检测到缺少依赖包: {', '.join(missing_packages)}")
-                logging.info("系统事件: 开始自动安装依赖...")
-                if not self.install_dependencies(missing_packages):
-                    logging.error("系统错误: 依赖安装失败，无法继续执行识别任务")
-                    self.status_var.set("错误：依赖安装失败")
-                    # Restore button states in finally block
-                    return
-                logging.info("系统事件: 依赖安装完成，继续执行识别任务")
+        """在新线程中运行 simple_funasr_client.py 脚本。"""
+        
+        # 构造要传递给子进程的参数列表
+        # ... (参数构造部分保持不变) ...
+        script_path = self._find_script_path()
+        if not script_path:
+            logging.error("系统错误: 未找到 simple_funasr_client.py 脚本")
+            self.status_var.set("错误: 脚本未找到")
+            return
 
-            # 修改：始终使用本地的 simple_funasr_client.py
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            local_client_path = os.path.join(current_dir, "simple_funasr_client.py")
+        args = [
+            sys.executable,  # 使用当前 Python 解释器
+            script_path,
+            "--host", ip,
+            "--port", str(port),
+            "--audio_in", audio_in,
+            # 根据 Checkbutton 状态添加 --no-itn 或 --no-ssl
+        ]
+        if self.use_itn_var.get() == 0:
+            args.append("--no-itn")
+        if self.use_ssl_var.get() == 0:
+            args.append("--no-ssl")
 
-            if not os.path.exists(local_client_path):
-                logging.error(f"系统错误: 找不到客户端脚本 {local_client_path}")
-                self.status_var.set("错误：客户端脚本不存在")
-                return
+        # 清空之前的识别结果区域
+        self.log_text.configure(state='normal')
+        # self.log_text.delete('1.0', tk.END) # 取消启动时清空，不清空之前的系统日志
+        self.log_text.configure(state='disabled')
+        logging.info(f"任务开始: 正在识别文件 {os.path.basename(audio_in)}")
+        self.status_var.set(f"正在识别: {os.path.basename(audio_in)}...")
+        self.start_button.config(state=tk.DISABLED) # 禁用开始按钮
 
-            logging.info(f"系统事件: 使用本地客户端脚本: {local_client_path}")
-            script_path = local_client_path # 脚本路径固定为本地客户端
+        last_reported_progress = -1 # 用于跟踪上次报告的进度
+        last_message_time = time.time() # 初始化上次收到消息的时间
+        timeout_duration = 10 # 设置超时时间（秒）
 
-            # 修改：始终将结果目录设置在 src/python-gui-client/results
-            result_dir = os.path.join(current_dir, "results")
-            os.makedirs(result_dir, exist_ok=True)
-            logging.debug(f"调试信息: 创建结果目录: {result_dir}")
+        def run_in_thread():
+            nonlocal last_reported_progress, last_message_time # 允许修改外部变量
+            process = None
+            try:
+                logging.debug(f"调试信息: 正在执行命令: {' '.join(args)}")
+                # 使用 Popen 启动子进程，捕获 stdout 和 stderr
+                process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8', bufsize=1, creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0)
 
-            # 构建命令行参数，使用本地脚本和正确的 result_dir
-            cmd = [
-                sys.executable, # 使用当前 Python 解释器执行脚本
-                script_path,    # 使用本地客户端脚本路径
-                "--host", ip,
-                "--port", port,
-                "--mode", "offline", # 固定为 offline 模式
-                "--audio_in", audio_in,
-                "--use_itn", str(self.use_itn_var.get()),
-                "--ssl", str(self.use_ssl_var.get()),
-                "--output_dir", result_dir # 使用正确的 result_dir
-            ]
+                # 实时读取 stdout
+                while True:
+                    line = process.stdout.readline()
+                    if not line and process.poll() is not None:
+                        break
+                    if line:
+                        stripped_line = line.strip()
+                        if stripped_line.startswith("[DEBUG]"):
+                            logging.debug(f"客户端调试: {stripped_line}")
+                        elif "识别结果" in stripped_line or not stripped_line.startswith("["):
+                            logging.info(f"服务器响应: {stripped_line}")
+                        else:
+                            logging.info(f"客户端事件: {stripped_line}")
 
-            logging.info(f"系统事件: 执行命令: {' '.join(cmd)}")
-            logging.debug(f"调试信息: 命令参数详情: {cmd}")
+                # 等待进程结束并获取返回码和 stderr
+                return_code = process.wait()
+                stderr_output = process.stderr.read().strip()
 
-            # 使用 subprocess.Popen 实时获取输出
-            env = os.environ.copy()
-            # 确保使用UTF-8编码
-            env["PYTHONIOENCODING"] = "utf-8"
-            logging.debug("调试信息: 设置子进程环境变量 PYTHONIOENCODING=utf-8")
-            
-            process = subprocess.Popen(
-                cmd, 
-                stdout=subprocess.PIPE, 
-                stderr=subprocess.PIPE, 
-                text=True, 
-                encoding='utf-8', 
-                errors='replace', 
-                env=env,
-                creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0
-            )
-            logging.debug(f"调试信息: 子进程已启动，PID: {process.pid}")
-
-            # 读取 stdout
-            logging.info("系统事件: 开始捕获识别脚本输出")
-            for line in iter(process.stdout.readline, ''):
-                # Remove potential trailing newline before logging
-                line = line.strip()
-                if line: # Avoid logging empty lines
-                    # 这里使用INFO级别记录客户端脚本的输出，将来可以优化为单独类别
-                    # 考虑添加"脚本输出:"前缀，使得将来容易分离
-                    logging.info(f"脚本输出: {line}")
-            process.stdout.close()
-
-            # 读取 stderr
-            stderr_output = process.stderr.read().strip()
-            if stderr_output:
-                logging.error(f"脚本错误: {stderr_output}")
-
-                # Check for common errors and log suggestions
-                if "did not receive a valid HTTP response" in stderr_output or "connection closed while reading HTTP status line" in stderr_output:
-                    logging.warning("用户提示: 检测到WebSocket握手失败，建议：")
-                    logging.warning("用户提示: 1. 检查服务器是否支持WebSocket协议")
-                    logging.warning("用户提示: 2. 尝试使用不同的端口（如10096或10097）")
-                    logging.warning("用户提示: 3. 查看服务器日志，确认是否正确启动了WebSocket服务")
-                    logging.warning("用户提示: 4. 如果使用了SSL，尝试关闭SSL或确保服务器支持SSL")
-                elif "cannot call recv while another coroutine is already running recv" in stderr_output:
-                    logging.warning("用户提示: 检测到WebSocket协程冲突错误，建议：")
-                    logging.warning("用户提示: 1. 请禁用SSL选项后重试")
-                    logging.warning("用户提示: 2. 确保没有其他程序正在连接同一个服务器")
-                    logging.warning("用户提示: 3. 尝试重启服务器或等待一段时间后再试")
-
-                # Log server configuration suggestions
-                logging.warning("用户提示: 服务器配置建议：")
-                logging.warning("用户提示: 1. 常见端口: 离线识别(10095)，实时识别(10096)，标点(10097)，翻译(10098)")
-                logging.warning("用户提示: 2. 确认服务器启动命令是否包含--port和--ssl参数，并与客户端保持一致")
-                logging.warning("用户提示: 3. 尝试直接使用命令行测试: 'telnet 127.0.0.1 10095' 查看端口是否开放")
-
-            process.stderr.close()
-
-            process.wait() # 等待进程结束
-            logging.debug(f"调试信息: 子进程已结束，返回代码: {process.returncode}")
-
-            if process.returncode == 0:
-                logging.info("系统事件: 识别任务完成")
-                self.status_var.set("识别完成")
-                
-                # 检查并显示识别结果
-                result_files = [f for f in os.listdir(result_dir) if f.startswith("text.")]
-                if result_files:
-                    logging.info(f"系统事件: 识别结果已保存在目录: {result_dir}")
-                    newest_file = max([os.path.join(result_dir, f) for f in result_files], key=os.path.getctime)
-                    logging.debug(f"调试信息: 找到最新结果文件: {newest_file}")
-                    try:
-                        with open(newest_file, "r", encoding="utf-8") as f:
-                            result_text = f.read().strip()
-                            if result_text:
-                                # 特殊标记识别结果，未来可以单独显示在"识别结果"选项卡中
-                                log_message = f"识别结果 (来自 {os.path.basename(newest_file)}):\n"
-                                log_message += "------ RESULT START ------\n"
-                                log_message += result_text + "\n"
-                                log_message += "------ RESULT END ------"
-                                logging.info(log_message)
-                            else:
-                                logging.warning(f"系统警告: 结果文件 {newest_file} 存在但内容为空")
-                    except Exception as e:
-                        logging.error(f"系统错误: 读取结果文件 {newest_file} 时出错: {e}", exc_info=True)
+                # 检查返回码
+                if return_code == 0:
+                    logging.info(f"任务成功: 文件 {os.path.basename(audio_in)} 识别完成。")
+                    self.after(0, self.status_var.set, "识别完成")
                 else:
-                    logging.warning(f"系统警告: 在目录 {result_dir} 中未找到结果文件 (text.*)。请检查服务器日志获取更多信息。")
-            else:
-                logging.error(f"系统错误: 识别任务失败，进程返回代码: {process.returncode}")
-                self.status_var.set(f"识别失败 (代码: {process.returncode})")
-                # Log suggestions
-                logging.warning("用户提示: 根据文档，您可能需要尝试：")
-                logging.warning("用户提示: 1. 确保服务器已经正确启动")
-                logging.warning("用户提示: 2. 如果您使用的是FunASR官方服务器，检查启动命令中是否包含'--certfile 0'选项")
-                logging.warning("用户提示: 3. 尝试直接使用官方客户端脚本，例如：")
-                logging.warning("用户提示: python funasr_wss_client.py --host 127.0.0.1 --port 10095 --mode offline --audio_in your_audio.wav --output_dir ./results")
+                    logging.error(f"任务失败: 文件 {os.path.basename(audio_in)} 识别出错。返回码: {return_code}")
+                    if stderr_output:
+                        logging.error(f"子进程错误输出:\n{stderr_output}")
+                    self.after(0, self.status_var.set, f"识别失败 (错误码: {return_code})")
+                    # Display error in a popup
+                    self.after(0, lambda: messagebox.showerror("识别错误", f"处理文件时发生错误:\n{stderr_output or '未知错误'}"))
 
-        except Exception as e:
-            logging.error(f"系统错误: 执行脚本时发生未捕获的错误: {e}", exc_info=True)
-            self.status_var.set(f"错误: {e}")
-        finally:
-            # 无论成功失败，恢复按钮状态
-            self.start_button.config(state=tk.NORMAL)
-            self.select_button.config(state=tk.NORMAL)
-            logging.debug("调试信息: 恢复按钮状态")
+            except FileNotFoundError:
+                logging.error(f"系统错误: 未找到 Python 解释器或脚本: {sys.executable} 或 {script_path}")
+                self.after(0, self.status_var.set, "错误: 无法启动识别脚本")
+                self.after(0, lambda: messagebox.showerror("启动错误", "无法找到 Python 解释器或识别脚本。\n请检查 Python 环境和脚本路径。"))
+            except Exception as e:
+                error_details = traceback.format_exc()
+                logging.error(f"系统错误: 运行脚本时出现意外错误: {e}\n{error_details}")
+                self.after(0, self.status_var.set, f"意外错误: {e}")
+                self.after(0, lambda: messagebox.showerror("意外错误", f"运行识别时发生错误:\n{e}"))
+            finally:
+                # 确保无论成功或失败，都重新启用按钮
+                self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
+                self.after(0, lambda: self.select_button.config(state=tk.NORMAL))  # 恢复文件选择按钮
+                # 确保进程被终止（如果它仍在运行）
+                if process and process.poll() is None:
+                    logging.warning("系统警告: 识别过程未正常结束，正在强制终止。")
+                    process.terminate()
+                    try:
+                        process.wait(timeout=5) # Give it a moment to terminate
+                    except subprocess.TimeoutExpired:
+                        logging.warning("系统警告: 强制终止超时，正在强制杀死进程。")
+                        process.kill() # Force kill if terminate doesn't work
+
+        # 启动超时监控
+        def check_timeout():
+            nonlocal last_message_time
+            if time.time() - last_message_time > timeout_duration:
+                 if process and process.poll() is None: # 检查进程是否存在且仍在运行
+                    logging.warning(f"系统警告: {timeout_duration}秒内未收到服务器响应，可能发生超时。正在尝试终止进程。")
+                    process.terminate() # 尝试终止进程
+                    try:
+                        process.wait(timeout=5) # 等待终止
+                    except subprocess.TimeoutExpired:
+                        logging.warning("系统警告: 终止进程超时，正在强制杀死。")
+                        process.kill() # 强制杀死
+                    self.after(0, self.status_var.set, "错误: 连接超时")
+                    self.after(0, lambda: messagebox.showerror("连接超时", f"超过 {timeout_duration} 秒未收到服务器响应。"))
+                    self.after(0, lambda: self.start_button.config(state=tk.NORMAL)) # 超时后恢复按钮
+            elif process and process.poll() is None: # 如果进程仍在运行，继续监控
+                self.after(1000, check_timeout) # 每秒检查一次
+            # 如果进程已结束，则停止监控
+            # elif process and process.poll() is not None:
+            #    logging.debug("调试信息：识别进程已结束，停止超时监控。")
+
+
+        # 在新线程中运行脚本
+        thread = threading.Thread(target=run_in_thread)
+        thread.daemon = True # 设置为守护线程，以便主程序退出时子线程也退出
+        thread.start()
+        
+        # 启动超时检查
+        # self.after(1000, check_timeout) # 延迟1秒开始检查
 
     async def _async_test_connection(self, ip, port, ssl_enabled):
         """异步测试WebSocket连接"""
