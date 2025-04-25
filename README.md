@@ -1,4 +1,4 @@
-# FunASR GUI Client V2
+# FunASR GUI 客户端 V2
 
 这是一个基于 Tkinter 的图形用户界面 (GUI) 客户端，用于与 FunASR (FunASR ASR) WebSocket 服务进行交互，实现语音识别功能。
 
@@ -12,6 +12,10 @@
 *   **高级选项**: 支持启用/禁用逆文本标准化 (ITN) 和 SSL 连接。
 *   **依赖检查与安装**: 自动检查并提示/尝试安装所需的 Python 依赖包 (`websockets`, `asyncio`)。
 *   **状态反馈**: 通过状态栏和输出区域提供清晰的操作状态反馈。
+*   **日志记录**: 生成独立的日志文件，包含详细的操作记录和错误信息，便于问题排查。
+*   **配置持久化**: 保存上次使用的服务器IP、端口和高级选项设置，下次启动时自动加载。
+*   **优化上传速度**: 针对离线模式进行了上传速度优化，提高了处理效率。
+*   **协议优化**: 修正了offline模式下的协议处理，确保与服务端正确通信。
 
 ## 🐍 环境要求
 
@@ -20,6 +24,7 @@
 *   **必要的 Python 包**:
     *   `websockets`: 用于 WebSocket 通信。
     *   `asyncio`: 用于异步操作。
+    *   `logging`: 用于生成日志文件（Python 标准库）。
     *   *(注意: GUI 客户端会在首次连接或识别时尝试自动安装这些依赖)*
 
 ## 🚀 安装与设置
@@ -45,7 +50,8 @@
 4.  **选择文件**: 点击 "选择音/视频文件" 按钮，选择您要识别的音频或视频文件。
 5.  **配置选项 (可选)**: 根据需要勾选或取消勾选 "启用 ITN" 和 "启用 SSL"。
 6.  **开始识别**: 点击 "开始识别" 按钮。
-7.  **查看结果**: 识别过程中的日志和最终结果将显示在 "状态与结果" 区域。状态栏会显示当前状态。识别结果文本文件将保存在 `src/python-gui-client/results/` 目录下 (默认覆盖同名文件)。
+7.  **查看结果**: 识别过程中的日志和最终结果将显示在 "运行日志与结果" 区域。状态栏会显示当前状态。识别结果文本文件将保存在 `src/python-gui-client/results/` 目录下 (默认覆盖同名文件)。
+8.  **查看日志**: 点击 "打开日志文件" 按钮可以打开日志文件，查看详细的操作记录和错误信息。
 
 ## 📁 文件结构
 
@@ -55,13 +61,25 @@ funasr-gui-win-ver2504/
 │   └── python-gui-client/
 │       ├── funasr_gui_client_v2.py   # GUI 客户端主程序
 │       ├── simple_funasr_client.py   # 实际执行识别的 WebSocket 客户端脚本
-│       ├── requirements.txt          # (可能包含更多依赖)
+│       ├── config.json               # 保存用户配置的文件
+│       ├── requirements.txt          # 依赖项列表
+│       ├── funasr_gui_client.log     # 程序运行日志文件
 │       └── results/                  # 存放识别结果文本文件的目录
-├── samples/
-│   └── funasr_wss_client.py          # FunASR 官方提供的 WebSocket 客户端示例 (供参考)
-├── prd/
-│   └── funasr-python-gui-client-v2-UI定义.md # UI 详细定义文档
-└── README.md                         # 本文档
+├── ref_codes/                        # 参考代码目录
+│   ├── funasr_client_api.py          # FunASR 客户端 API
+│   ├── funasr_wss_client.py          # FunASR 原始 WebSocket 客户端
+│   └── requirements_client.txt       # 客户端依赖项列表
+├── ref_docs/                         # 参考文档目录
+├── demo/                             # 演示音视频文件目录
+│   ├── tv-report-1.mp4               # 示例视频文件
+│   └── tv-report-1.wav               # 示例音频文件
+├── prd/                              # 项目需求和文档目录
+│   ├── funasr-python-gui-client-v2-需求文档.md # 项目需求文档
+│   ├── funasr-python-gui-client-v2-项目管理.md # 项目管理文档
+│   ├── funasr-python-gui-client-v2-UI定义.md   # UI 详细定义文档
+│   ├── FunASR客户端流程记录.md                 # 客户端与服务端交互流程记录
+│   └── FunASR-performance.md                   # 性能测试记录
+└── README.md                                   # 本文档
 ```
 
 ## ⚠️ 已知问题与限制
@@ -70,6 +88,18 @@ funasr-gui-win-ver2504/
 *   错误处理和提示可以进一步完善。
 *   结果文件的保存路径目前固定在 `src/python-gui-client/results/`。
 *   暂未实现对所有 `funasr_wss_client.py` 命令行参数的可视化配置（如 `chunk_size`, `chunk_interval`, `hotword` 等）。
+
+## 🔜 开发计划
+
+根据项目管理文档，以下功能正在开发中：
+
+*   **结果与日志分离**: 将识别结果与运行日志分开显示，提供更清晰的用户体验。
+*   **状态栏信息增强**: 显示更详细的识别阶段和进度信息。
+*   **增强错误处理**: 捕获并友好显示常见错误。
+*   **添加"取消"按钮**: 允许用户中止正在进行的识别任务。
+*   **支持热词文件**: 添加选择热词文件的功能，提高特定领域识别准确率。
+*   **配置输出目录**: 允许用户指定结果保存位置。
+*   **支持 Online 和 2Pass 模式**: 扩展支持更多识别模式，满足不同场景需求。
 
 ## 🤝 贡献
 
