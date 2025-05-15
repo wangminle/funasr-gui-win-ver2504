@@ -9,6 +9,9 @@ import json
 import traceback
 from multiprocessing import Process
 
+# 添加对大型响应的支持
+import gc  # 用于手动触发垃圾回收
+
 # 解决中文显示乱码问题
 if sys.platform == 'win32':
     import io
@@ -227,7 +230,7 @@ async def record_from_scp(chunk_begin, chunk_size):
     # 离线模式需要等待结果接收完成
     if args.mode == "offline":
         log("等待服务器处理完成...")
-        timeout = 300  # 5分钟超时
+        timeout = 600  # 修改为10分钟超时
         start_time = time.time()
         while not offline_msg_done:
             await asyncio.sleep(1)
@@ -256,57 +259,86 @@ async def message(id):
         while True:
             # 设置超时
             try:
-                meg = await asyncio.wait_for(websocket.recv(), timeout=120)
-                meg = json.loads(meg)
+                log("等待接收消息...")
+                meg = await asyncio.wait_for(websocket.recv(), timeout=600)
+                log(f"已接收消息，大小: {len(meg)/1024/1024:.2f}MB")
                 
-                wav_name = meg.get("wav_name", "demo")
-                text = meg.get("text", "")
-                timestamp = ""
-                
-                # 在离线模式下，不依赖is_final字段，而是根据收到非空text字段来判断识别完成
-                if args.mode == "offline" and text.strip():
-                    log("离线模式收到非空文本，识别完成")
-                    offline_msg_done = True
-                else:
-                    # 非离线模式仍然使用is_final字段
-                    offline_msg_done = meg.get("is_final", False)
-                
-                if "timestamp" in meg:
-                    timestamp = meg["timestamp"]
-                
-                # log(f"接收到消息: {meg}") # 原始消息日志可能过于详细
-
-                # 写入结果文件
-                if ibest_writer is not None and text != "":
-                    if len(timestamp) > 0:
-                        ibest_writer.write(wav_name + "\t" + json.dumps(timestamp) + "\t" + text + "\n")
+                try:
+                    # 尝试解析JSON，设置更大的递归限制
+                    old_limit = sys.getrecursionlimit()
+                    sys.setrecursionlimit(10000)  # 增加递归限制
+                    meg = json.loads(meg)
+                    sys.setrecursionlimit(old_limit)  # 恢复原来的递归限制
+                    
+                    # 手动垃圾回收以释放内存
+                    gc.collect()
+                    
+                    wav_name = meg.get("wav_name", "demo")
+                    text = meg.get("text", "")
+                    timestamp = ""
+                    
+                    # 在离线模式下，不依赖is_final字段，而是根据收到非空text字段来判断识别完成
+                    if args.mode == "offline" and text.strip():
+                        log("离线模式收到非空文本，识别完成")
+                        offline_msg_done = True
                     else:
-                        ibest_writer.write(wav_name + "\t" + text + "\n")
-                    ibest_writer.flush() # 确保立即写入
+                        # 非离线模式仍然使用is_final字段
+                        offline_msg_done = meg.get("is_final", False)
                     
-                # 存储JSON结果
-                if json_writer is not None:
-                    # 只存储包含文本或时间戳的有效消息
-                    if text or timestamp:
-                        all_results_for_json.append(meg)
+                    if "timestamp" in meg:
+                        timestamp = meg["timestamp"]
+                    
+                    # 写入结果文件
+                    if ibest_writer is not None and text != "":
+                        if len(timestamp) > 0:
+                            ibest_writer.write(wav_name + "\t" + json.dumps(timestamp) + "\t" + text + "\n")
+                        else:
+                            ibest_writer.write(wav_name + "\t" + text + "\n")
+                        ibest_writer.flush() # 确保立即写入
+                        
+                    # 存储JSON结果
+                    if json_writer is not None:
+                        # 只存储包含文本或时间戳的有效消息
+                        if text or timestamp:
+                            # 过滤掉可能导致JSON文件过大的字段
+                            if len(meg) > 1000000:  # 如果消息太大
+                                log("消息太大，只保留关键字段")
+                                filtered_meg = {
+                                    "wav_name": wav_name,
+                                    "text": text,
+                                    "is_final": meg.get("is_final", False)
+                                }
+                                if "timestamp" in meg:
+                                    filtered_meg["timestamp"] = timestamp
+                                all_results_for_json.append(filtered_meg)
+                            else:
+                                all_results_for_json.append(meg)
 
-                # -- 修改：直接打印当前收到的文本 --
-                current_output = ""
-                if args.mode == "2pass":
-                    if "text_2pass_offline" in meg:
-                        current_output = f"[2pass离线] {text}"
-                    elif "text_2pass_online" in meg:
-                        current_output = f"[2pass在线] {text}"
-                    elif text: # 普通中间结果
+                    # -- 修改：直接打印当前收到的文本 --
+                    current_output = ""
+                    if args.mode == "2pass":
+                        if "text_2pass_offline" in meg:
+                            current_output = f"[2pass离线] {text}"
+                        elif "text_2pass_online" in meg:
+                            current_output = f"[2pass在线] {text}"
+                        elif text: # 普通中间结果
+                            current_output = text
+                    elif text: # 非2pass模式直接使用text
                         current_output = text
-                elif text: # 非2pass模式直接使用text
-                    current_output = text
-                    
-                if current_output:
-                     # 直接打印当前结果到stdout
-                     print(f"识别结果: {current_output}", flush=True)
-                     # log(f"识别结果片段: {current_output}") # 可选的调试日志
-
+                        
+                    if current_output:
+                         # 直接打印当前结果到stdout
+                         print(f"识别结果: {current_output}", flush=True)
+                
+                except json.JSONDecodeError as e:
+                    log(f"JSON解析错误: {e}")
+                    if len(meg) > 1000:
+                        log(f"数据预览: {meg[:500]}...{meg[-500:]}")
+                    else:
+                        log(f"数据全文: {meg}")
+                except Exception as e:
+                    log(f"消息处理错误: {e}\n{traceback.format_exc()}")
+                
                 # 检查是否是最后的消息
                 if offline_msg_done:
                     log("收到结束标志或完整结果，退出消息循环")
@@ -329,9 +361,14 @@ async def message(id):
             log("文本结果文件已关闭")
         if json_writer is not None:
             # 写入完整的JSON列表
-            json.dump(all_results_for_json, json_writer, ensure_ascii=False, indent=4)
-            json_writer.close()
-            log(f"JSON结果文件已写入并关闭: {json_file_path}")
+            try:
+                log(f"尝试写入JSON结果文件，包含 {len(all_results_for_json)} 条记录")
+                json.dump(all_results_for_json, json_writer, ensure_ascii=False, indent=2)
+                log(f"JSON结果文件已写入并关闭: {json_file_path}")
+            except Exception as e:
+                log(f"写入JSON文件出错: {e}")
+            finally:
+                json_writer.close()
 
 async def ws_client(id, chunk_begin, chunk_size):
     """创建WebSocket客户端并开始通信"""
@@ -359,12 +396,15 @@ async def ws_client(id, chunk_begin, chunk_size):
         log(f"连接到 {uri}")
         
         try:
+            # 设置更大的max_size参数以支持更大的消息
+            # 默认是1MB，这里设置为1GB
             async with websockets.connect(
                 uri, 
                 subprotocols=["binary"], 
                 ping_interval=None, 
                 ssl=ssl_context,
-                close_timeout=60
+                close_timeout=60,
+                max_size=1024 * 1024 * 1024  # 1GB的最大消息大小
             ) as websocket:
                 log("连接已建立")
                 

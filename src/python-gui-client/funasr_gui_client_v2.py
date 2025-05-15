@@ -61,8 +61,22 @@ class FunASRGUIClient(tk.Tk):
 
         # 配置文件路径设置
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.config_file = os.path.join(self.current_dir, 'config.json')
-        self.log_file = os.path.join(self.current_dir, 'funasr_gui_client.log') # 日志文件路径
+        self.project_root = os.path.abspath(os.path.join(self.current_dir, os.pardir, os.pardir))
+        
+        # 新的配置和日志文件路径
+        self.release_dir = os.path.join(self.project_root, 'release')
+        self.config_dir = os.path.join(self.release_dir, 'config')
+        self.logs_dir = os.path.join(self.release_dir, 'logs')
+        
+        # 确保目录存在
+        os.makedirs(self.config_dir, exist_ok=True)
+        os.makedirs(self.logs_dir, exist_ok=True)
+        
+        self.config_file = os.path.join(self.config_dir, 'config.json')
+        self.log_file = os.path.join(self.logs_dir, 'funasr_gui_client.log') # 日志文件路径
+        
+        # 迁移旧的配置文件和日志文件
+        self.migrate_legacy_files()
 
         # --- Setup Logging ---
         self.setup_logging()
@@ -129,6 +143,10 @@ class FunASRGUIClient(tk.Tk):
         # Add "Open Log File" button
         self.open_log_button = ttk.Button(options_frame, text="打开日志文件", command=self.open_log_file)
         self.open_log_button.grid(row=0, column=2, padx=15, pady=2, sticky=tk.W) # Position it next to SSL
+        
+        # Add "Open Results Folder" button
+        self.open_results_button = ttk.Button(options_frame, text="打开结果目录", command=self.open_results_folder)
+        self.open_results_button.grid(row=0, column=3, padx=15, pady=2, sticky=tk.W) # Position it next to Open Log
 
         # --- 状态与结果显示区 ---
         # Renamed frame to Log Display Area
@@ -156,6 +174,30 @@ class FunASRGUIClient(tk.Tk):
 
         # 检查必要的依赖 (Log the process)
         self.check_dependencies()
+
+    def migrate_legacy_files(self):
+        """检查并迁移旧位置的配置文件和日志文件到新位置"""
+        # 旧的配置文件路径
+        old_config_file = os.path.join(self.current_dir, 'config.json')
+        old_log_file = os.path.join(self.current_dir, 'funasr_gui_client.log')
+        
+        # 如果旧的配置文件存在而新的不存在，则复制
+        if os.path.exists(old_config_file) and not os.path.exists(self.config_file):
+            try:
+                import shutil
+                shutil.copy2(old_config_file, self.config_file)
+                print(f"已迁移配置文件从 {old_config_file} 到 {self.config_file}")
+            except Exception as e:
+                print(f"迁移配置文件失败: {e}")
+        
+        # 如果旧的日志文件存在而新的不存在，则复制
+        if os.path.exists(old_log_file) and not os.path.exists(self.log_file):
+            try:
+                import shutil
+                shutil.copy2(old_log_file, self.log_file)
+                print(f"已迁移日志文件从 {old_log_file} 到 {self.log_file}")
+            except Exception as e:
+                print(f"迁移日志文件失败: {e}")
 
     def setup_logging(self):
         """配置日志记录"""
@@ -453,12 +495,17 @@ class FunASRGUIClient(tk.Tk):
             self.status_var.set("错误: 脚本未找到")
             return
 
+        # 设置输出目录到 release/results 文件夹
+        results_dir = os.path.join(self.release_dir, 'results')
+        os.makedirs(results_dir, exist_ok=True)
+        
         args = [
             sys.executable,  # 使用当前 Python 解释器
             script_path,
             "--host", ip,
             "--port", str(port),
             "--audio_in", audio_in,
+            "--output_dir", results_dir,  # 添加输出目录参数
             # 根据 Checkbutton 状态添加 --no-itn 或 --no-ssl
         ]
         if self.use_itn_var.get() == 0:
@@ -471,6 +518,7 @@ class FunASRGUIClient(tk.Tk):
         # self.log_text.delete('1.0', tk.END) # 取消启动时清空，不清空之前的系统日志
         self.log_text.configure(state='disabled')
         logging.info(f"任务开始: 正在识别文件 {os.path.basename(audio_in)}")
+        logging.info(f"识别结果将保存在: {results_dir}")
         self.status_var.set(f"正在识别: {os.path.basename(audio_in)}...")
         self.start_button.config(state=tk.DISABLED) # 禁用开始按钮
 
@@ -744,6 +792,40 @@ class FunASRGUIClient(tk.Tk):
         except Exception as e:
             logging.error(f"系统错误: 打开日志文件/目录时发生错误: {e}", exc_info=True)
             messagebox.showerror("错误", f"无法打开日志文件或目录: {e}")
+
+    def open_results_folder(self):
+        """打开结果目录"""
+        results_dir = os.path.join(self.release_dir, 'results')
+        logging.info(f"用户操作: 尝试打开结果目录: {results_dir}")
+        try:
+            if sys.platform == "win32":
+                # 在 Windows 上，尝试直接打开文件夹，如果失败则打开目录
+                try:
+                    os.startfile(results_dir)
+                    logging.info(f"系统事件: 使用 os.startfile 打开结果目录 {results_dir}")
+                except OSError:
+                    logging.warning(f"系统警告: 无法直接打开结果目录 {results_dir}，尝试打开目录 {os.path.dirname(results_dir)}")
+                    os.startfile(os.path.dirname(results_dir))
+                    logging.info(f"系统事件: 使用 os.startfile 打开结果目录父目录 {os.path.dirname(results_dir)}")
+            elif sys.platform == "darwin": # macOS
+                try:
+                    subprocess.run(["open", "-R", results_dir], check=True) # 在 Finder 中显示文件夹
+                    logging.info(f"系统事件: 使用 'open -R' 在 Finder 中显示结果目录 {results_dir}")
+                except (FileNotFoundError, subprocess.CalledProcessError) as e:
+                    logging.error(f"系统错误: 无法在 Finder 中显示结果目录，尝试打开目录: {e}")
+                    subprocess.run(["open", os.path.dirname(results_dir)], check=True) # 打开目录
+                    logging.info(f"系统事件: 使用 'open' 打开结果目录父目录 {os.path.dirname(results_dir)}")
+            else: # Linux and other Unix-like
+                try:
+                    # 尝试使用 xdg-open 打开目录，更通用
+                    subprocess.run(["xdg-open", results_dir], check=True)
+                    logging.info(f"系统事件: 使用 'xdg-open' 打开结果目录 {results_dir}")
+                except (FileNotFoundError, subprocess.CalledProcessError) as e:
+                    logging.error(f"系统错误: 无法使用 xdg-open 打开结果目录 {results_dir}: {e}")
+                    messagebox.showwarning("无法打开", f"无法自动打开结果目录。请手动导航至: {results_dir}")
+        except Exception as e:
+            logging.error(f"系统错误: 打开结果目录时发生错误: {e}", exc_info=True)
+            messagebox.showerror("错误", f"无法打开结果目录: {e}")
 
 
 if __name__ == "__main__":

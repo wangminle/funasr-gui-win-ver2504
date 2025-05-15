@@ -248,3 +248,47 @@ I20250424 20:58:42.294812 21648 websocket-server.cpp:211] remove one connection 
     *   客户端需要能处理网络错误、连接意外断开（如日志中 `20:58:24` 的关闭事件所示）等情况。
     *   应该清晰地向用户展示当前状态：连接中、上传中、处理中、识别完成、失败等。
 5.  **结果解析:** 客户端需要正确解析服务端返回的 `result json`，提取 `"text"` 字段获取识别结果，如果需要，还可以提取 `"stamp_sents"` 或 `"timestamp"` 获取时间戳信息。
+
+
+# 时序图
+sequenceDiagram
+    participant Client as FunASR客户端
+    participant Server as FunASR服务端
+    
+    Note over Client: 1. 参数解析与初始化<br>(host, port, mode, audio_in等)
+    Note over Client: 2. 音频文件处理<br>(检查单个文件或.scp文件列表)
+    Note over Client: 3. 线程分配<br>(根据thread_num创建处理线程)
+    
+    Client->>Server: 4. WebSocket连接请求<br>(wss://host:port 或 ws://host:port)
+    Server-->>Client: 连接确认(on_open)
+    Note over Server: 记录active connections
+    
+    Client->>Server: 5. 发送初始参数(JSON)<br>{"mode": "offline", "wav_name": "实际文件名",<br>"wav_format": "pcm", "is_speaking": true,<br>"hotwords": "", "itn": true}
+    Note over Server: 检查参数(如hotwords)
+    
+    Note over Client: 6. 音频数据读取<br>(打开文件, 获取音频数据)
+    
+    loop 7. 音频数据分块发送
+        Client->>Server: 发送音频数据块(二进制)
+        Note over Client: 切分数据: stride = int(60*10/10/1000*16000*2)
+    end
+    
+    Client->>Server: 发送结束标志<br>{"is_speaking": false}
+    Note over Server: 记录client done
+    
+    Note over Server: 执行语音识别处理<br>(约2-30秒，取决于音频长度)
+    
+    Server-->>Client: 8. 发送识别结果(JSON)<br>{"wav_name": "文件名", "text": "识别文本",<br>"timestamp": [[起始时间,结束时间],...],<br>"mode": "offline", "is_final": true}
+    
+    Note over Client: 9. 处理识别结果<br>(显示或保存到文件)
+    
+    Client->>Server: 10. 关闭WebSocket连接
+    Server-->>Client: 确认连接关闭(on_close)
+    Note over Server: 更新active connections
+    
+    Note over Client: 11. 程序结束
+
+
+# 时序图--mermaid图像
+https://www.mermaidchart.com/raw/606cb197-c143-43c3-88a8-cf509487efb4?theme=light&version=v0.1&format=svg
+prd/FunASR-Client&Server-sequenceDiagram.png
