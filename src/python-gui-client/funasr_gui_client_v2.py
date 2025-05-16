@@ -59,6 +59,14 @@ class FunASRGUIClient(tk.Tk):
         self.geometry("800x600")
         self.connection_status = False  # 连接状态标志
 
+        # 速度测试相关变量
+        self.speed_test_running = False
+        self.test_file_index = 0
+        self.test_files = []
+        self.upload_times = []
+        self.transcribe_times = []
+        self.file_sizes = []
+        
         # 配置文件路径设置
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
         self.project_root = os.path.abspath(os.path.join(self.current_dir, os.pardir, os.pardir))
@@ -147,6 +155,31 @@ class FunASRGUIClient(tk.Tk):
         # Add "Open Results Folder" button
         self.open_results_button = ttk.Button(options_frame, text="打开结果目录", command=self.open_results_folder)
         self.open_results_button.grid(row=0, column=3, padx=15, pady=2, sticky=tk.W) # Position it next to Open Log
+
+        # --- 速度测试区域 ---
+        speed_test_frame = ttk.LabelFrame(self, text="速度测试")
+        speed_test_frame.pack(padx=10, pady=5, fill=tk.X)
+
+        # 速度测试按钮
+        self.speed_test_button = ttk.Button(speed_test_frame, text="速度测试", command=self.start_speed_test)
+        self.speed_test_button.grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)
+
+        # 测试状态显示
+        self.speed_test_status_var = tk.StringVar(value="未测试")
+        self.speed_test_status = ttk.Label(speed_test_frame, textvariable=self.speed_test_status_var, font=("Arial", 9, "bold"))
+        self.speed_test_status.grid(row=0, column=1, padx=15, pady=5, sticky=tk.W)
+
+        # 结果显示区域
+        result_frame = ttk.Frame(speed_test_frame)
+        result_frame.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky=tk.W)
+
+        ttk.Label(result_frame, text="上传速度:").grid(row=0, column=0, padx=5, pady=2, sticky=tk.W)
+        self.upload_speed_var = tk.StringVar(value="--")
+        ttk.Label(result_frame, textvariable=self.upload_speed_var).grid(row=0, column=1, padx=5, pady=2, sticky=tk.W)
+
+        ttk.Label(result_frame, text="转写速度:").grid(row=1, column=0, padx=5, pady=2, sticky=tk.W)
+        self.transcribe_speed_var = tk.StringVar(value="--")
+        ttk.Label(result_frame, textvariable=self.transcribe_speed_var).grid(row=1, column=1, padx=5, pady=2, sticky=tk.W)
 
         # --- 状态与结果显示区 ---
         # Renamed frame to Log Display Area
@@ -826,6 +859,263 @@ class FunASRGUIClient(tk.Tk):
         except Exception as e:
             logging.error(f"系统错误: 打开结果目录时发生错误: {e}", exc_info=True)
             messagebox.showerror("错误", f"无法打开结果目录: {e}")
+
+    def start_speed_test(self):
+        """启动速度测试过程"""
+        if self.speed_test_running:
+            logging.warning("用户警告: 速度测试已在进行中，请等待完成")
+            self.status_var.set("警告: 速度测试已在进行中")
+            return
+
+        # 检查服务器连接
+        ip = self.ip_var.get()
+        port = self.port_var.get()
+
+        if not ip or not port:
+            logging.error("用户错误: 服务器IP或端口未设置")
+            self.status_var.set("错误: 缺少服务器信息")
+            messagebox.showerror("错误", "请先设置服务器IP和端口")
+            return
+
+        # 如果未连接服务器，先尝试连接
+        if not self.connection_status:
+            logging.info("系统事件: 未检测到服务器连接，先尝试连接服务器...")
+            # 创建连接测试线程
+            thread = threading.Thread(target=self._test_connection, 
+                                    args=(ip, port, self.use_ssl_var.get()), 
+                                    daemon=True)
+            thread.start()
+            # 等待连接测试完成
+            thread.join(timeout=6)  # 最多等待6秒
+            
+            # 检查连接状态
+            if not self.connection_status:
+                logging.warning("系统警告: 服务器连接测试未成功，无法进行速度测试")
+                self.status_var.set("错误: 无法连接服务器")
+                messagebox.showerror("连接错误", "无法连接到服务器，请先检查连接")
+                return
+
+        # 初始化测试相关变量
+        self.speed_test_running = True
+        self.test_file_index = 0
+        self.test_files = []
+        self.upload_times = []
+        self.transcribe_times = []
+        self.file_sizes = []
+        
+        # 设置测试状态
+        self.speed_test_status_var.set("测试准备中...")
+        self.status_var.set("正在准备速度测试...")
+        self.speed_test_button.config(state=tk.DISABLED)
+        
+        # 查找测试文件
+        demo_dir = os.path.join(self.project_root, 'demo')
+        mp4_file = os.path.join(demo_dir, 'tv-report-1.mp4')
+        wav_file = os.path.join(demo_dir, 'tv-report-1.wav')
+        
+        if not os.path.exists(mp4_file) or not os.path.exists(wav_file):
+            logging.error(f"系统错误: 测试文件不存在，请确保 {demo_dir} 目录下有 tv-report-1.mp4 和 tv-report-1.wav 文件")
+            self.status_var.set("错误: 测试文件不存在")
+            self.speed_test_status_var.set("未测试")
+            self.speed_test_button.config(state=tk.NORMAL)
+            self.speed_test_running = False
+            messagebox.showerror("文件错误", f"测试文件不存在，请确保 {demo_dir} 目录下有 tv-report-1.mp4 和 tv-report-1.wav 文件")
+            return
+            
+        # 记录文件大小和路径
+        mp4_size = os.path.getsize(mp4_file)
+        wav_size = os.path.getsize(wav_file)
+        self.test_files = [mp4_file, wav_file]
+        self.file_sizes = [mp4_size, wav_size]
+        
+        logging.info(f"系统事件: 开始速度测试，文件1: {mp4_file} ({mp4_size/1024/1024:.2f}MB), 文件2: {wav_file} ({wav_size/1024/1024:.2f}MB)")
+        
+        # 启动第一次测试
+        self._run_speed_test()
+        
+    def _run_speed_test(self):
+        """运行单个文件的速度测试"""
+        if self.test_file_index >= len(self.test_files):
+            # 所有测试完成，计算并显示结果
+            self._calculate_and_show_results()
+            return
+            
+        current_file = self.test_files[self.test_file_index]
+        file_name = os.path.basename(current_file)
+        
+        # 更新状态
+        self.speed_test_status_var.set(f"测试{self.test_file_index + 1}进行中...")
+        self.status_var.set(f"正在测试文件: {file_name}")
+        logging.info(f"系统事件: 开始测试文件 {self.test_file_index + 1}: {current_file}")
+        
+        # 在新线程中运行测试，不阻塞UI
+        threading.Thread(target=self._process_test_file, 
+                        args=(current_file,), 
+                        daemon=True).start()
+        
+    def _process_test_file(self, file_path):
+        """处理单个测试文件，记录上传时间和转写时间"""
+        ip = self.ip_var.get()
+        port = self.port_var.get()
+        
+        # 设置参数
+        script_path = self._find_script_path()
+        if not script_path:
+            logging.error("系统错误: 未找到 simple_funasr_client.py 脚本")
+            self.after(0, self._handle_test_error, "脚本未找到")
+            return
+
+        # 设置输出目录到 release/results/speed_test 文件夹
+        results_dir = os.path.join(self.release_dir, 'results', 'speed_test')
+        os.makedirs(results_dir, exist_ok=True)
+        
+        args = [
+            sys.executable,  # 使用当前 Python 解释器
+            script_path,
+            "--host", ip,
+            "--port", str(port),
+            "--audio_in", file_path,
+            "--output_dir", results_dir,
+        ]
+        
+        if self.use_itn_var.get() == 0:
+            args.append("--no-itn")
+        if self.use_ssl_var.get() == 0:
+            args.append("--no-ssl")
+            
+        upload_start_time = None
+        upload_end_time = None
+        transcribe_start_time = None
+        transcribe_end_time = None
+        
+        try:
+            logging.debug(f"调试信息: 执行速度测试命令: {' '.join(args)}")
+            process = subprocess.Popen(
+                args, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.PIPE, 
+                text=True, 
+                encoding='utf-8', 
+                bufsize=1,
+                creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0
+            )
+            
+            # 实时读取输出，查找上传开始、结束和转写完成的标志
+            for line in iter(process.stdout.readline, ''):
+                if not line:
+                    break
+                    
+                line = line.strip()
+                logging.debug(f"速度测试输出: {line}")
+                
+                # 检测上传开始
+                if "发送WebSocket:" in line and "mode" in line and upload_start_time is None:
+                    upload_start_time = time.time()
+                    logging.info(f"速度测试: 文件 {self.test_file_index + 1} 上传开始")
+                
+                # 检测上传进度，当进度达到100%时认为上传结束
+                if "上传进度: 100%" in line and upload_end_time is None:
+                    upload_end_time = time.time()
+                    transcribe_start_time = time.time()  # 上传结束即开始转写
+                    logging.info(f"速度测试: 文件 {self.test_file_index + 1} 上传完成，耗时: {upload_end_time - upload_start_time:.2f}秒")
+                
+                # 检测转写完成
+                if ("离线模式收到非空文本" in line or "收到结束标志或完整结果" in line) and transcribe_end_time is None:
+                    transcribe_end_time = time.time()
+                    logging.info(f"速度测试: 文件 {self.test_file_index + 1} 转写完成，耗时: {transcribe_end_time - transcribe_start_time:.2f}秒")
+            
+            # 确保进程结束
+            process.wait()
+            
+            # 检查是否成功获取了所有时间点
+            if upload_start_time and upload_end_time and transcribe_start_time and transcribe_end_time:
+                upload_time = upload_end_time - upload_start_time
+                transcribe_time = transcribe_end_time - transcribe_start_time
+                
+                # 记录时间
+                self.upload_times.append(upload_time)
+                self.transcribe_times.append(transcribe_time)
+                
+                logging.info(f"速度测试: 文件 {self.test_file_index + 1} 测试完成，上传耗时: {upload_time:.2f}秒，转写耗时: {transcribe_time:.2f}秒")
+                
+                # 准备下一个测试
+                self.test_file_index += 1
+                self.after(0, self._run_speed_test)
+            else:
+                # 某些时间点未能获取到
+                missing = []
+                if not upload_start_time: missing.append("上传开始时间")
+                if not upload_end_time: missing.append("上传结束时间")
+                if not transcribe_start_time: missing.append("转写开始时间")
+                if not transcribe_end_time: missing.append("转写结束时间")
+                
+                error_msg = f"未能获取到完整时间点: {', '.join(missing)}"
+                logging.error(f"速度测试错误: {error_msg}")
+                self.after(0, self._handle_test_error, error_msg)
+        
+        except Exception as e:
+            error_details = traceback.format_exc()
+            logging.error(f"速度测试错误: {e}\n{error_details}")
+            self.after(0, self._handle_test_error, str(e))
+    
+    def _handle_test_error(self, error_msg):
+        """处理测试过程中的错误"""
+        self.speed_test_status_var.set("测试失败")
+        self.status_var.set(f"速度测试失败: {error_msg}")
+        self.speed_test_button.config(state=tk.NORMAL)
+        self.speed_test_running = False
+        messagebox.showerror("测试失败", f"速度测试过程中出错:\n{error_msg}")
+    
+    def _calculate_and_show_results(self):
+        """计算并显示测试结果"""
+        try:
+            if len(self.upload_times) != 2 or len(self.transcribe_times) != 2:
+                raise ValueError("测试数据不完整")
+                
+            # 计算上传速度 (MB/s)
+            total_size_bytes = sum(self.file_sizes)
+            total_size_mb = total_size_bytes / (1024 * 1024)
+            total_upload_time = sum(self.upload_times)
+            upload_speed = total_size_mb / total_upload_time
+            
+            # 计算转写速度 (倍速)
+            # 两个文件播放时长各为180秒，总共360秒
+            total_audio_duration = 360  # 两个文件各3分钟，共6分钟
+            total_transcribe_time = sum(self.transcribe_times)
+            transcribe_speed = total_audio_duration / total_transcribe_time
+            
+            # 更新UI显示
+            self.upload_speed_var.set(f"{upload_speed:.2f} MB/s")
+            self.transcribe_speed_var.set(f"{transcribe_speed:.2f}x")
+            
+            # 更新状态
+            self.speed_test_status_var.set("测试完成")
+            self.status_var.set("速度测试完成")
+            self.speed_test_button.config(state=tk.NORMAL)
+            self.speed_test_running = False
+            
+            logging.info(f"速度测试结果: 上传速度 {upload_speed:.2f} MB/s, 转写速度 {transcribe_speed:.2f}x")
+            
+            # 显示详细结果
+            detail_msg = (
+                f"测试总结\n\n"
+                f"文件总大小: {total_size_mb:.2f} MB\n"
+                f"总上传时间: {total_upload_time:.2f} 秒\n"
+                f"平均上传速度: {upload_speed:.2f} MB/s\n\n"
+                f"音频总时长: {total_audio_duration} 秒\n"
+                f"总转写时间: {total_transcribe_time:.2f} 秒\n"
+                f"转写速度: {transcribe_speed:.2f}x"
+            )
+            messagebox.showinfo("速度测试结果", detail_msg)
+            
+        except Exception as e:
+            error_details = traceback.format_exc()
+            logging.error(f"计算速度测试结果错误: {e}\n{error_details}")
+            self.speed_test_status_var.set("结果计算失败")
+            self.status_var.set(f"速度测试结果计算失败: {e}")
+            self.speed_test_button.config(state=tk.NORMAL)
+            self.speed_test_running = False
+            messagebox.showerror("结果计算失败", f"计算速度测试结果时出错:\n{e}")
 
 
 if __name__ == "__main__":

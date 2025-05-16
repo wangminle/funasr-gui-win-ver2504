@@ -113,9 +113,57 @@
         *   **文本**: "打开日志文件"
         *   **位置**: `grid(row=0, column=2, padx=15, pady=2, sticky=tk.W)`
         *   **操作**: 点击后调用 `self.open_log_file` 方法。
-        *   **效果**: 根据操作系统尝试打开日志文件 (`funasr_gui_client.log`) 或其所在目录。
+        *   **效果**: 根据操作系统尝试打开日志文件 (`release/logs/funasr_gui_client.log`) 或其所在目录。
+    *   **打开结果目录 按钮 (`ttk.Button`)**
+        *   **控件变量名**: `self.open_results_button`
+        *   **文本**: "打开结果目录"
+        *   **位置**: `grid(row=0, column=3, padx=15, pady=2, sticky=tk.W)`
+        *   **操作**: 点击后调用 `self.open_results_folder` 方法。
+        *   **效果**: 根据操作系统尝试打开识别结果保存目录 (`release/results`) 或其所在目录。
 
-## 6. 运行日志与结果
+## 6. 速度测试区域
+
+*   **框架变量名**: `speed_test_frame`
+*   **文本**: "速度测试"
+*   **布局**: `pack(padx=10, pady=5, fill=tk.X)`
+
+    *   **速度测试 按钮 (`ttk.Button`)**
+        *   **控件变量名**: `self.speed_test_button`
+        *   **文本**: "速度测试"
+        *   **位置**: `grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)`
+        *   **操作**: 点击后调用 `self.start_speed_test` 方法，在后台线程执行测试。
+        *   **效果**: 使用demo目录中的测试文件依次进行识别，记录上传时间和转写时间，计算并显示上传速度和转写速度。点击后按钮变为禁用状态，直到测试完成后恢复可用。状态栏和状态显示标签会显示测试进度。
+    
+    *   **测试状态 标签 (`ttk.Label`)**
+        *   **控件变量名**: `self.speed_test_status`
+        *   **关联变量**: `self.speed_test_status_var` (tk.StringVar, 默认值 "未测试")
+        *   **字体**: `("Arial", 9, "bold")`
+        *   **位置**: `grid(row=0, column=1, padx=15, pady=5, sticky=tk.W)`
+        *   **效果**: 显示当前测试状态，包括"未测试"、"测试1进行中..."、"测试2进行中..."、"测试完成"。
+    
+    *   **结果显示区域 (嵌套 `ttk.Frame`)**
+        *   **框架变量名**: `result_frame`
+        *   **位置**: `grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky=tk.W)`
+        
+        *   **上传速度 标签 (`ttk.Label`)**
+            *   **文本**: "上传速度:"
+            *   **位置**: `grid(row=0, column=0, padx=5, pady=2, sticky=tk.W)`
+        
+        *   **上传速度 值标签 (`ttk.Label`)**
+            *   **关联变量**: `self.upload_speed_var` (tk.StringVar, 默认值 "--")
+            *   **位置**: `grid(row=0, column=1, padx=5, pady=2, sticky=tk.W)`
+            *   **效果**: 显示测试后计算的上传速度，格式为 "x.xx MB/s"。
+        
+        *   **转写速度 标签 (`ttk.Label`)**
+            *   **文本**: "转写速度:"
+            *   **位置**: `grid(row=1, column=0, padx=5, pady=2, sticky=tk.W)`
+        
+        *   **转写速度 值标签 (`ttk.Label`)**
+            *   **关联变量**: `self.transcribe_speed_var` (tk.StringVar, 默认值 "--")
+            *   **位置**: `grid(row=1, column=1, padx=5, pady=2, sticky=tk.W)`
+            *   **效果**: 显示测试后计算的转写速度，格式为 "x.xx倍速"。
+
+## 7. 运行日志与结果
 
 *   **框架变量名**: `log_frame` (原 `result_frame`)
 *   **文本**: "运行日志与结果" (原 "状态与结果")
@@ -128,7 +176,7 @@
         *   **操作**: 显示程序运行日志（所有级别）、依赖检查信息、连接状态、识别过程中的标准输出/错误（标记为脚本输出/错误），以及最终的识别结果文本（特殊标记）。
         *   **效果**: 文本会自动滚动到最底部 (`self.log_text.see(tk.END)`)。
 
-## 7. 状态栏
+## 8. 状态栏
 
 *   **控件变量名**: `self.status_bar`
 *   **关联变量**: `self.status_var` (tk.StringVar, 初始值 "准备就绪")
