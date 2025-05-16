@@ -1,7 +1,5 @@
 .DS_Store
 /.venv
-/demo
 /src/python-gui-client/__pycache__
 /release/results
-release/logs/funasr_gui_client.log
 /release/logs
