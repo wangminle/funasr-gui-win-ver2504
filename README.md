@@ -1,116 +1,116 @@
-# FunASR GUI 客户端 V2
+# FunASR GUI Client V2
 
-这是一个基于 Tkinter 的图形用户界面 (GUI) 客户端，用于与 FunASR (FunASR ASR) WebSocket 服务进行交互，实现语音识别功能。
+This is a Tkinter-based graphical user interface (GUI) client for interacting with FunASR (FunASR ASR) WebSocket service to implement speech recognition functionality.
 
-## ✨ 功能特性
+## ✨ Features
 
-*   **服务器连接配置**: 允许用户输入 FunASR WebSocket 服务器的 IP 地址和端口。
-*   **连接测试**: 提供按钮测试与服务器的 WebSocket 连接状态（包括 SSL）。
-*   **文件选择**: 支持选择本地的音频/视频文件（如 `.wav`, `.mp3`, `.pcm`, `.mp4` 等）或 `.scp` 列表文件进行识别。
-*   **离线识别**: 通过调用客户端脚本 (`simple_funasr_client.py`) 执行 FunASR 的离线识别模式。
-*   **实时输出显示**: 在 GUI 中实时显示识别过程中的状态信息和最终识别结果。
-*   **高级选项**: 支持启用/禁用逆文本标准化 (ITN) 和 SSL 连接。
-*   **依赖检查与安装**: 自动检查并提示/尝试安装所需的 Python 依赖包 (`websockets`, `asyncio`)。
-*   **状态反馈**: 通过状态栏和输出区域提供清晰的操作状态反馈。
-*   **日志记录**: 生成独立的日志文件，包含详细的操作记录和错误信息，便于问题排查。
-*   **配置持久化**: 保存上次使用的服务器IP、端口和高级选项设置，下次启动时自动加载。
-*   **优化上传速度**: 针对离线模式进行了上传速度优化，提高了处理效率。
-*   **协议优化**: 修正了offline模式下的协议处理，确保与服务端正确通信。
-*   **文件结构优化**: 重构了文件存储结构，将配置文件、日志和识别结果分别存储在独立目录中。
-*   **服务器速度测试**: 提供专用按钮测试服务器的上传速度和转写速度，使用demo目录中的测试文件计算并显示上传速度（MB/s）和转写速度（倍时）。
+*   **Server Connection Configuration**: Allows users to input the IP address and port of the FunASR WebSocket server.
+*   **Connection Testing**: Provides a button to test the WebSocket connection status with the server (including SSL).
+*   **File Selection**: Supports selecting local audio/video files (such as `.wav`, `.mp3`, `.pcm`, `.mp4`, etc.) or `.scp` list files for recognition.
+*   **Offline Recognition**: Executes FunASR's offline recognition mode by calling the client script (`simple_funasr_client.py`).
+*   **Real-time Output Display**: Displays status information and final recognition results in real-time in the GUI.
+*   **Advanced Options**: Supports enabling/disabling Inverse Text Normalization (ITN) and SSL connections.
+*   **Dependency Check and Installation**: Automatically checks and prompts/attempts to install required Python dependency packages (`websockets`, `asyncio`).
+*   **Status Feedback**: Provides clear operation status feedback through the status bar and output area.
+*   **Logging**: Generates independent log files containing detailed operation records and error information for troubleshooting.
+*   **Configuration Persistence**: Saves the last used server IP, port, and advanced option settings, which are automatically loaded at next startup.
+*   **Upload Speed Optimization**: Optimizes upload speed for offline mode, improving processing efficiency.
+*   **Protocol Optimization**: Corrects protocol handling in offline mode, ensuring correct communication with the server.
+*   **File Structure Optimization**: Restructures file storage, storing configuration files, logs, and recognition results in separate directories.
+*   **Server Speed Testing**: Provides a dedicated button to test the server's upload speed and transcription speed, using test files from the demo directory to calculate and display upload speed (MB/s) and transcription speed (real-time factor).
 
-## 🐍 环境要求
+## 🐍 Requirements
 
-*   **Python**: 3.8 或更高版本 (推荐使用项目运行时使用的 Python 版本，例如 3.12)。
-*   **Tkinter**: Python 标准库，通常随 Python 安装。
-*   **必要的 Python 包**:
-    *   `websockets`: 用于 WebSocket 通信。
-    *   `asyncio`: 用于异步操作。
-    *   `logging`: 用于生成日志文件（Python 标准库）。
-    *   *(注意: GUI 客户端会在首次连接或识别时尝试自动安装这些依赖)*
+*   **Python**: 3.8 or higher (recommended to use the Python version used in the project runtime, e.g., 3.12).
+*   **Tkinter**: Python standard library, usually installed with Python.
+*   **Necessary Python Packages**:
+    *   `websockets`: For WebSocket communication.
+    *   `asyncio`: For asynchronous operations.
+    *   `logging`: For generating log files (Python standard library).
+    *   *(Note: The GUI client will attempt to automatically install these dependencies upon first connection or recognition)*
 
-## 🚀 安装与设置
+## 🚀 Installation and Setup
 
-1.  **获取代码**: 克隆或下载本仓库到您的本地计算机。
-2.  **FunASR 服务端**: 确保您已经按照 FunASR 官方文档部署并运行了 WebSocket 服务端 (包括 `wss_server_online.py` 或 `wss_server_offline.py`)。记下服务端的 IP 地址和端口。
-3.  **安装依赖**:
-    *   您可以手动安装:
+1.  **Get the Code**: Clone or download this repository to your local computer.
+2.  **FunASR Server**: Ensure you have deployed and are running the WebSocket server according to the FunASR official documentation (including `wss_server_online.py` or `wss_server_offline.py`). Note down the server's IP address and port.
+3.  **Install Dependencies**:
+    *   You can install manually:
         ```bash
         pip install websockets asyncio
         ```
-    *   或者，启动 GUI 客户端，它会在需要时尝试自动安装。
+    *   Or start the GUI client, which will attempt to automatically install them when needed.
 
-## 🛠️ 使用方法
+## 🛠️ Usage
 
-1.  **启动 GUI**:
+1.  **Start GUI**:
     ```bash
-    cd path/to/funasr-gui-win-ver2504 # 进入项目根目录
+    cd path/to/funasr-gui-win-ver2504 # Navigate to the project root directory
     python src/python-gui-client/funasr_gui_client_v2.py
     ```
-2.  **配置服务器**: 在 "服务器连接配置" 区域输入 FunASR WebSocket 服务器的 IP 地址和端口。
-3.  **测试连接 (可选)**: 点击 "连接服务器" 按钮检查网络连通性。连接成功后，指示灯会变绿。
-4.  **选择文件**: 点击 "选择音/视频文件" 按钮，选择您要识别的音频或视频文件。
-5.  **配置选项 (可选)**: 根据需要勾选或取消勾选 "启用 ITN" 和 "启用 SSL"。
-6.  **开始识别**: 点击 "开始识别" 按钮。
-7.  **查看结果**: 识别过程中的日志和最终结果将显示在 "运行日志与结果" 区域。状态栏会显示当前状态。识别结果文本文件将保存在 `release/results/` 目录下。
-8.  **查看日志**: 点击 "打开日志文件" 按钮可以打开日志文件，查看详细的操作记录和错误信息。
-9.  **查看识别结果**: 点击 "打开结果目录" 按钮可以直接打开保存识别结果的目录。
-10. **测试服务器速度**: 点击 "速度测试" 按钮可以测试服务器的上传速度和转写速度。测试会自动使用demo目录中的测试文件（tv-report-1.mp4和tv-report-1.wav）进行两次测试，并计算平均上传速度（MB/s）和转写速度（倍时）。测试完成后，会在界面上显示结果，并弹出详细的测试结果对话框。
+2.  **Configure Server**: Enter the IP address and port of the FunASR WebSocket server in the "Server Connection Configuration" area.
+3.  **Test Connection (Optional)**: Click the "Connect to Server" button to check network connectivity. The indicator will turn green after a successful connection.
+4.  **Select File**: Click the "Select Audio/Video File" button to choose the audio or video file you want to recognize.
+5.  **Configure Options (Optional)**: Check or uncheck "Enable ITN" and "Enable SSL" as needed.
+6.  **Start Recognition**: Click the "Start Recognition" button.
+7.  **View Results**: Logs and final results during the recognition process will be displayed in the "Running Logs and Results" area. The status bar will show the current status. Recognition result text files will be saved in the `release/results/` directory.
+8.  **View Logs**: Click the "Open Log File" button to open the log file and view detailed operation records and error information.
+9.  **View Recognition Results**: Click the "Open Results Directory" button to directly open the directory where recognition results are saved.
+10. **Test Server Speed**: Click the "Speed Test" button to test the server's upload speed and transcription speed. The test will automatically use test files (tv-report-1.mp4 and tv-report-1.wav) from the demo directory to perform two tests, and calculate the average upload speed (MB/s) and transcription speed (real-time factor). After the test is completed, the results will be displayed on the interface, and a detailed test results dialog will pop up.
 
-## 📁 文件结构
+## 📁 File Structure
 
 ```
 funasr-gui-win-ver2504/
 ├── src/
 │   └── python-gui-client/
-│       ├── funasr_gui_client_v2.py   # GUI 客户端主程序
-│       └── simple_funasr_client.py   # 实际执行识别的 WebSocket 客户端脚本
+│       ├── funasr_gui_client_v2.py   # GUI client main program
+│       └── simple_funasr_client.py   # WebSocket client script that actually performs recognition
 ├── release/
-│   ├── config/                       # 配置文件目录
-│   │   └── config.json               # 保存用户配置的文件
-│   ├── logs/                         # 日志文件目录
-│   │   └── funasr_gui_client.log     # 程序运行日志文件
-│   └── results/                      # 存放识别结果文本文件的目录
-│       └── speed_test/               # 存放速度测试结果的子目录
-├── ref_codes/                        # 参考代码目录
-│   ├── funasr_client_api.py          # FunASR 客户端 API
-│   ├── funasr_wss_client.py          # FunASR 原始 WebSocket 客户端
-│   └── requirements_client.txt       # 客户端依赖项列表
-├── ref_docs/                         # 参考文档目录
-├── demo/                             # 演示音视频文件目录
-│   ├── tv-report-1.mp4               # 示例视频文件 (用于速度测试)
-│   └── tv-report-1.wav               # 示例音频文件 (用于速度测试)
-├── prd/                              # 项目需求和文档目录
-│   ├── funasr-python-gui-client-v2-需求文档.md # 项目需求文档
-│   ├── funasr-python-gui-client-v2-项目管理.md # 项目管理文档
-│   ├── funasr-python-gui-client-v2-UI定义.md   # UI 详细定义文档
-│   ├── FunASR客户端流程记录.md                 # 客户端与服务端交互流程记录
-│   └── FunASR-performance.md                   # 性能测试记录
-└── README.md                                   # 本文档
+│   ├── config/                       # Configuration file directory
+│   │   └── config.json               # File that saves user configuration
+│   ├── logs/                         # Log file directory
+│   │   └── funasr_gui_client.log     # Program running log file
+│   └── results/                      # Directory for storing recognition result text files
+│       └── speed_test/               # Subdirectory for storing speed test results
+├── ref_codes/                        # Reference code directory
+│   ├── funasr_client_api.py          # FunASR client API
+│   ├── funasr_wss_client.py          # Original FunASR WebSocket client
+│   └── requirements_client.txt       # Client dependency list
+├── ref_docs/                         # Reference document directory
+├── demo/                             # Demo audio and video file directory
+│   ├── tv-report-1.mp4               # Example video file (for speed testing)
+│   └── tv-report-1.wav               # Example audio file (for speed testing)
+├── prd/                              # Project requirements and documentation directory
+│   ├── funasr-python-gui-client-v2-需求文档.md # Project requirements document
+│   ├── funasr-python-gui-client-v2-项目管理.md # Project management document
+│   ├── funasr-python-gui-client-v2-UI定义.md   # Detailed UI definition document
+│   ├── FunASR客户端流程记录.md                 # Client and server interaction process record
+│   └── FunASR-performance.md                   # Performance test record
+└── README.md                                   # This document
 ```
 
-## ⚠️ 已知问题与限制
+## ⚠️ Known Issues and Limitations
 
-*   当前主要支持 FunASR 的 **离线 (offline)** 识别模式。
-*   错误处理和提示可以进一步完善。
-*   暂未实现对所有 `funasr_wss_client.py` 命令行参数的可视化配置（如 `chunk_size`, `chunk_interval`, `hotword` 等）。
+*   Currently mainly supports FunASR's **offline** recognition mode.
+*   Error handling and prompts can be further improved.
+*   Visual configuration for all `funasr_wss_client.py` command line parameters (such as `chunk_size`, `chunk_interval`, `hotword`, etc.) is not yet implemented.
 
-## 🔜 开发计划
+## 🔜 Development Plan
 
-根据项目管理文档，以下功能正在开发中：
+According to the project management document, the following features are under development:
 
-*   **结果与日志分离**: 将识别结果与运行日志分开显示，提供更清晰的用户体验。
-*   **状态栏信息增强**: 显示更详细的识别阶段和进度信息。
-*   **增强错误处理**: 捕获并友好显示常见错误。
-*   **添加"取消"按钮**: 允许用户中止正在进行的识别任务。
-*   **支持热词文件**: 添加选择热词文件的功能，提高特定领域识别准确率。
-*   **配置输出目录**: 允许用户自定义结果保存位置。
-*   **支持 Online 和 2Pass 模式**: 扩展支持更多识别模式，满足不同场景需求。
+*   **Separation of Results and Logs**: Displaying recognition results and running logs separately to provide a clearer user experience.
+*   **Enhanced Status Bar Information**: Displaying more detailed recognition stage and progress information.
+*   **Enhanced Error Handling**: Capturing and displaying common errors in a friendly manner.
+*   **Adding "Cancel" Button**: Allowing users to abort an ongoing recognition task.
+*   **Supporting Hotword Files**: Adding the function to select hotword files to improve recognition accuracy in specific domains.
+*   **Configurable Output Directory**: Allowing users to customize the location where results are saved.
+*   **Supporting Online and 2Pass Modes**: Extending support for more recognition modes to meet different scenario requirements.
 
-## 🤝 贡献
+## 🤝 Contribution
 
-欢迎提出问题、报告错误或贡献代码改进！
+Questions, bug reports, or code improvements are welcome!
 
-## 📄 许可证
+## 📄 License
 
-(可在此添加许可证信息，例如 MIT License) 
+(License information can be added here, e.g., MIT License) 

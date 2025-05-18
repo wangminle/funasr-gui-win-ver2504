@@ -3815,3 +3815,1283 @@ TypeError: unsupported operand type(s) for -: 'float' and 'NoneType'
 2025-05-16 14:21:43,662 - INFO - 系统事件: 开始检查必要的依赖
 2025-05-16 14:21:47,113 - INFO - 系统事件: 应用程序关闭
 2025-05-16 14:21:47,114 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 11:47:38,733 - INFO - 系统事件: 应用程序初始化
+2025-05-18 11:47:38,733 - INFO - 系统事件: 应用程序初始化
+2025-05-18 11:47:38,779 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 11:47:38,779 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 11:48:47,636 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 11:48:47,666 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 11:48:52,763 - ERROR - 系统错误: 连接 wss://100.100.167.50:10095 超时，服务器无响应
+2025-05-18 11:48:55,263 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 11:48:55,275 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 11:48:55,280 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 11:48:57,288 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 11:48:57,288 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 11:49:00,980 - INFO - 系统事件: 开始速度测试，文件1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4 (20.63MB), 文件2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav (5.48MB)
+2025-05-18 11:49:00,981 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 11:49:01,298 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 11:49:01,398 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.10秒
+2025-05-18 11:49:07,562 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.16秒
+2025-05-18 11:49:08,481 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.10秒，转写耗时: 6.16秒
+2025-05-18 11:49:08,481 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 11:49:08,761 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 11:49:08,785 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.02秒
+2025-05-18 11:49:14,776 - INFO - 速度测试: 文件 2 转写完成，耗时: 5.99秒
+2025-05-18 11:49:14,930 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.02秒，转写耗时: 5.99秒
+2025-05-18 11:49:14,932 - INFO - 速度测试结果: 上传速度 210.27 MB/s, 转写速度 29.62x
+2025-05-18 11:49:41,306 - INFO - 用户操作: 已选择文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 11:49:41,306 - INFO - 用户提示: 准备开始识别...
+2025-05-18 11:49:42,209 - INFO - 用户操作: 开始识别: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 11:49:42,209 - INFO - 系统事件: 使用服务器: 100.100.167.50:10095
+2025-05-18 11:49:42,216 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 11:49:42,216 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 11:49:42,422 - INFO - 客户端事件: [调试] 使用SSL连接
+2025-05-18 11:49:42,436 - INFO - 客户端事件: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 11:49:42,462 - INFO - 客户端事件: [调试] 连接已建立
+2025-05-18 11:49:42,462 - INFO - 客户端事件: [调试] 处理文件数: 1
+2025-05-18 11:49:42,462 - INFO - 客户端事件: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 11:49:42,462 - INFO - 客户端事件: [调试] 文件大小: 25.96MB
+2025-05-18 11:49:42,496 - INFO - 客户端事件: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 11:49:42,496 - INFO - 客户端事件: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 11:49:42,496 - INFO - 客户端事件: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 11:49:42,496 - INFO - 服务器响应: 上传进度: 0%
+2025-05-18 11:49:42,497 - INFO - 客户端事件: [调试] 等待接收消息...
+2025-05-18 11:49:42,498 - INFO - 服务器响应: 上传进度: 2%
+2025-05-18 11:49:42,498 - INFO - 服务器响应: 上传进度: 4%
+2025-05-18 11:49:42,499 - INFO - 服务器响应: 上传进度: 6%
+2025-05-18 11:49:42,521 - INFO - 服务器响应: 上传进度: 8%
+2025-05-18 11:49:42,534 - INFO - 服务器响应: 上传进度: 10%
+2025-05-18 11:49:42,534 - INFO - 服务器响应: 上传进度: 12%
+2025-05-18 11:49:42,538 - INFO - 服务器响应: 上传进度: 14%
+2025-05-18 11:49:42,563 - INFO - 服务器响应: 上传进度: 16%
+2025-05-18 11:49:42,564 - INFO - 服务器响应: 上传进度: 18%
+2025-05-18 11:49:42,565 - INFO - 服务器响应: 上传进度: 20%
+2025-05-18 11:49:42,565 - INFO - 服务器响应: 上传进度: 22%
+2025-05-18 11:49:42,565 - INFO - 服务器响应: 上传进度: 24%
+2025-05-18 11:49:42,566 - INFO - 服务器响应: 上传进度: 26%
+2025-05-18 11:49:42,568 - INFO - 服务器响应: 上传进度: 28%
+2025-05-18 11:49:42,569 - INFO - 服务器响应: 上传进度: 30%
+2025-05-18 11:49:42,570 - INFO - 服务器响应: 上传进度: 32%
+2025-05-18 11:49:42,572 - INFO - 服务器响应: 上传进度: 34%
+2025-05-18 11:49:42,575 - INFO - 服务器响应: 上传进度: 36%
+2025-05-18 11:49:42,577 - INFO - 服务器响应: 上传进度: 38%
+2025-05-18 11:49:42,579 - INFO - 服务器响应: 上传进度: 40%
+2025-05-18 11:49:42,581 - INFO - 服务器响应: 上传进度: 42%
+2025-05-18 11:49:42,582 - INFO - 服务器响应: 上传进度: 44%
+2025-05-18 11:49:42,584 - INFO - 服务器响应: 上传进度: 46%
+2025-05-18 11:49:42,584 - INFO - 服务器响应: 上传进度: 48%
+2025-05-18 11:49:42,586 - INFO - 服务器响应: 上传进度: 50%
+2025-05-18 11:49:42,589 - INFO - 服务器响应: 上传进度: 52%
+2025-05-18 11:49:42,591 - INFO - 服务器响应: 上传进度: 54%
+2025-05-18 11:49:42,593 - INFO - 服务器响应: 上传进度: 56%
+2025-05-18 11:49:42,594 - INFO - 服务器响应: 上传进度: 58%
+2025-05-18 11:49:42,596 - INFO - 服务器响应: 上传进度: 60%
+2025-05-18 11:49:42,597 - INFO - 服务器响应: 上传进度: 62%
+2025-05-18 11:49:42,609 - INFO - 服务器响应: 上传进度: 64%
+2025-05-18 11:49:42,610 - INFO - 服务器响应: 上传进度: 66%
+2025-05-18 11:49:42,610 - INFO - 服务器响应: 上传进度: 68%
+2025-05-18 11:49:42,610 - INFO - 服务器响应: 上传进度: 70%
+2025-05-18 11:49:42,611 - INFO - 服务器响应: 上传进度: 72%
+2025-05-18 11:49:42,611 - INFO - 服务器响应: 上传进度: 74%
+2025-05-18 11:49:42,613 - INFO - 服务器响应: 上传进度: 76%
+2025-05-18 11:49:42,617 - INFO - 服务器响应: 上传进度: 78%
+2025-05-18 11:49:42,619 - INFO - 服务器响应: 上传进度: 80%
+2025-05-18 11:49:42,621 - INFO - 服务器响应: 上传进度: 82%
+2025-05-18 11:49:42,625 - INFO - 服务器响应: 上传进度: 84%
+2025-05-18 11:49:42,639 - INFO - 服务器响应: 上传进度: 86%
+2025-05-18 11:49:42,640 - INFO - 服务器响应: 上传进度: 88%
+2025-05-18 11:49:42,640 - INFO - 服务器响应: 上传进度: 90%
+2025-05-18 11:49:42,641 - INFO - 服务器响应: 上传进度: 92%
+2025-05-18 11:49:42,641 - INFO - 服务器响应: 上传进度: 94%
+2025-05-18 11:49:42,642 - INFO - 服务器响应: 上传进度: 96%
+2025-05-18 11:49:42,644 - INFO - 服务器响应: 上传进度: 98%
+2025-05-18 11:49:42,647 - INFO - 服务器响应: 上传进度: 100%
+2025-05-18 11:49:42,647 - INFO - 客户端事件: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 11:49:42,647 - INFO - 客户端事件: [调试] 等待服务器处理完成...
+2025-05-18 11:50:10,360 - INFO - 客户端事件: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 11:50:10,364 - INFO - 客户端事件: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 11:50:10,365 - INFO - 服务器响应: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 11:50:10,365 - INFO - 客户端事件: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 11:50:10,365 - INFO - 客户端事件: [调试] 文本结果文件已关闭
+2025-05-18 11:50:10,365 - INFO - 客户端事件: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 11:50:10,371 - INFO - 客户端事件: [调试] JSON结果文件已写入并关闭: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results\250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.0_0.json
+2025-05-18 11:50:10,903 - INFO - 客户端事件: [调试] 处理完成，关闭连接
+2025-05-18 11:50:10,961 - INFO - 服务器响应: 参数: Namespace(host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 11:50:10,961 - INFO - 服务器响应: 处理完成
+2025-05-18 11:50:10,971 - INFO - 任务成功: 文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav 识别完成。
+2025-05-18 11:50:46,008 - INFO - 系统事件: 应用程序关闭
+2025-05-18 11:50:46,008 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 18:04:11,809 - INFO - 系统事件: 应用程序初始化
+2025-05-18 18:04:11,809 - INFO - 系统事件: 应用程序初始化
+2025-05-18 18:04:11,884 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 18:04:11,884 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 19:39:26,408 - INFO - 系统事件: 应用程序关闭
+2025-05-18 19:39:26,412 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 19:42:46,458 - INFO - 系统事件: 应用程序初始化
+2025-05-18 19:42:46,458 - INFO - 系统事件: 应用程序初始化
+2025-05-18 19:42:46,480 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 19:42:46,481 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 19:42:59,802 - INFO - 系统事件: 应用程序关闭
+2025-05-18 19:42:59,802 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 19:43:18,005 - INFO - 系统事件: 应用程序初始化
+2025-05-18 19:43:18,005 - INFO - 系统事件: 应用程序初始化
+2025-05-18 19:43:18,022 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 19:43:18,023 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 19:43:57,960 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 19:43:57,976 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 19:43:58,042 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 19:44:00,043 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 19:44:00,043 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 19:44:03,011 - INFO - 系统事件: 开始速度测试，文件1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4 (20.63MB), 文件2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav (5.48MB)
+2025-05-18 19:44:03,012 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 19:44:03,278 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 19:44:03,416 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.14秒
+2025-05-18 19:44:09,586 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.17秒
+2025-05-18 19:44:10,547 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.14秒，转写耗时: 6.17秒
+2025-05-18 19:44:10,547 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 19:44:10,826 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 19:44:10,844 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.02秒
+2025-05-18 19:44:16,642 - INFO - 速度测试: 文件 2 转写完成，耗时: 5.80秒
+2025-05-18 19:44:16,989 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.02秒，转写耗时: 5.80秒
+2025-05-18 19:44:16,990 - INFO - 速度测试结果: 上传速度 167.82 MB/s, 转写速度 30.08x
+2025-05-18 19:44:24,999 - INFO - 系统事件: 开始速度测试，文件1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4 (20.63MB), 文件2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav (5.48MB)
+2025-05-18 19:44:24,999 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 19:44:25,288 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 19:44:25,378 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.09秒
+2025-05-18 19:44:31,375 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.00秒
+2025-05-18 19:44:31,504 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.09秒，转写耗时: 6.00秒
+2025-05-18 19:44:31,506 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 19:44:31,805 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 19:44:31,833 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.03秒
+2025-05-18 19:44:37,925 - INFO - 速度测试: 文件 2 转写完成，耗时: 6.09秒
+2025-05-18 19:44:38,982 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.03秒，转写耗时: 6.09秒
+2025-05-18 19:44:38,983 - INFO - 速度测试结果: 上传速度 221.47 MB/s, 转写速度 29.78x
+2025-05-18 19:48:40,380 - INFO - 系统事件: 应用程序关闭
+2025-05-18 19:48:40,381 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:50:38,588 - INFO - 系统事件: 应用程序初始化
+2025-05-18 20:50:38,589 - INFO - 系统事件: 应用程序初始化
+2025-05-18 20:50:38,611 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:50:38,612 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 20:50:56,317 - INFO - System Event: Switched to English interface
+2025-05-18 20:50:56,321 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:51:01,740 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 20:51:01,755 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 20:51:01,780 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 20:51:03,790 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 20:51:03,790 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 20:51:11,198 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 20:51:11,201 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:51:15,272 - INFO - System Event: Switched to English interface
+2025-05-18 20:51:15,274 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:51:17,933 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 20:51:17,946 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 20:51:17,990 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 20:51:20,004 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 20:51:20,004 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 20:51:23,364 - INFO - 系统事件: 开始速度测试，文件1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4 (20.63MB), 文件2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav (5.48MB)
+2025-05-18 20:51:23,364 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 20:51:23,677 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 20:51:23,783 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.11秒
+2025-05-18 20:51:29,964 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.18秒
+2025-05-18 20:51:30,925 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.11秒，转写耗时: 6.18秒
+2025-05-18 20:51:30,926 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 20:51:31,177 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 20:51:31,192 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.01秒
+2025-05-18 20:51:37,096 - INFO - 速度测试: 文件 2 转写完成，耗时: 5.90秒
+2025-05-18 20:51:37,338 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.01秒，转写耗时: 5.90秒
+2025-05-18 20:51:37,338 - INFO - 速度测试结果: 上传速度 216.66 MB/s, 转写速度 29.79x
+2025-05-18 20:51:41,896 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 20:51:41,901 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:51:44,433 - INFO - 系统事件: 开始速度测试，文件1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4 (20.63MB), 文件2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav (5.48MB)
+2025-05-18 20:51:44,433 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 20:51:44,679 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 20:51:44,784 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.11秒
+2025-05-18 20:51:50,859 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.07秒
+2025-05-18 20:51:51,958 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.11秒，转写耗时: 6.07秒
+2025-05-18 20:51:51,959 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 20:51:52,202 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 20:51:52,219 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.02秒
+2025-05-18 20:51:58,290 - INFO - 速度测试: 文件 2 转写完成，耗时: 6.07秒
+2025-05-18 20:51:59,300 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.02秒，转写耗时: 6.07秒
+2025-05-18 20:51:59,300 - INFO - 速度测试结果: 上传速度 212.41 MB/s, 转写速度 29.64x
+2025-05-18 20:53:13,300 - INFO - 系统事件: 应用程序关闭
+2025-05-18 20:53:13,302 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:55:41,428 - INFO - 系统事件: 应用程序初始化
+2025-05-18 20:55:41,428 - INFO - 系统事件: 应用程序初始化
+2025-05-18 20:55:41,452 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:55:41,453 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 20:55:51,306 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 20:55:51,320 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 20:55:51,345 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 20:55:53,357 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 20:55:53,357 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 20:55:55,155 - INFO - 系统事件: 开始速度测试，文件1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4 (20.63MB), 文件2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav (5.48MB)
+2025-05-18 20:55:55,155 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 20:55:55,467 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 20:55:55,575 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.11秒
+2025-05-18 20:56:01,737 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.16秒
+2025-05-18 20:56:02,699 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.11秒，转写耗时: 6.16秒
+2025-05-18 20:56:02,700 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 20:56:02,944 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 20:56:02,963 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.02秒
+2025-05-18 20:56:08,905 - INFO - 速度测试: 文件 2 转写完成，耗时: 5.94秒
+2025-05-18 20:56:09,104 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.02秒，转写耗时: 5.94秒
+2025-05-18 20:56:09,104 - INFO - 速度测试结果: 上传速度 208.84 MB/s, 转写速度 29.74x
+2025-05-18 20:57:31,237 - INFO - 系统事件: 应用程序关闭
+2025-05-18 20:57:31,238 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:58:32,264 - INFO - 系统事件: 应用程序初始化
+2025-05-18 20:58:32,264 - INFO - 系统事件: 应用程序初始化
+2025-05-18 20:58:32,282 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 20:58:32,283 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 21:09:06,916 - INFO - 系统事件: 应用程序关闭
+2025-05-18 21:09:06,917 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:14:01,107 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:14:01,107 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:14:01,134 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:14:01,136 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 21:14:03,663 - INFO - System Event: Switched to English interface
+2025-05-18 21:14:03,668 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:14:06,408 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:14:06,414 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:14:10,009 - INFO - System Event: Switched to English interface
+2025-05-18 21:14:10,012 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:14:12,625 - INFO - 系统事件: 未检测到服务器连接，先尝试连接服务器...
+2025-05-18 21:14:12,640 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:14:12,666 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:14:14,670 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:14:14,670 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:14:18,632 - WARNING - 系统警告: 服务器连接测试未成功，无法进行速度测试
+2025-05-18 21:14:21,418 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:14:21,430 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:14:21,433 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:14:23,448 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:14:23,448 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:14:26,885 - INFO - 系统事件: 开始速度测试，文件1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4 (20.63MB), 文件2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav (5.48MB)
+2025-05-18 21:14:26,886 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:14:27,202 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 21:14:27,330 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.13秒
+2025-05-18 21:14:33,413 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.08秒
+2025-05-18 21:14:34,455 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.13秒，转写耗时: 6.08秒
+2025-05-18 21:14:34,468 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:14:34,725 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 21:14:34,772 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.05秒
+2025-05-18 21:14:40,692 - INFO - 速度测试: 文件 2 转写完成，耗时: 5.92秒
+2025-05-18 21:14:40,921 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.05秒，转写耗时: 5.92秒
+2025-05-18 21:14:40,922 - INFO - 速度测试结果: 上传速度 149.05 MB/s, 转写速度 29.99x
+2025-05-18 21:15:03,853 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:15:03,857 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:15:07,453 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 21:15:07,466 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:15:07,510 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:15:09,511 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:15:09,511 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:15:45,620 - INFO - System Event: Switched to English interface
+2025-05-18 21:15:45,627 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:15:48,158 - INFO - 系统事件: 开始速度测试，文件1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4 (20.63MB), 文件2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav (5.48MB)
+2025-05-18 21:15:48,158 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:15:48,392 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 21:15:48,530 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.14秒
+2025-05-18 21:15:54,887 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.36秒
+2025-05-18 21:15:55,666 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.14秒，转写耗时: 6.36秒
+2025-05-18 21:15:55,667 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:15:55,926 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 21:15:55,946 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.02秒
+2025-05-18 21:16:02,102 - INFO - 速度测试: 文件 2 转写完成，耗时: 6.16秒
+2025-05-18 21:16:03,069 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.02秒，转写耗时: 6.16秒
+2025-05-18 21:16:03,080 - INFO - 速度测试结果: 上传速度 165.52 MB/s, 转写速度 28.77x
+2025-05-18 21:23:52,740 - INFO - System Event: Application closing
+2025-05-18 21:23:52,741 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:24:01,106 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:24:01,106 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:24:01,126 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:24:01,127 - INFO - System Event: Checking required dependencies
+2025-05-18 21:24:08,127 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:24:08,131 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:24:10,458 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 21:24:10,472 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:24:10,497 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:24:12,500 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:24:12,500 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:24:15,296 - INFO - 系统事件: 开始速度测试，文件1: tv-report-1.mp4 (20.6328125MB), 文件2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:24:15,297 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:24:15,602 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 21:24:15,745 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.14秒
+2025-05-18 21:24:21,751 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.01秒
+2025-05-18 21:24:21,863 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.14秒，转写耗时: 6.01秒
+2025-05-18 21:24:21,864 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:24:22,156 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 21:24:22,197 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.04秒
+2025-05-18 21:24:28,235 - INFO - 速度测试: 文件 2 转写完成，耗时: 6.04秒
+2025-05-18 21:24:28,324 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.04秒，转写耗时: 6.04秒
+2025-05-18 21:24:28,339 - INFO - 速度测试结果: 上传速度 142.24 MB/s, 转写速度 29.89x
+2025-05-18 21:24:34,301 - INFO - 系统事件: 开始速度测试，文件1: tv-report-1.mp4 (20.6328125MB), 文件2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:24:34,301 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:24:34,551 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 21:24:34,666 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.12秒
+2025-05-18 21:24:40,805 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.14秒
+2025-05-18 21:24:41,800 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.12秒，转写耗时: 6.14秒
+2025-05-18 21:24:41,801 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:24:42,081 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 21:24:42,115 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.03秒
+2025-05-18 21:24:48,253 - INFO - 速度测试: 文件 2 转写完成，耗时: 6.14秒
+2025-05-18 21:24:49,264 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.03秒，转写耗时: 6.14秒
+2025-05-18 21:24:49,265 - INFO - 速度测试结果: 上传速度 174.55 MB/s, 转写速度 29.32x
+2025-05-18 21:24:56,906 - INFO - System Event: Switched to English interface
+2025-05-18 21:24:56,908 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:24:58,542 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:24:58,566 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:24:58,569 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:25:00,572 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:25:00,572 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:25:06,620 - INFO - System Event: Starting speed test. File 1: tv-report-1.mp4 (20.6328125MB), File 2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:25:06,620 - INFO - System Event: Starting test for file 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:25:06,913 - INFO - Speed Test: File 1 upload started
+2025-05-18 21:25:07,018 - INFO - Speed Test: File 1 upload completed, duration: 0.10s
+2025-05-18 21:25:13,234 - INFO - Speed Test: File 1 transcription completed, duration: 6.22s
+2025-05-18 21:25:14,150 - INFO - Speed Test: File 1 test completed. Upload: 0.10s, Transcription: 6.22s
+2025-05-18 21:25:14,151 - INFO - System Event: Starting test for file 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:25:14,444 - INFO - Speed Test: File 2 upload started
+2025-05-18 21:25:14,466 - INFO - Speed Test: File 2 upload completed, duration: 0.02s
+2025-05-18 21:25:20,586 - INFO - Speed Test: File 2 transcription completed, duration: 6.12s
+2025-05-18 21:25:21,598 - INFO - Speed Test: File 2 test completed. Upload: 0.02s, Transcription: 6.12s
+2025-05-18 21:25:21,599 - INFO - Speed Test Results: Upload Speed 209.18 MB/s, Transcription Speed 29.18x
+2025-05-18 21:25:33,405 - INFO - System Event: Starting speed test. File 1: tv-report-1.mp4 (20.6328125MB), File 2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:25:33,405 - INFO - System Event: Starting test for file 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:25:33,644 - INFO - Speed Test: File 1 upload started
+2025-05-18 21:25:33,776 - INFO - Speed Test: File 1 upload completed, duration: 0.13s
+2025-05-18 21:25:39,902 - INFO - Speed Test: File 1 transcription completed, duration: 6.13s
+2025-05-18 21:25:40,905 - INFO - Speed Test: File 1 test completed. Upload: 0.13s, Transcription: 6.13s
+2025-05-18 21:25:40,906 - INFO - System Event: Starting test for file 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:25:41,216 - INFO - Speed Test: File 2 upload started
+2025-05-18 21:25:41,249 - INFO - Speed Test: File 2 upload completed, duration: 0.03s
+2025-05-18 21:25:47,213 - INFO - Speed Test: File 2 transcription completed, duration: 5.96s
+2025-05-18 21:25:47,368 - INFO - Speed Test: File 2 test completed. Upload: 0.03s, Transcription: 5.96s
+2025-05-18 21:25:47,370 - INFO - Speed Test Results: Upload Speed 157.65 MB/s, Transcription Speed 29.78x
+2025-05-18 21:26:06,771 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:26:06,805 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:26:06,854 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:26:08,855 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:26:08,855 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:26:13,349 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:26:13,362 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:26:13,407 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:26:15,409 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:26:15,409 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:26:18,141 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:26:18,145 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:26:31,505 - INFO - System Event: Switched to English interface
+2025-05-18 21:26:31,510 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:26:34,018 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:26:34,021 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:26:35,724 - INFO - System Event: Switched to English interface
+2025-05-18 21:26:35,726 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:26:36,710 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:26:36,713 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:26:37,709 - INFO - System Event: Switched to English interface
+2025-05-18 21:26:37,715 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:26:39,299 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:26:39,303 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:26:40,544 - INFO - System Event: Switched to English interface
+2025-05-18 21:26:40,548 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:26:47,180 - INFO - User Action: File selected: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:26:48,360 - INFO - User Action: Starting recognition for audio/video file: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:26:48,362 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:26:48,362 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 21:26:48,569 - INFO - 客户端事件: [调试] 使用SSL连接
+2025-05-18 21:26:48,583 - INFO - 客户端事件: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 21:26:48,607 - INFO - 客户端事件: [调试] 连接已建立
+2025-05-18 21:26:48,607 - INFO - 客户端事件: [调试] 处理文件数: 1
+2025-05-18 21:26:48,607 - INFO - 客户端事件: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:26:48,607 - INFO - 客户端事件: [调试] 文件大小: 25.96MB
+2025-05-18 21:26:48,614 - INFO - 客户端事件: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 21:26:48,614 - INFO - 客户端事件: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 21:26:48,614 - INFO - 客户端事件: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 21:26:48,614 - INFO - 服务器响应: 上传进度: 0%
+2025-05-18 21:26:48,614 - INFO - 客户端事件: [调试] 等待接收消息...
+2025-05-18 21:26:48,615 - INFO - 服务器响应: 上传进度: 2%
+2025-05-18 21:26:48,616 - INFO - 服务器响应: 上传进度: 4%
+2025-05-18 21:26:48,618 - INFO - 服务器响应: 上传进度: 6%
+2025-05-18 21:26:48,621 - INFO - 服务器响应: 上传进度: 8%
+2025-05-18 21:26:48,622 - INFO - 服务器响应: 上传进度: 10%
+2025-05-18 21:26:48,624 - INFO - 服务器响应: 上传进度: 12%
+2025-05-18 21:26:48,627 - INFO - 服务器响应: 上传进度: 14%
+2025-05-18 21:26:48,630 - INFO - 服务器响应: 上传进度: 16%
+2025-05-18 21:26:48,631 - INFO - 服务器响应: 上传进度: 18%
+2025-05-18 21:26:48,636 - INFO - 服务器响应: 上传进度: 20%
+2025-05-18 21:26:48,636 - INFO - 服务器响应: 上传进度: 22%
+2025-05-18 21:26:48,637 - INFO - 服务器响应: 上传进度: 24%
+2025-05-18 21:26:48,639 - INFO - 服务器响应: 上传进度: 26%
+2025-05-18 21:26:48,641 - INFO - 服务器响应: 上传进度: 28%
+2025-05-18 21:26:48,642 - INFO - 服务器响应: 上传进度: 30%
+2025-05-18 21:26:48,645 - INFO - 服务器响应: 上传进度: 32%
+2025-05-18 21:26:48,646 - INFO - 服务器响应: 上传进度: 34%
+2025-05-18 21:26:48,648 - INFO - 服务器响应: 上传进度: 36%
+2025-05-18 21:26:48,653 - INFO - 服务器响应: 上传进度: 38%
+2025-05-18 21:26:48,654 - INFO - 服务器响应: 上传进度: 40%
+2025-05-18 21:26:48,655 - INFO - 服务器响应: 上传进度: 42%
+2025-05-18 21:26:48,657 - INFO - 服务器响应: 上传进度: 44%
+2025-05-18 21:26:48,659 - INFO - 服务器响应: 上传进度: 46%
+2025-05-18 21:26:48,674 - INFO - 服务器响应: 上传进度: 48%
+2025-05-18 21:26:48,675 - INFO - 服务器响应: 上传进度: 50%
+2025-05-18 21:26:48,691 - INFO - 服务器响应: 上传进度: 52%
+2025-05-18 21:26:48,693 - INFO - 服务器响应: 上传进度: 54%
+2025-05-18 21:26:48,694 - INFO - 服务器响应: 上传进度: 56%
+2025-05-18 21:26:48,695 - INFO - 服务器响应: 上传进度: 58%
+2025-05-18 21:26:48,696 - INFO - 服务器响应: 上传进度: 60%
+2025-05-18 21:26:48,698 - INFO - 服务器响应: 上传进度: 62%
+2025-05-18 21:26:48,699 - INFO - 服务器响应: 上传进度: 64%
+2025-05-18 21:26:48,700 - INFO - 服务器响应: 上传进度: 66%
+2025-05-18 21:26:48,701 - INFO - 服务器响应: 上传进度: 68%
+2025-05-18 21:26:48,703 - INFO - 服务器响应: 上传进度: 70%
+2025-05-18 21:26:48,709 - INFO - 服务器响应: 上传进度: 72%
+2025-05-18 21:26:48,712 - INFO - 服务器响应: 上传进度: 74%
+2025-05-18 21:26:48,737 - INFO - 服务器响应: 上传进度: 76%
+2025-05-18 21:26:48,738 - INFO - 服务器响应: 上传进度: 78%
+2025-05-18 21:26:48,738 - INFO - 服务器响应: 上传进度: 80%
+2025-05-18 21:26:48,739 - INFO - 服务器响应: 上传进度: 82%
+2025-05-18 21:26:48,740 - INFO - 服务器响应: 上传进度: 84%
+2025-05-18 21:26:48,742 - INFO - 服务器响应: 上传进度: 86%
+2025-05-18 21:26:48,743 - INFO - 服务器响应: 上传进度: 88%
+2025-05-18 21:26:48,743 - INFO - 服务器响应: 上传进度: 90%
+2025-05-18 21:26:48,749 - INFO - 服务器响应: 上传进度: 92%
+2025-05-18 21:26:48,751 - INFO - 服务器响应: 上传进度: 94%
+2025-05-18 21:26:48,753 - INFO - 服务器响应: 上传进度: 96%
+2025-05-18 21:26:48,755 - INFO - 服务器响应: 上传进度: 98%
+2025-05-18 21:26:48,757 - INFO - 服务器响应: 上传进度: 100%
+2025-05-18 21:26:48,757 - INFO - 客户端事件: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 21:26:48,757 - INFO - 客户端事件: [调试] 等待服务器处理完成...
+2025-05-18 21:27:16,817 - INFO - 客户端事件: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 21:27:16,820 - INFO - 客户端事件: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 21:27:16,821 - INFO - 服务器响应: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 21:27:16,821 - INFO - 客户端事件: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 21:27:16,821 - INFO - 客户端事件: [调试] 文本结果文件已关闭
+2025-05-18 21:27:16,821 - INFO - 客户端事件: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 21:27:16,828 - INFO - 客户端事件: [调试] JSON结果文件已写入并关闭: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results\250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.0_0.json
+2025-05-18 21:27:17,035 - INFO - 客户端事件: [调试] 处理完成，关闭连接
+2025-05-18 21:27:17,094 - INFO - 服务器响应: 参数: Namespace(host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 21:27:17,094 - INFO - 服务器响应: 处理完成
+2025-05-18 21:27:17,104 - INFO - 任务成功: 文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav 识别完成。
+2025-05-18 21:27:48,869 - INFO - System Event: Application closing
+2025-05-18 21:27:48,871 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:29:03,104 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:29:03,104 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:29:03,133 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:29:03,134 - INFO - System Event: Checking required dependencies
+2025-05-18 21:29:05,582 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:29:05,585 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:32:21,721 - INFO - 系统事件: 应用程序关闭
+2025-05-18 21:32:21,721 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:32:42,214 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:32:42,214 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:32:42,235 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:32:42,235 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 21:32:51,377 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 21:32:51,391 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:32:51,416 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:32:53,423 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:32:53,423 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:32:56,305 - INFO - 用户操作: 已选择文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:32:57,032 - INFO - 用户操作: 开始识别音频/视频文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:32:57,048 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:32:57,048 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 21:32:57,245 - INFO - 客户端事件: [调试] 使用SSL连接
+2025-05-18 21:32:57,258 - INFO - 客户端事件: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 21:32:57,282 - INFO - 客户端事件: [调试] 连接已建立
+2025-05-18 21:32:57,283 - INFO - 客户端事件: [调试] 处理文件数: 1
+2025-05-18 21:32:57,283 - INFO - 客户端事件: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:32:57,283 - INFO - 客户端事件: [调试] 文件大小: 25.96MB
+2025-05-18 21:32:57,289 - INFO - 客户端事件: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 21:32:57,289 - INFO - 客户端事件: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 21:32:57,290 - INFO - 客户端事件: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 21:32:57,290 - INFO - 服务器响应: 上传进度: 0%
+2025-05-18 21:32:57,290 - INFO - 客户端事件: [调试] 等待接收消息...
+2025-05-18 21:32:57,293 - INFO - 服务器响应: 上传进度: 2%
+2025-05-18 21:32:57,293 - INFO - 服务器响应: 上传进度: 4%
+2025-05-18 21:32:57,297 - INFO - 服务器响应: 上传进度: 6%
+2025-05-18 21:32:57,297 - INFO - 服务器响应: 上传进度: 8%
+2025-05-18 21:32:57,309 - INFO - 服务器响应: 上传进度: 10%
+2025-05-18 21:32:57,311 - INFO - 服务器响应: 上传进度: 12%
+2025-05-18 21:32:57,312 - INFO - 服务器响应: 上传进度: 14%
+2025-05-18 21:32:57,313 - INFO - 服务器响应: 上传进度: 16%
+2025-05-18 21:32:57,316 - INFO - 服务器响应: 上传进度: 18%
+2025-05-18 21:32:57,318 - INFO - 服务器响应: 上传进度: 20%
+2025-05-18 21:32:57,320 - INFO - 服务器响应: 上传进度: 22%
+2025-05-18 21:32:57,322 - INFO - 服务器响应: 上传进度: 24%
+2025-05-18 21:32:57,334 - INFO - 服务器响应: 上传进度: 26%
+2025-05-18 21:32:57,335 - INFO - 服务器响应: 上传进度: 28%
+2025-05-18 21:32:57,337 - INFO - 服务器响应: 上传进度: 30%
+2025-05-18 21:32:57,338 - INFO - 服务器响应: 上传进度: 32%
+2025-05-18 21:32:57,340 - INFO - 服务器响应: 上传进度: 34%
+2025-05-18 21:32:57,342 - INFO - 服务器响应: 上传进度: 36%
+2025-05-18 21:32:57,343 - INFO - 服务器响应: 上传进度: 38%
+2025-05-18 21:32:57,345 - INFO - 服务器响应: 上传进度: 40%
+2025-05-18 21:32:57,347 - INFO - 服务器响应: 上传进度: 42%
+2025-05-18 21:32:57,352 - INFO - 服务器响应: 上传进度: 44%
+2025-05-18 21:32:57,354 - INFO - 服务器响应: 上传进度: 46%
+2025-05-18 21:32:57,356 - INFO - 服务器响应: 上传进度: 48%
+2025-05-18 21:32:57,357 - INFO - 服务器响应: 上传进度: 50%
+2025-05-18 21:32:57,359 - INFO - 服务器响应: 上传进度: 52%
+2025-05-18 21:32:57,361 - INFO - 服务器响应: 上传进度: 54%
+2025-05-18 21:32:57,361 - INFO - 服务器响应: 上传进度: 56%
+2025-05-18 21:32:57,362 - INFO - 服务器响应: 上传进度: 58%
+2025-05-18 21:32:57,364 - INFO - 服务器响应: 上传进度: 60%
+2025-05-18 21:32:57,371 - INFO - 服务器响应: 上传进度: 62%
+2025-05-18 21:32:57,372 - INFO - 服务器响应: 上传进度: 64%
+2025-05-18 21:32:57,373 - INFO - 服务器响应: 上传进度: 66%
+2025-05-18 21:32:57,375 - INFO - 服务器响应: 上传进度: 68%
+2025-05-18 21:32:57,378 - INFO - 服务器响应: 上传进度: 70%
+2025-05-18 21:32:57,379 - INFO - 服务器响应: 上传进度: 72%
+2025-05-18 21:32:57,386 - INFO - 服务器响应: 上传进度: 74%
+2025-05-18 21:32:57,388 - INFO - 服务器响应: 上传进度: 76%
+2025-05-18 21:32:57,388 - INFO - 服务器响应: 上传进度: 78%
+2025-05-18 21:32:57,395 - INFO - 服务器响应: 上传进度: 80%
+2025-05-18 21:32:57,395 - INFO - 服务器响应: 上传进度: 82%
+2025-05-18 21:32:57,396 - INFO - 服务器响应: 上传进度: 84%
+2025-05-18 21:32:57,398 - INFO - 服务器响应: 上传进度: 86%
+2025-05-18 21:32:57,400 - INFO - 服务器响应: 上传进度: 88%
+2025-05-18 21:32:57,402 - INFO - 服务器响应: 上传进度: 90%
+2025-05-18 21:32:57,403 - INFO - 服务器响应: 上传进度: 92%
+2025-05-18 21:32:57,404 - INFO - 服务器响应: 上传进度: 94%
+2025-05-18 21:32:57,409 - INFO - 服务器响应: 上传进度: 96%
+2025-05-18 21:32:57,411 - INFO - 服务器响应: 上传进度: 98%
+2025-05-18 21:32:57,412 - INFO - 服务器响应: 上传进度: 100%
+2025-05-18 21:32:57,412 - INFO - 客户端事件: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 21:32:57,412 - INFO - 客户端事件: [调试] 等待服务器处理完成...
+2025-05-18 21:33:25,026 - INFO - 客户端事件: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 21:33:25,029 - INFO - 客户端事件: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 21:33:25,029 - INFO - 服务器响应: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 21:33:25,030 - INFO - 客户端事件: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 21:33:25,030 - INFO - 客户端事件: [调试] 文本结果文件已关闭
+2025-05-18 21:33:25,030 - INFO - 客户端事件: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 21:33:25,037 - INFO - 客户端事件: [调试] JSON结果文件已写入并关闭: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results\250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.0_0.json
+2025-05-18 21:33:25,704 - INFO - 客户端事件: [调试] 处理完成，关闭连接
+2025-05-18 21:33:25,761 - INFO - 服务器响应: 参数: Namespace(host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 21:33:25,761 - INFO - 服务器响应: 处理完成
+2025-05-18 21:33:25,771 - INFO - 任务成功: 文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav 识别完成。
+2025-05-18 21:33:44,718 - INFO - 系统事件: 开始速度测试，文件1: tv-report-1.mp4 (20.6328125MB), 文件2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:33:44,718 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:33:44,952 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 21:33:45,084 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.13秒
+2025-05-18 21:33:51,139 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.05秒
+2025-05-18 21:33:52,227 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.13秒，转写耗时: 6.05秒
+2025-05-18 21:33:52,227 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:33:52,460 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 21:33:52,479 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.02秒
+2025-05-18 21:33:58,376 - INFO - 速度测试: 文件 2 转写完成，耗时: 5.90秒
+2025-05-18 21:33:58,604 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.02秒，转写耗时: 5.90秒
+2025-05-18 21:33:58,605 - INFO - 速度测试结果: 上传速度 172.32 MB/s, 转写速度 30.12x
+2025-05-18 21:34:06,198 - INFO - System Event: Switched to English interface
+2025-05-18 21:34:06,202 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:34:08,343 - INFO - System Event: Starting speed test. File 1: tv-report-1.mp4 (20.6328125MB), File 2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:34:08,343 - INFO - System Event: Starting test for file 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:34:08,649 - INFO - Speed Test: File 1 upload started
+2025-05-18 21:34:08,723 - INFO - Speed Test: File 1 upload completed, duration: 0.07s
+2025-05-18 21:34:14,815 - INFO - Speed Test: File 1 transcription completed, duration: 6.09s
+2025-05-18 21:34:15,860 - INFO - Speed Test: File 1 test completed. Upload: 0.07s, Transcription: 6.09s
+2025-05-18 21:34:15,860 - INFO - System Event: Starting test for file 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:34:16,149 - INFO - Speed Test: File 2 upload started
+2025-05-18 21:34:16,179 - INFO - Speed Test: File 2 upload completed, duration: 0.03s
+2025-05-18 21:34:22,456 - INFO - Speed Test: File 2 transcription completed, duration: 6.28s
+2025-05-18 21:34:23,316 - INFO - Speed Test: File 2 test completed. Upload: 0.03s, Transcription: 6.28s
+2025-05-18 21:34:23,317 - INFO - Speed Test Results: Upload Speed 250.50 MB/s, Transcription Speed 29.11x
+2025-05-18 21:34:29,194 - INFO - System Event: Starting speed test. File 1: tv-report-1.mp4 (20.6328125MB), File 2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:34:29,195 - INFO - System Event: Starting test for file 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:34:29,484 - INFO - Speed Test: File 1 upload started
+2025-05-18 21:34:29,613 - INFO - Speed Test: File 1 upload completed, duration: 0.13s
+2025-05-18 21:34:36,044 - INFO - Speed Test: File 1 transcription completed, duration: 6.43s
+2025-05-18 21:34:36,767 - INFO - Speed Test: File 1 test completed. Upload: 0.13s, Transcription: 6.43s
+2025-05-18 21:34:36,768 - INFO - System Event: Starting test for file 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:34:37,051 - INFO - Speed Test: File 2 upload started
+2025-05-18 21:34:37,079 - INFO - Speed Test: File 2 upload completed, duration: 0.03s
+2025-05-18 21:34:43,052 - INFO - Speed Test: File 2 transcription completed, duration: 5.97s
+2025-05-18 21:34:43,220 - INFO - Speed Test: File 2 test completed. Upload: 0.03s, Transcription: 5.97s
+2025-05-18 21:34:43,221 - INFO - Speed Test Results: Upload Speed 164.94 MB/s, Transcription Speed 29.02x
+2025-05-18 21:34:57,430 - INFO - User Action: File selected: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:35:00,972 - INFO - User Action: Starting recognition for audio/video file: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:35:00,980 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:35:00,980 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 21:35:01,180 - INFO - 客户端事件: [调试] 使用SSL连接
+2025-05-18 21:35:01,193 - INFO - 客户端事件: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 21:35:01,266 - INFO - 客户端事件: [调试] 连接已建立
+2025-05-18 21:35:01,266 - INFO - 客户端事件: [调试] 处理文件数: 1
+2025-05-18 21:35:01,266 - INFO - 客户端事件: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:35:01,266 - INFO - 客户端事件: [调试] 文件大小: 25.96MB
+2025-05-18 21:35:01,273 - INFO - 客户端事件: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 21:35:01,273 - INFO - 客户端事件: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 21:35:01,273 - INFO - 客户端事件: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 21:35:01,273 - INFO - 服务器响应: 上传进度: 0%
+2025-05-18 21:35:01,273 - INFO - 客户端事件: [调试] 等待接收消息...
+2025-05-18 21:35:01,274 - INFO - 服务器响应: 上传进度: 2%
+2025-05-18 21:35:01,275 - INFO - 服务器响应: 上传进度: 4%
+2025-05-18 21:35:01,275 - INFO - 服务器响应: 上传进度: 6%
+2025-05-18 21:35:01,296 - INFO - 服务器响应: 上传进度: 8%
+2025-05-18 21:35:01,306 - INFO - 服务器响应: 上传进度: 10%
+2025-05-18 21:35:01,317 - INFO - 服务器响应: 上传进度: 12%
+2025-05-18 21:35:01,318 - INFO - 服务器响应: 上传进度: 14%
+2025-05-18 21:35:01,319 - INFO - 服务器响应: 上传进度: 16%
+2025-05-18 21:35:01,321 - INFO - 服务器响应: 上传进度: 18%
+2025-05-18 21:35:01,323 - INFO - 服务器响应: 上传进度: 20%
+2025-05-18 21:35:01,335 - INFO - 服务器响应: 上传进度: 22%
+2025-05-18 21:35:01,337 - INFO - 服务器响应: 上传进度: 24%
+2025-05-18 21:35:01,337 - INFO - 服务器响应: 上传进度: 26%
+2025-05-18 21:35:01,338 - INFO - 服务器响应: 上传进度: 28%
+2025-05-18 21:35:01,348 - INFO - 服务器响应: 上传进度: 30%
+2025-05-18 21:35:01,349 - INFO - 服务器响应: 上传进度: 32%
+2025-05-18 21:35:01,350 - INFO - 服务器响应: 上传进度: 34%
+2025-05-18 21:35:01,364 - INFO - 服务器响应: 上传进度: 36%
+2025-05-18 21:35:01,379 - INFO - 服务器响应: 上传进度: 38%
+2025-05-18 21:35:01,395 - INFO - 服务器响应: 上传进度: 40%
+2025-05-18 21:35:01,395 - INFO - 服务器响应: 上传进度: 42%
+2025-05-18 21:35:01,397 - INFO - 服务器响应: 上传进度: 44%
+2025-05-18 21:35:01,400 - INFO - 服务器响应: 上传进度: 46%
+2025-05-18 21:35:01,403 - INFO - 服务器响应: 上传进度: 48%
+2025-05-18 21:35:01,405 - INFO - 服务器响应: 上传进度: 50%
+2025-05-18 21:35:01,406 - INFO - 服务器响应: 上传进度: 52%
+2025-05-18 21:35:01,407 - INFO - 服务器响应: 上传进度: 54%
+2025-05-18 21:35:01,425 - INFO - 服务器响应: 上传进度: 56%
+2025-05-18 21:35:01,426 - INFO - 服务器响应: 上传进度: 58%
+2025-05-18 21:35:01,426 - INFO - 服务器响应: 上传进度: 60%
+2025-05-18 21:35:01,429 - INFO - 服务器响应: 上传进度: 62%
+2025-05-18 21:35:01,430 - INFO - 服务器响应: 上传进度: 64%
+2025-05-18 21:35:01,431 - INFO - 服务器响应: 上传进度: 66%
+2025-05-18 21:35:01,432 - INFO - 服务器响应: 上传进度: 68%
+2025-05-18 21:35:01,432 - INFO - 服务器响应: 上传进度: 70%
+2025-05-18 21:35:01,434 - INFO - 服务器响应: 上传进度: 72%
+2025-05-18 21:35:01,435 - INFO - 服务器响应: 上传进度: 74%
+2025-05-18 21:35:01,437 - INFO - 服务器响应: 上传进度: 76%
+2025-05-18 21:35:01,444 - INFO - 服务器响应: 上传进度: 78%
+2025-05-18 21:35:01,445 - INFO - 服务器响应: 上传进度: 80%
+2025-05-18 21:35:01,447 - INFO - 服务器响应: 上传进度: 82%
+2025-05-18 21:35:01,451 - INFO - 服务器响应: 上传进度: 84%
+2025-05-18 21:35:01,454 - INFO - 服务器响应: 上传进度: 86%
+2025-05-18 21:35:01,455 - INFO - 服务器响应: 上传进度: 88%
+2025-05-18 21:35:01,457 - INFO - 服务器响应: 上传进度: 90%
+2025-05-18 21:35:01,459 - INFO - 服务器响应: 上传进度: 92%
+2025-05-18 21:35:01,461 - INFO - 服务器响应: 上传进度: 94%
+2025-05-18 21:35:01,461 - INFO - 服务器响应: 上传进度: 96%
+2025-05-18 21:35:01,463 - INFO - 服务器响应: 上传进度: 98%
+2025-05-18 21:35:01,464 - INFO - 服务器响应: 上传进度: 100%
+2025-05-18 21:35:01,464 - INFO - 客户端事件: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 21:35:01,464 - INFO - 客户端事件: [调试] 等待服务器处理完成...
+2025-05-18 21:35:29,428 - INFO - 客户端事件: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 21:35:29,432 - INFO - 客户端事件: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 21:35:29,432 - INFO - 服务器响应: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 21:35:29,432 - INFO - 客户端事件: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 21:35:29,433 - INFO - 客户端事件: [调试] 文本结果文件已关闭
+2025-05-18 21:35:29,433 - INFO - 客户端事件: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 21:35:29,446 - INFO - 客户端事件: [调试] JSON结果文件已写入并关闭: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results\250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.0_0.json
+2025-05-18 21:35:29,738 - INFO - 客户端事件: [调试] 处理完成，关闭连接
+2025-05-18 21:35:29,803 - INFO - 服务器响应: 参数: Namespace(host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 21:35:29,803 - INFO - 服务器响应: 处理完成
+2025-05-18 21:35:29,816 - INFO - 任务成功: 文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav 识别完成。
+2025-05-18 21:38:13,076 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:38:13,089 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:38:13,137 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:38:15,151 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:38:15,151 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:38:20,958 - INFO - System Event: Application closing
+2025-05-18 21:38:20,959 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:39:53,786 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:39:53,786 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:39:53,814 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:39:53,814 - INFO - System Event: Checking required dependencies
+2025-05-18 21:39:57,207 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:39:57,212 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:39:58,978 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 21:39:58,992 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:39:59,058 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:40:01,068 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:40:01,068 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:40:05,492 - INFO - 用户操作: 未选择文件
+2025-05-18 21:40:06,570 - INFO - 系统事件: 开始速度测试，文件1: tv-report-1.mp4 (20.6328125MB), 文件2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:40:06,570 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:40:06,836 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 21:40:06,983 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.15秒
+2025-05-18 21:40:13,131 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.15秒
+2025-05-18 21:40:14,110 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.15秒，转写耗时: 6.15秒
+2025-05-18 21:40:14,111 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:40:14,403 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 21:40:14,430 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.03秒
+2025-05-18 21:40:20,466 - INFO - 速度测试: 文件 2 转写完成，耗时: 6.04秒
+2025-05-18 21:40:21,539 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.03秒，转写耗时: 6.04秒
+2025-05-18 21:40:21,540 - INFO - 速度测试结果: 上传速度 149.95 MB/s, 转写速度 29.55x
+2025-05-18 21:40:25,237 - INFO - System Event: Switched to English interface
+2025-05-18 21:40:25,240 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:40:27,023 - INFO - System Event: Starting speed test. File 1: tv-report-1.mp4 (20.6328125MB), File 2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:40:27,023 - INFO - System Event: Starting test for file 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:40:27,334 - INFO - Speed Test: File 1 upload started
+2025-05-18 21:40:27,420 - INFO - Speed Test: File 1 upload completed, duration: 0.09s
+2025-05-18 21:40:33,527 - INFO - Speed Test: File 1 transcription completed, duration: 6.11s
+2025-05-18 21:40:34,559 - INFO - Speed Test: File 1 test completed. Upload: 0.09s, Transcription: 6.11s
+2025-05-18 21:40:34,560 - INFO - System Event: Starting test for file 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:40:34,800 - INFO - Speed Test: File 2 upload started
+2025-05-18 21:40:34,836 - INFO - Speed Test: File 2 upload completed, duration: 0.04s
+2025-05-18 21:40:40,695 - INFO - Speed Test: File 2 transcription completed, duration: 5.86s
+2025-05-18 21:40:40,965 - INFO - Speed Test: File 2 test completed. Upload: 0.04s, Transcription: 5.86s
+2025-05-18 21:40:40,966 - INFO - Speed Test Results: Upload Speed 214.99 MB/s, Transcription Speed 30.08x
+2025-05-18 21:41:35,336 - INFO - User Action: File selected: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:41:36,593 - INFO - User Action: Starting recognition for audio/video file: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:41:36,600 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:41:36,600 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 21:41:36,804 - INFO - Client Event: [调试] 使用SSL连接
+2025-05-18 21:41:36,817 - INFO - Client Event: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 21:41:36,844 - INFO - Client Event: [调试] 连接已建立
+2025-05-18 21:41:36,844 - INFO - Client Event: [调试] 处理文件数: 1
+2025-05-18 21:41:36,844 - INFO - Client Event: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:41:36,844 - INFO - Client Event: [调试] 文件大小: 25.96MB
+2025-05-18 21:41:36,852 - INFO - Client Event: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 21:41:36,852 - INFO - Client Event: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 21:41:36,852 - INFO - Client Event: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 21:41:36,852 - INFO - Server Response: Upload Progress: 0%
+2025-05-18 21:41:36,852 - INFO - Client Event: [调试] 等待接收消息...
+2025-05-18 21:41:36,853 - INFO - Server Response: Upload Progress: 2%
+2025-05-18 21:41:36,854 - INFO - Server Response: Upload Progress: 4%
+2025-05-18 21:41:36,854 - INFO - Server Response: Upload Progress: 6%
+2025-05-18 21:41:36,855 - INFO - Server Response: Upload Progress: 8%
+2025-05-18 21:41:36,855 - INFO - Server Response: Upload Progress: 10%
+2025-05-18 21:41:36,855 - INFO - Server Response: Upload Progress: 12%
+2025-05-18 21:41:36,857 - INFO - Server Response: Upload Progress: 14%
+2025-05-18 21:41:36,858 - INFO - Server Response: Upload Progress: 16%
+2025-05-18 21:41:36,878 - INFO - Server Response: Upload Progress: 18%
+2025-05-18 21:41:36,878 - INFO - Server Response: Upload Progress: 20%
+2025-05-18 21:41:36,879 - INFO - Server Response: Upload Progress: 22%
+2025-05-18 21:41:36,879 - INFO - Server Response: Upload Progress: 24%
+2025-05-18 21:41:36,894 - INFO - Server Response: Upload Progress: 26%
+2025-05-18 21:41:36,895 - INFO - Server Response: Upload Progress: 28%
+2025-05-18 21:41:36,896 - INFO - Server Response: Upload Progress: 30%
+2025-05-18 21:41:36,897 - INFO - Server Response: Upload Progress: 32%
+2025-05-18 21:41:36,899 - INFO - Server Response: Upload Progress: 34%
+2025-05-18 21:41:36,901 - INFO - Server Response: Upload Progress: 36%
+2025-05-18 21:41:36,901 - INFO - Server Response: Upload Progress: 38%
+2025-05-18 21:41:36,902 - INFO - Server Response: Upload Progress: 40%
+2025-05-18 21:41:36,904 - INFO - Server Response: Upload Progress: 42%
+2025-05-18 21:41:36,908 - INFO - Server Response: Upload Progress: 44%
+2025-05-18 21:41:36,910 - INFO - Server Response: Upload Progress: 46%
+2025-05-18 21:41:36,912 - INFO - Server Response: Upload Progress: 48%
+2025-05-18 21:41:36,913 - INFO - Server Response: Upload Progress: 50%
+2025-05-18 21:41:36,914 - INFO - Server Response: Upload Progress: 52%
+2025-05-18 21:41:36,916 - INFO - Server Response: Upload Progress: 54%
+2025-05-18 21:41:36,917 - INFO - Server Response: Upload Progress: 56%
+2025-05-18 21:41:36,919 - INFO - Server Response: Upload Progress: 58%
+2025-05-18 21:41:36,923 - INFO - Server Response: Upload Progress: 60%
+2025-05-18 21:41:36,923 - INFO - Server Response: Upload Progress: 62%
+2025-05-18 21:41:36,926 - INFO - Server Response: Upload Progress: 64%
+2025-05-18 21:41:36,927 - INFO - Server Response: Upload Progress: 66%
+2025-05-18 21:41:36,928 - INFO - Server Response: Upload Progress: 68%
+2025-05-18 21:41:36,929 - INFO - Server Response: Upload Progress: 70%
+2025-05-18 21:41:36,932 - INFO - Server Response: Upload Progress: 72%
+2025-05-18 21:41:36,934 - INFO - Server Response: Upload Progress: 74%
+2025-05-18 21:41:36,937 - INFO - Server Response: Upload Progress: 76%
+2025-05-18 21:41:36,942 - INFO - Server Response: Upload Progress: 78%
+2025-05-18 21:41:36,945 - INFO - Server Response: Upload Progress: 80%
+2025-05-18 21:41:36,946 - INFO - Server Response: Upload Progress: 82%
+2025-05-18 21:41:36,948 - INFO - Server Response: Upload Progress: 84%
+2025-05-18 21:41:36,950 - INFO - Server Response: Upload Progress: 86%
+2025-05-18 21:41:36,951 - INFO - Server Response: Upload Progress: 88%
+2025-05-18 21:41:36,952 - INFO - Server Response: Upload Progress: 90%
+2025-05-18 21:41:36,953 - INFO - Server Response: Upload Progress: 92%
+2025-05-18 21:41:36,969 - INFO - Server Response: Upload Progress: 94%
+2025-05-18 21:41:36,970 - INFO - Server Response: Upload Progress: 96%
+2025-05-18 21:41:36,970 - INFO - Server Response: Upload Progress: 98%
+2025-05-18 21:41:36,984 - INFO - Server Response: Upload Progress: 100%
+2025-05-18 21:41:36,984 - INFO - Client Event: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 21:41:36,985 - INFO - Client Event: [DEBUG] Waiting for server processing to complete...
+2025-05-18 21:42:05,112 - INFO - Client Event: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 21:42:05,115 - INFO - Client Event: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 21:42:05,116 - INFO - Server Response: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 21:42:05,116 - INFO - Client Event: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 21:42:05,116 - INFO - Client Event: [调试] 文本结果文件已关闭
+2025-05-18 21:42:05,116 - INFO - Client Event: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 21:42:05,123 - INFO - Client Event: [调试] JSON结果文件已写入并关闭: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results\250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.0_0.json
+2025-05-18 21:42:05,245 - INFO - Client Event: [调试] 处理完成，关闭连接
+2025-05-18 21:42:05,304 - INFO - Server Response: 参数: Namespace(host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 21:42:05,304 - INFO - Server Response: 处理完成
+2025-05-18 21:42:05,313 - INFO - Task Success: File 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav recognition completed.
+2025-05-18 21:49:14,926 - INFO - System Event: Application closing
+2025-05-18 21:49:14,927 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:49:19,219 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:49:19,219 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:49:19,246 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:49:19,247 - INFO - System Event: Checking required dependencies
+2025-05-18 21:49:22,670 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 21:49:22,673 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:49:24,786 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 21:49:24,801 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:49:24,866 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:49:26,875 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:49:26,875 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:49:28,513 - INFO - 系统事件: 开始速度测试，文件1: tv-report-1.mp4 (20.6328125MB), 文件2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:49:28,513 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:49:28,774 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 21:49:28,911 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.14秒
+2025-05-18 21:49:34,918 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.01秒
+2025-05-18 21:49:35,047 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.14秒，转写耗时: 6.01秒
+2025-05-18 21:49:35,047 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:49:35,350 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 21:49:35,413 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.06秒
+2025-05-18 21:49:41,233 - INFO - 速度测试: 文件 2 转写完成，耗时: 5.82秒
+2025-05-18 21:49:41,543 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.06秒，转写耗时: 5.82秒
+2025-05-18 21:49:41,543 - INFO - 速度测试结果: 上传速度 130.47 MB/s, 转写速度 30.44x
+2025-05-18 21:49:59,669 - INFO - 系统事件: 开始速度测试，文件1: tv-report-1.mp4 (20.6328125MB), 文件2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:49:59,669 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:49:59,900 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 21:50:00,062 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.16秒
+2025-05-18 21:50:06,139 - INFO - 速度测试: 文件 1 转写完成，耗时: 6.08秒
+2025-05-18 21:50:07,195 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.16秒，转写耗时: 6.08秒
+2025-05-18 21:50:07,196 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:50:07,461 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 21:50:07,496 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.03秒
+2025-05-18 21:50:13,699 - INFO - 速度测试: 文件 2 转写完成，耗时: 6.20秒
+2025-05-18 21:50:14,632 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.03秒，转写耗时: 6.20秒
+2025-05-18 21:50:14,637 - INFO - 速度测试结果: 上传速度 132.49 MB/s, 转写速度 29.32x
+2025-05-18 21:50:22,759 - INFO - 用户操作: 已选择文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:50:23,264 - INFO - 用户操作: 开始识别音频/视频文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:50:23,273 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:50:23,273 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 21:50:23,482 - INFO - 客户端事件: [调试] 使用SSL连接
+2025-05-18 21:50:23,495 - INFO - 客户端事件: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 21:50:23,561 - INFO - 客户端事件: [调试] 连接已建立
+2025-05-18 21:50:23,561 - INFO - 客户端事件: [调试] 处理文件数: 1
+2025-05-18 21:50:23,561 - INFO - 客户端事件: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:50:23,562 - INFO - 客户端事件: [调试] 文件大小: 25.96MB
+2025-05-18 21:50:23,568 - INFO - 客户端事件: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 21:50:23,568 - INFO - 客户端事件: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 21:50:23,568 - INFO - 客户端事件: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 21:50:23,568 - INFO - 服务器响应: 上传进度: 0%
+2025-05-18 21:50:23,569 - INFO - 客户端事件: [调试] 等待接收消息...
+2025-05-18 21:50:23,570 - INFO - 服务器响应: 上传进度: 2%
+2025-05-18 21:50:23,571 - INFO - 服务器响应: 上传进度: 4%
+2025-05-18 21:50:23,573 - INFO - 服务器响应: 上传进度: 6%
+2025-05-18 21:50:23,585 - INFO - 服务器响应: 上传进度: 8%
+2025-05-18 21:50:23,590 - INFO - 服务器响应: 上传进度: 10%
+2025-05-18 21:50:23,591 - INFO - 服务器响应: 上传进度: 12%
+2025-05-18 21:50:23,612 - INFO - 服务器响应: 上传进度: 14%
+2025-05-18 21:50:23,614 - INFO - 服务器响应: 上传进度: 16%
+2025-05-18 21:50:23,615 - INFO - 服务器响应: 上传进度: 18%
+2025-05-18 21:50:23,627 - INFO - 服务器响应: 上传进度: 20%
+2025-05-18 21:50:23,629 - INFO - 服务器响应: 上传进度: 22%
+2025-05-18 21:50:23,630 - INFO - 服务器响应: 上传进度: 24%
+2025-05-18 21:50:23,630 - INFO - 服务器响应: 上传进度: 26%
+2025-05-18 21:50:23,632 - INFO - 服务器响应: 上传进度: 28%
+2025-05-18 21:50:23,634 - INFO - 服务器响应: 上传进度: 30%
+2025-05-18 21:50:23,634 - INFO - 服务器响应: 上传进度: 32%
+2025-05-18 21:50:23,640 - INFO - 服务器响应: 上传进度: 34%
+2025-05-18 21:50:23,658 - INFO - 服务器响应: 上传进度: 36%
+2025-05-18 21:50:23,658 - INFO - 服务器响应: 上传进度: 38%
+2025-05-18 21:50:23,659 - INFO - 服务器响应: 上传进度: 40%
+2025-05-18 21:50:23,660 - INFO - 服务器响应: 上传进度: 42%
+2025-05-18 21:50:23,660 - INFO - 服务器响应: 上传进度: 44%
+2025-05-18 21:50:23,661 - INFO - 服务器响应: 上传进度: 46%
+2025-05-18 21:50:23,662 - INFO - 服务器响应: 上传进度: 48%
+2025-05-18 21:50:23,666 - INFO - 服务器响应: 上传进度: 50%
+2025-05-18 21:50:23,668 - INFO - 服务器响应: 上传进度: 52%
+2025-05-18 21:50:23,673 - INFO - 服务器响应: 上传进度: 54%
+2025-05-18 21:50:23,673 - INFO - 服务器响应: 上传进度: 56%
+2025-05-18 21:50:23,689 - INFO - 服务器响应: 上传进度: 58%
+2025-05-18 21:50:23,690 - INFO - 服务器响应: 上传进度: 60%
+2025-05-18 21:50:23,691 - INFO - 服务器响应: 上传进度: 62%
+2025-05-18 21:50:23,705 - INFO - 服务器响应: 上传进度: 64%
+2025-05-18 21:50:23,709 - INFO - 服务器响应: 上传进度: 66%
+2025-05-18 21:50:23,710 - INFO - 服务器响应: 上传进度: 68%
+2025-05-18 21:50:23,734 - INFO - 服务器响应: 上传进度: 70%
+2025-05-18 21:50:23,734 - INFO - 服务器响应: 上传进度: 72%
+2025-05-18 21:50:23,736 - INFO - 服务器响应: 上传进度: 74%
+2025-05-18 21:50:23,750 - INFO - 服务器响应: 上传进度: 76%
+2025-05-18 21:50:23,764 - INFO - 服务器响应: 上传进度: 78%
+2025-05-18 21:50:23,767 - INFO - 服务器响应: 上传进度: 80%
+2025-05-18 21:50:23,767 - INFO - 服务器响应: 上传进度: 82%
+2025-05-18 21:50:23,772 - INFO - 服务器响应: 上传进度: 84%
+2025-05-18 21:50:23,772 - INFO - 服务器响应: 上传进度: 86%
+2025-05-18 21:50:23,795 - INFO - 服务器响应: 上传进度: 88%
+2025-05-18 21:50:23,796 - INFO - 服务器响应: 上传进度: 90%
+2025-05-18 21:50:23,796 - INFO - 服务器响应: 上传进度: 92%
+2025-05-18 21:50:23,797 - INFO - 服务器响应: 上传进度: 94%
+2025-05-18 21:50:23,797 - INFO - 服务器响应: 上传进度: 96%
+2025-05-18 21:50:23,798 - INFO - 服务器响应: 上传进度: 98%
+2025-05-18 21:50:23,799 - INFO - 服务器响应: 上传进度: 100%
+2025-05-18 21:50:23,799 - INFO - 客户端事件: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 21:50:23,799 - INFO - 客户端事件: [调试] 等待服务器处理完成...
+2025-05-18 21:50:51,983 - INFO - 客户端事件: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 21:50:51,988 - INFO - 客户端事件: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 21:50:51,988 - INFO - 服务器响应: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 21:50:51,988 - INFO - 客户端事件: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 21:50:51,988 - INFO - 客户端事件: [调试] 文本结果文件已关闭
+2025-05-18 21:50:51,988 - INFO - 客户端事件: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 21:50:51,995 - INFO - 客户端事件: [调试] JSON结果文件已写入并关闭
+2025-05-18 21:50:52,089 - INFO - 服务器响应: 处理完成
+2025-05-18 21:50:52,149 - INFO - 服务器响应: 命名空间: (host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 21:50:52,150 - INFO - 服务器响应: 处理完成
+2025-05-18 21:50:52,161 - INFO - 任务成功: 文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav 识别完成。
+2025-05-18 21:51:06,224 - INFO - System Event: Switched to English interface
+2025-05-18 21:51:06,226 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:51:08,723 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:51:08,736 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:51:08,739 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:51:10,745 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:51:10,745 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:51:14,190 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:51:14,202 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:51:14,249 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:51:16,256 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:51:16,256 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:51:29,341 - INFO - User Action: Starting recognition for audio/video file: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:51:29,350 - INFO - Task Start: Recognizing file 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:51:29,350 - INFO - Recognition results will be saved in: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 21:51:29,554 - INFO - Client Event: [调试] 使用SSL连接
+2025-05-18 21:51:29,566 - INFO - Client Event: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 21:51:29,642 - INFO - Client Event: [调试] 连接已建立
+2025-05-18 21:51:29,642 - INFO - Client Event: [调试] 处理文件数: 1
+2025-05-18 21:51:29,642 - INFO - Client Event: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:51:29,642 - INFO - Client Event: [调试] 文件大小: 25.96MB
+2025-05-18 21:51:29,649 - INFO - Client Event: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 21:51:29,649 - INFO - Client Event: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 21:51:29,649 - INFO - Client Event: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 21:51:29,649 - INFO - Server Response: Upload Progress: 0%
+2025-05-18 21:51:29,649 - INFO - Client Event: [调试] 等待接收消息...
+2025-05-18 21:51:29,651 - INFO - Server Response: Upload Progress: 2%
+2025-05-18 21:51:29,654 - INFO - Server Response: Upload Progress: 4%
+2025-05-18 21:51:29,658 - INFO - Server Response: Upload Progress: 6%
+2025-05-18 21:51:29,659 - INFO - Server Response: Upload Progress: 8%
+2025-05-18 21:51:29,659 - INFO - Server Response: Upload Progress: 10%
+2025-05-18 21:51:29,671 - INFO - Server Response: Upload Progress: 12%
+2025-05-18 21:51:29,671 - INFO - Server Response: Upload Progress: 14%
+2025-05-18 21:51:29,686 - INFO - Server Response: Upload Progress: 16%
+2025-05-18 21:51:29,688 - INFO - Server Response: Upload Progress: 18%
+2025-05-18 21:51:29,690 - INFO - Server Response: Upload Progress: 20%
+2025-05-18 21:51:29,701 - INFO - Server Response: Upload Progress: 22%
+2025-05-18 21:51:29,703 - INFO - Server Response: Upload Progress: 24%
+2025-05-18 21:51:29,703 - INFO - Server Response: Upload Progress: 26%
+2025-05-18 21:51:29,718 - INFO - Server Response: Upload Progress: 28%
+2025-05-18 21:51:29,733 - INFO - Server Response: Upload Progress: 30%
+2025-05-18 21:51:29,736 - INFO - Server Response: Upload Progress: 32%
+2025-05-18 21:51:29,738 - INFO - Server Response: Upload Progress: 34%
+2025-05-18 21:51:29,739 - INFO - Server Response: Upload Progress: 36%
+2025-05-18 21:51:29,740 - INFO - Server Response: Upload Progress: 38%
+2025-05-18 21:51:29,763 - INFO - Server Response: Upload Progress: 40%
+2025-05-18 21:51:29,764 - INFO - Server Response: Upload Progress: 42%
+2025-05-18 21:51:29,765 - INFO - Server Response: Upload Progress: 44%
+2025-05-18 21:51:29,765 - INFO - Server Response: Upload Progress: 46%
+2025-05-18 21:51:29,767 - INFO - Server Response: Upload Progress: 48%
+2025-05-18 21:51:29,768 - INFO - Server Response: Upload Progress: 50%
+2025-05-18 21:51:29,770 - INFO - Server Response: Upload Progress: 52%
+2025-05-18 21:51:29,774 - INFO - Server Response: Upload Progress: 54%
+2025-05-18 21:51:29,776 - INFO - Server Response: Upload Progress: 56%
+2025-05-18 21:51:29,777 - INFO - Server Response: Upload Progress: 58%
+2025-05-18 21:51:29,778 - INFO - Server Response: Upload Progress: 60%
+2025-05-18 21:51:29,780 - INFO - Server Response: Upload Progress: 62%
+2025-05-18 21:51:29,782 - INFO - Server Response: Upload Progress: 64%
+2025-05-18 21:51:29,784 - INFO - Server Response: Upload Progress: 66%
+2025-05-18 21:51:29,785 - INFO - Server Response: Upload Progress: 68%
+2025-05-18 21:51:29,808 - INFO - Server Response: Upload Progress: 70%
+2025-05-18 21:51:29,808 - INFO - Server Response: Upload Progress: 72%
+2025-05-18 21:51:29,809 - INFO - Server Response: Upload Progress: 74%
+2025-05-18 21:51:29,809 - INFO - Server Response: Upload Progress: 76%
+2025-05-18 21:51:29,810 - INFO - Server Response: Upload Progress: 78%
+2025-05-18 21:51:29,810 - INFO - Server Response: Upload Progress: 80%
+2025-05-18 21:51:29,812 - INFO - Server Response: Upload Progress: 82%
+2025-05-18 21:51:29,823 - INFO - Server Response: Upload Progress: 84%
+2025-05-18 21:51:29,824 - INFO - Server Response: Upload Progress: 86%
+2025-05-18 21:51:29,824 - INFO - Server Response: Upload Progress: 88%
+2025-05-18 21:51:29,825 - INFO - Server Response: Upload Progress: 90%
+2025-05-18 21:51:29,825 - INFO - Server Response: Upload Progress: 92%
+2025-05-18 21:51:29,826 - INFO - Server Response: Upload Progress: 94%
+2025-05-18 21:51:29,827 - INFO - Server Response: Upload Progress: 96%
+2025-05-18 21:51:29,827 - INFO - Server Response: Upload Progress: 98%
+2025-05-18 21:51:29,830 - INFO - Server Response: Upload Progress: 100%
+2025-05-18 21:51:29,830 - INFO - Client Event: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 21:51:29,830 - INFO - Client Event: [DEBUG] Waiting for server processing to complete...
+2025-05-18 21:51:57,323 - INFO - Client Event: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 21:51:57,327 - INFO - Client Event: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 21:51:57,327 - INFO - Server Response: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 21:51:57,327 - INFO - Client Event: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 21:51:57,328 - INFO - Client Event: [调试] 文本结果文件已关闭
+2025-05-18 21:51:57,328 - INFO - Client Event: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 21:51:57,334 - INFO - Client Event: [DEBUG] JSON result file written and closed
+2025-05-18 21:51:58,137 - INFO - Server Response: Processing Completed
+2025-05-18 21:51:58,193 - INFO - Server Response: Namespace: (host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 21:51:58,194 - INFO - Server Response: Processing Completed
+2025-05-18 21:51:58,203 - INFO - Task Success: File 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav recognition completed.
+2025-05-18 21:52:07,014 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:52:07,026 - INFO - 系统事件: 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 21:52:07,074 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 21:52:09,079 - INFO - 系统事件: 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 21:52:09,079 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 21:57:19,049 - INFO - System Event: Application closing
+2025-05-18 21:57:19,050 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:57:23,644 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:57:23,644 - INFO - 系统事件: 应用程序初始化
+2025-05-18 21:57:23,670 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 21:57:23,671 - INFO - System Event: Checking required dependencies
+2025-05-18 21:57:26,722 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:57:26,736 - INFO - Attempting WebSocket connection to: wss://100.100.167.50:10095
+2025-05-18 21:57:26,802 - INFO - System Event: WebSocket connected and test message sent
+2025-05-18 21:57:28,807 - INFO - No response received from WebSocket server within timeout, but connection established
+2025-05-18 21:57:28,807 - INFO - System Event: WebSocket connection test successful
+2025-05-18 21:57:35,198 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 21:57:35,210 - INFO - Attempting WebSocket connection to: wss://100.100.167.50:10095
+2025-05-18 21:57:35,214 - INFO - System Event: WebSocket connected and test message sent
+2025-05-18 21:57:37,222 - INFO - No response received from WebSocket server within timeout, but connection established
+2025-05-18 21:57:37,222 - INFO - System Event: WebSocket connection test successful
+2025-05-18 21:57:43,254 - INFO - System Event: Starting speed test. File 1: tv-report-1.mp4 (20.6328125MB), File 2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 21:57:43,254 - INFO - System Event: Starting test for file 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 21:57:43,524 - INFO - Speed Test: File 1 upload started
+2025-05-18 21:57:43,624 - INFO - Speed Test: File 1 upload completed, duration: 0.10s
+2025-05-18 21:57:49,500 - INFO - Speed Test: File 1 transcription completed, duration: 5.88s
+2025-05-18 21:57:49,746 - INFO - Speed Test: File 1 test completed. Upload: 0.10s, Transcription: 5.88s
+2025-05-18 21:57:49,747 - INFO - System Event: Starting test for file 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 21:57:50,036 - INFO - Speed Test: File 2 upload started
+2025-05-18 21:57:50,050 - INFO - Speed Test: File 2 upload completed, duration: 0.01s
+2025-05-18 21:57:55,965 - INFO - Speed Test: File 2 transcription completed, duration: 5.91s
+2025-05-18 21:57:56,179 - INFO - Speed Test: File 2 test completed. Upload: 0.01s, Transcription: 5.91s
+2025-05-18 21:57:56,180 - INFO - Speed Test Results: Upload Speed 229.26 MB/s, Transcription Speed 30.53x
+2025-05-18 21:58:05,617 - INFO - User Action: File selected: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:58:07,022 - INFO - User Action: Starting recognition for audio/video file: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:58:07,031 - INFO - Task Start: Recognizing file 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:58:07,031 - INFO - Recognition results will be saved in: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 21:58:07,214 - INFO - Client Event: [调试] 使用SSL连接
+2025-05-18 21:58:07,227 - INFO - Client Event: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 21:58:07,249 - INFO - Client Event: [调试] 连接已建立
+2025-05-18 21:58:07,249 - INFO - Client Event: [调试] 处理文件数: 1
+2025-05-18 21:58:07,249 - INFO - Client Event: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 21:58:07,249 - INFO - Client Event: [调试] 文件大小: 25.96MB
+2025-05-18 21:58:07,255 - INFO - Client Event: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 21:58:07,256 - INFO - Client Event: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 21:58:07,256 - INFO - Client Event: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 21:58:07,256 - INFO - Server Response: Upload Progress: 0%
+2025-05-18 21:58:07,257 - INFO - Client Event: [调试] 等待接收消息...
+2025-05-18 21:58:07,268 - INFO - Server Response: Upload Progress: 10%
+2025-05-18 21:58:07,285 - INFO - Server Response: Upload Progress: 20%
+2025-05-18 21:58:07,303 - INFO - Server Response: Upload Progress: 30%
+2025-05-18 21:58:07,308 - INFO - Server Response: Upload Progress: 40%
+2025-05-18 21:58:07,334 - INFO - Server Response: Upload Progress: 50%
+2025-05-18 21:58:07,345 - INFO - Server Response: Upload Progress: 60%
+2025-05-18 21:58:07,363 - INFO - Server Response: Upload Progress: 70%
+2025-05-18 21:58:07,387 - INFO - Server Response: Upload Progress: 80%
+2025-05-18 21:58:07,393 - INFO - Server Response: Upload Progress: 90%
+2025-05-18 21:58:07,402 - INFO - Server Response: Upload Progress: 100%
+2025-05-18 21:58:07,402 - INFO - Client Event: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 21:58:07,402 - INFO - Client Event: [DEBUG] Waiting for server processing to complete...
+2025-05-18 21:58:35,188 - INFO - Client Event: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 21:58:35,194 - INFO - Client Event: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 21:58:35,194 - INFO - Server Response: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 21:58:35,195 - INFO - Client Event: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 21:58:35,195 - INFO - Client Event: [调试] 文本结果文件已关闭
+2025-05-18 21:58:35,197 - INFO - Client Event: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 21:58:35,222 - INFO - Client Event: [DEBUG] JSON result file written and closed
+2025-05-18 21:58:35,695 - INFO - Server Response: Processing Completed
+2025-05-18 21:58:35,762 - INFO - Server Response: Namespace: (host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 21:58:35,762 - INFO - Server Response: Processing Completed
+2025-05-18 21:58:35,775 - INFO - Task Success: File 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav recognition completed.
+2025-05-18 22:00:08,914 - INFO - User Action: File selected: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250512-上师-莲师殿开示/250512-上师-莲师殿开示-1080.wav
+2025-05-18 22:00:11,943 - INFO - User Action: Starting recognition for audio/video file: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250512-上师-莲师殿开示/250512-上师-莲师殿开示-1080.wav
+2025-05-18 22:00:11,945 - INFO - Task Start: Recognizing file 250512-上师-莲师殿开示-1080.wav
+2025-05-18 22:00:11,945 - INFO - Recognition results will be saved in: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 22:00:12,182 - INFO - Client Event: [调试] 使用SSL连接
+2025-05-18 22:00:12,196 - INFO - Client Event: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 22:00:12,262 - INFO - Client Event: [调试] 连接已建立
+2025-05-18 22:00:12,262 - INFO - Client Event: [调试] 处理文件数: 1
+2025-05-18 22:00:12,262 - INFO - Client Event: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250512-上师-莲师殿开示/250512-上师-莲师殿开示-1080.wav
+2025-05-18 22:00:12,262 - INFO - Client Event: [调试] 文件大小: 111.08MB
+2025-05-18 22:00:12,405 - INFO - Client Event: [调试] 已读取WAV文件，采样率: 16000, 大小: 111.07MB
+2025-05-18 22:00:12,405 - INFO - Client Event: [调试] 分块数: 1778, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 22:00:12,405 - INFO - Client Event: [指令] 发送WebSocket: {"mode": "offline", "audio_fs": 16000, "wav_name": "250512-\u4e0a\u5e08-\u83b2\u5e08\u6bbf\u5f00\u793a-1080.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 22:00:12,405 - INFO - Server Response: Upload Progress: 0%
+2025-05-18 22:00:12,405 - INFO - Client Event: [调试] 等待接收消息...
+2025-05-18 22:00:12,488 - INFO - Server Response: Upload Progress: 10%
+2025-05-18 22:00:12,523 - INFO - Server Response: Upload Progress: 20%
+2025-05-18 22:00:12,564 - INFO - Server Response: Upload Progress: 30%
+2025-05-18 22:00:12,654 - INFO - Server Response: Upload Progress: 40%
+2025-05-18 22:00:12,715 - INFO - Server Response: Upload Progress: 50%
+2025-05-18 22:00:12,823 - INFO - Server Response: Upload Progress: 60%
+2025-05-18 22:00:12,883 - INFO - Server Response: Upload Progress: 70%
+2025-05-18 22:00:12,943 - INFO - Server Response: Upload Progress: 80%
+2025-05-18 22:00:12,993 - INFO - Server Response: Upload Progress: 90%
+2025-05-18 22:00:13,036 - INFO - Server Response: Upload Progress: 100%
+2025-05-18 22:00:13,037 - INFO - Client Event: [指令] 发送WebSocket: {"is_speaking": false}
+2025-05-18 22:00:13,037 - INFO - Client Event: [DEBUG] Waiting for server processing to complete...
+2025-05-18 22:02:09,391 - INFO - Client Event: [调试] 已接收消息，大小: 0.62MB
+2025-05-18 22:02:09,399 - INFO - Client Event: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 22:02:09,400 - INFO - Server Response: 识别结果: 好，各位举手，下午好好抽出这个一小段时间呢，做一些简单的佛法开释以及口传啊，那么大家呢很辛苦啊，从各地来，然后呢又要适应这么高的海拔的这个环境呢。虽然很多地址是来了好多次啊，但但高原这种气候啊，你是只要在内地多一段时间呢，每次来都需要需需要习惯一下不容易啊。一个是大家这个从那么远的地方来人力物力加上这里，但我看每天都有前行，在那里共生啊，这些啊方方面面的还要付出非常多，还真不容易啊。但是呢人生难得佛法难闻，甚至是难遇，中途难生。嗯，特别是今天这样一个日子，大家应该都已经忘记了。在17年前的今天呢，整个四川的一个大灾难啊，大地震512 大地震，汶川大地震今天刚好是10 17 年。所以在那个时候，你看多么这个恐怖的一个场景是吧？多少家人呢生离死别，短短的时间里面，多少人失去了人生当中最宝贵的生命啊，当然缅怀他们以外。更值得庆幸的是，经过了这么一场大灾难以后啊，强大的国力啊，让每个地震灾区都恢复的非常好啊。特别大家来的时候看到了这个我们要经过两个灾难最重的地方，一个是都江堰市是吧？另外一个就是阿巴卓的汶川县。嗯，所以这些灾后重建以后，你可以看到，它实际上比以前的城市更美啊，居住环境比以前更好。老百姓现在过的日子也比以前更好啊，这真的是国家的强大，带给我们最大的鼓报。而我们能够从那里又活了17 年是吧？而且在座的各位很多都老弟子啊，这么多年的修行呢，基本上除了疫情期间以外都没有断过，这是很难得的。佛经里面讲啊啊that opportunity man学骂，这里讲慢慢拼，什么意思呢？就说如果没有一个虔诚的心魔啊，所有的这些功德啊以及福报都不会到来啊。你可能现在感觉自己不错，是因为在用前面的前世累积的这些福报，犹如啊他是佛陀形容说你捏那个沙，你怎么捏也从沙里面捏不出食用油啊啊，耐不住食用油能吃的油啊。嗯，所以呢大家为了自己的那种信仰啊，这么多年的坚持，这是一个基础啊，为什么？每一次啊不管是你们见到诸佛菩萨的法相也好，来到庄园的这样一个大殿也好，见到上师们也好，我们宁愿双手合掌啊，把我们高昂的头低下来，头颅低下来，愿意磕头。啊，那是对我们信仰的崇敬，好跟我们对偶像的崇拜一点关系都没有啊，那么我们的皈依证里面第一就念到了皈依上师啊，那为什么要这样讲呢？你看上师这个定义啊，帐篷里面我们叫喇嘛。你们说喇嘛喇嘛其实其实就上师龄史为什么称为上？因为他是善的老师，所以它另外一个别称又叫善知识。在我们学习善的方面啊，他是我们的老师。嗯，那么人天是最伟大的这种导善知识导师，那肯定就是释迦牟尼佛了，对吧？对我们在座的各位来讲啊，2500 500 多年前降生的释迦牟尼佛，就是我们最伟大的善知识扣过他在人间哪用6年的苦行的方式，把所有觉悟了的佛法的真谛啊，留给我们84000 种不同的法门，都是为了什么呢？调伏不同的众生的口味啊，如果我们大家的口味只有一种的佛法就不需要那么多。但是呢有人问佛陀，那84000 个法不同的法门呢，是不是你的法门到边儿了？他说没有如果众生还有别的疑问，这个佛法的这个次第啊，它还会延伸出去，这是一个笼统的概念数而已。啊，刚才他讲了84000 个法门呢，对我们来讲只能用经律论三藏来分。然后为了密训啊，他又讲了啊这个80000 里面的其中的这个呃20000 呃呃1000 个法门嘛，嗯然后经律论3张各21000 ，密续21000 。那什么一概念呢？其实就是针对我们的坛城吃啊，抢了这个66 万哎3000 的法门，然后3个一起调伏藏密法，又抢了21000 个法门啊，但我们目前看到的是藏传佛教里面呢，我们叫大占新嘛啊甘竹尔就104 本书。那么佛的弟子们去解释他，我们现在收集起来的是217 本，尊丹卓尔，那么汉传佛教那就更浩瀚了，更多了是吧？嗯，有的呢从印度就翻译成了汉汉传，呃，对对，佛经了，但是没有被翻译成藏文。比如我们大家知道的内地书里面，佛经里面最有名的楞严经楞元军，当时就没有被翻译成藏文，只有名字没有经书。后来是乾隆皇帝帮我们把这个这个金属啊那呃论元经呢翻译成了藏文。所以我们现在的这个游戏藏文的大战记里面就变成了105 本书，就是狼烟经在乾隆皇帝的书把它加进来。乾隆皇帝学识渊博，他会藏文，会蒙文，会汉文，他精通很多这个学科，又擅长佛法。本中国历史上最伟大的2位这个皇帝啊，一个是清朝的乾隆啊，当然康熙亚孙子都伟大，但是里面乾隆是最伟大的。还有另外一个就是永乐皇帝明永乐皇帝啊，我们哈文里面看到的哈文大章经的刻板，它是永乐皇帝雕的藏文。大章经最早最早整套的经典的刻本，就是雕刻的木刻板呢，也是永乐皇帝雕的满文的经书的。大章经是永乐夏陵雕的猛文的大将军，也是涌泪相邻。到了目前，现存所有的这些佛像里面的最庄严的也是永乐皇帝，当时下令找的，包括发起都士。所以这些皇帝啊，这对我们现在的这是我们现在讲是说哦这个佛法的传播啊，特别是呃佛教在中国这片土地上，在各民族与信仰佛教的里面能够扎根呢，真的是他们的功不可没。嗯，功德不可吗？所以呢有了他们这样的传承下来以后，那么我们可以看到那么多浩瀚的经典。嗯，但是这些浩瀚的经典又怎么去修呢？这就牵扯到我们现在怎么去修法这个问题。阿迪侠尊者10 一世纪的时候，是他是孟加拉王子纳兰陀市的主持啊啊。然后呢，被杜牧预言，他可以到藏区红法本尊以后，被藏族人请到啊，我们这个阿里王啊，就出家的叫阿喇嘛耶稣耶稣。我当这个大师实际上是国王出家的，他邀请他到了藏区传法。那个时候张旭没有高声吗？有，我们叫人前行。波大师是藏区啊，这个新新的佛教复兴以后，唐代不是有一个南丹马面佛吗？那以后佛教复兴以后呢，最有名的大师到印度留学回来，在藏区传播佛法的阿迪霞呃，尊者之前的罗先生不就人前商铺大是在哪儿？阿比县之尊在到藏区的时候，上师已经85 岁的高龄了，他去拜访这个大翻译家，看到85 岁高龄的翻译家，一看到他那学识渊博，那自己又是藏族人了啊，殿下尊者自己又不会讲藏语。他就说哦呀当时看到有你这么伟大的高僧大德的藏去啊，我白来了嘛，哎我还得带翻译，我还得讲清啊，有你不就够了吗？早知道您还活着啊，我就不用来藏区了，我就在印度纳兰图市，当我的方长就好了，他两个相看甚欢呢。最后阿迪下尊者啊问了一些一下大师，大师，佛法如此浩瀚广大，我们应该怎么去把它修好？这下问题出来了，大师回答说，按照不同的传承，按照传承的制度，一步一步去把它修大圆满。他是马上就说听那个阿迪夏对治，马上就说，大师听你这样讲，我藏区还是来对了。您的说法是针对这些长时间像出家的修行人那样，长期有时间研究各自的佛法的那些各个不同的派系的修行方法。学者式的修行方法。它是现在是着实大家需要的，是一个浓缩的精华诀窍学习方法啊，因为对大家来讲时间不够啊，所以按照你这么的传法，你是学者性的传教方式。而我来对了，所以你看但是到了藏区以后啊，一辈子在干什么？用泥巴做小佛像，小佛塔，这是他干最大的一件事情。另外就养了一只泼猴，每天都让那个泼泼猴在自己头上身上撒液啊。第3个，教人怎么皈依。后来藏主任的纳边，你不是印度，纳兰图，是30000 人的这个首席首座大师，你怎么到了张姆区都教我们皈依证，所以藏族人就给他取了个外号，叫做西密法。本尊大半直大是什么大学者？然后前面就给他加了一个皈医大半自达啊，皈医大学士还是有点贬低的意思在那。但是他当时讲的很清楚，如果没有一个虔诚心，没有一个处理性，所有一切都免谈了。在虔诚心魔处理心作为基础之下，把所有佛法的精华浓缩起来，共修。每个人都能够是实修实正，但这不能只是用口头的是吧？所以他用他做篱笆小佛像来告诉我们，身体的也是身体一样进化的好，不能说你是靠嘴啊。所以为什么你看我们每个弟子进来500000 个大礼拜是吧？经常说哦，你要供佛啊，坐满达拉啦，一定要自己动手。我说哎，怎么就没有一个诀窍，就马上让让你今天传传明天成佛的法门。有啊，吹牛的人都会说这句话。你看我们的那那个叫当巴大师，米拉德巴大师去见他的时候，说跟你求一个速胜的法。然后我们的你妈爸的高僧呢，他直接想哦，我这边方法很多啊，你想修什么样的法门，说你那个最好的法是什么？今天听了明天成佛的那种大圆满的诀窍法门，拉德巴大声想哈，我杀杀一批那个诅咒一批人，杀一批人都要花好多年时间来修，没有想到成佛比我做坏事还容易啊，这个就是你们经常说到的，哎，什么去西天取经，还要面临99 81 难，然后呢杀人的人呢那就是放下屠刀就立地成佛了，误解脱你误错误啊。那是今天修听闻佛法，明天成佛的那个是他已经把前面的基础都打好了，只剩下摘果实那段了，它的播种种子播种，让这个树果树成长了，最后果实累累。到了秋天了，直接用手碰一下就掉下来了。啊，就像我们讲牛顿的故事一样，怎么砸到我们的头上的苹果，没有让我们变成科学家，为什么他能成功？这个就顿悟者，他是当下的那个嘛，我们只是没有看到他前面的罗列了。所以阿迪夏真着用他实际的这种操作告诉我们呢，一定身体的也一定要身体小，而你只是高声大的也好，或者是修行人啊，没有经过检验的话，你哪知道你修的好不好？所以他让一个坡后来每天都检验他自己这个猴子，抓他的脸，抓他的衣服，抓他的东西的时候，他会不会生起那种对猴子的那种分别心。我想大师肯定不会像我们那种嗔恨心的，但是他自己在检验自己，他说千万不要把不要把我的猴子给放走啊。因为你们藏族人对我太好了，你们都把我当佛来看，没有一个人说我的坏话，没有一个人呃呃，惹我生气啊，我要检验自己的修行行不行？我得靠猴子啊，他们就啊那猴子不是造业障的，没有关系，他跟我一起前行，我会把功德回降给他。操。那很多时候很多弟子来他也要讲经说法。所以有一天弟子们觉得他老是去抓一大堆泥土，不是泡一大堆泥土过来，然后用水倒在里面，把它那搅和以后要做小佛塔，小佛像，不庄严，上师的衣服上全是泥浆嘛。他们就说算了吧，今天让他庄严一点，趁他不注意，他把它那个收集起来泥巴，他们全部把它和成泥浆以后，全部把它捏好。泥巴做成那个模型里面的小佛像，小佛塔全部给他做完了，说中午吃饭时间见见大师不吃饭了啊。他弟子们就说，师傅，你该吃饭了，他说哦，不用吃了，你们帮我吃吧。他说我们不能帮你吃啊，你得自己吃。他说我该宵的夜，你们都可以帮我削，那么我的饭你们肯定可以帮我吃啊。我发现你们是能代替我吗？那既然是能代替我宵夜，那你们也能代替我吃饭，你就帮我吃，我就饱了。你知道从此以后，没有一个弟子敢敢呃，大家自己怎么做就怎么做。但是他到了藏区以后，发现啊，我们藏族的那个时候，所谓的贡品呢就是用那个糍粑，我们也有的只有这个糍粑嘛，所以就把把酥油啊这些倒在毡粑里面做一个贡品。我们讲的狮子啊，就是像台上那种虱子就供在那儿。当时看了以后就说，哎呀，你们藏族人呢又在高原上又不爱干净。夏天到了，你们满山遍全世界最干净的水，连我们印度人的所有恒河源头都在你们这里。你们满山遍野的野花儿这么漂亮，为什么不拿它来供访啊，偏要捏一些什么所谓的狮子，脏兮兮的供奉。他说你们不会有大福报的，因为你们就从来就不把贡品做干净一点。呃，所以他当时这样训藏族人呢，从此以后藏族人才学会了，我们就来看水水花香灯油食品里面用整个水来代替干净的水来代替在印度。不是啊，印度那个水水花香灯油食品是什么呢？迎接国王的时候啊，现供养一个干净的水给他喝，然后让他洗手洗脚啊，它是饮水跟洗脚水，其他就是水后面是花根香灯。然后这个涂身上的那个我们讲的香水啊，香水，然后是一一点的灯啊，有灯的，不像我们现在是7个杯里面全部倒水，那个是在在西藏以后才开始的啊。看我们以前是7杯水，里面就放一点野花嘛，每杯里面放一点野花就用起来。其实就是供氧饮水啊，那已经不呃这个了呃，就代改良了，就是代替了本地，有的就本地化啊，所以呢这是我们每个人能做得起来的。大家随喜我们就说的呃这个六are casual gal啊，功德是随手可以做的，顺手可以带，最高也是这样。你看任何时候最高，我们不用有人叫贪嗔吃鸡，多傲慢，额，口上人挑拨离间，我们连口就来啊，但是呢要做功德，也就就要要逼着我们自己每天早上起来烧3只香啊，给我磕3个头啊啊让身体的修行自己来。那么有了这些这虔诚心以后，就就像我们刚刚讲的，大家虽然是以内是吧，做大理拜牙不不容易，辛苦，吃粥也不容易啊，念经也不容易，但是慢慢的久而久之以后习惯了，但这个时候也要担心，我们变成佛油子，就是有口无心。魔只是技术看，我们发现好多老弟子里面念经基本上是这样，因为基本背的起来了，所以他根本也不是靠里面的内容。哒哒哒哒哒哒，反正练的比谁都快啊呃他有没有功德？当然有啊，我们在室外放个风马骑，路边叼个石头风啥的，吹到那个上面都有功德。我们练肯定是有功德，但是清楚也不清楚，是100 倍的功德啊。然后有没有定力，就看你有没有用心了，有没有禅定力菩提心去修这个法，那就上万倍的功德了是不一样的啊。刚好就是今天是15 嘛，我们都会讲说哦，15 是上万的倍的功德啊，上亿倍的功德。那是什么呢？因为一个是天上有一批人，我们叫心痛，心痛就人呃呃欲借6天里面有一个是地方，就像我们人世间的这个这个呃财会一样啊，审计审计局啊，他们是专门天上的神仙的帮众生属英果的啊，他们是这个输入大数据库里面的这一批工作人员呢啊在比我们高一点的。天上遇见6天，其中一个我们的trample啊，就是你天天拿着俯卧柱，实际上是计数器在数的他们帮我们数，然后拿出什么呢？啊，实际上是我们自己的这个阿赖耶识面储存在里面的。到时候这这当我们面临死亡的时候，善恶两者就要较量，谁多谁少。我们佛经故事里面说哦，阎罗王说拿镜子来把里面的输入进去的那些功德跟罪过调出来看看就知道了。实际上是我们的阿赖耶识里面的，从直接从里面调出来了，大数据早就分类好了。所以我们现在讲我大数据啊，这个分类啊，这个什么哎呀，我好像都多了不起。您看看佛经里面呢，在两2500 600~500600年前，佛陀都已经讲的清清楚楚。就是我们那个时候不知道用什么词儿，所以用阿赖耶识么一个称呼啊，储藏的是啊。那么这这个罪里面的功德跟罪过就靠平常我们这样点点滴滴往里面输入啊，每次你们来孜孜不倦的上师来路途的遥远。所有的这一切，当你开始迈开大步往仓里斯这个方向来走的时候，你有这个念头的时候，你为这个做准备的所有一切功德啊。如果你再用菩提心的方式去做这件事情的话，那我们就是大圣金刚乘的功德。为什么称它为圣大？马车啊？乘乘是车的意思，马车为什么叫小乘？我把自己渡好，我帮一下你们，这叫。因为心态不是很大学的佛法是一样的，但是他心魔小了，我们称它为小乘佛教，它是所有佛教的基础大秤，是因为想到了众生呢，这个马车就变大了。那金刚乘你就像什么呢？火车一样了不只是要载人，还要快速急速的一起到达某某个活佛的地方。啊，所以我们就为什么经常讲说在同一个坛城下面，同一个师傅，哎，我们经常说到哦一师一法门本尊，很多上师哎，这个知识的上师呢，为什么就只有他一个法则？可以不是这个概念呢？我们的这个一个法就是刚刚阿迪夏尊者跟老他的师傅那个他的长长辈，我们的罗先人前山坡大医师的对话一样的罗先生见商铺大师的意思说，你可以都去学啊这个拍戏，每个按部就班的全好。阿迪夏顿的的意思说，要用诀窍妙法，当下受持所有的这种佛法的诀窍，而且追随同一个脉络，这样才能成功。啊，不能说蜻蜓点水，东边西边到处乱沾了。所以在你妈妈一个共同的一个坛城下面，你看我们头顶的这个上面中间是什么呢？莲花生大师的8个上师传的8个不同的法门，我们叫八大黑入干。嗯，其实就是奋斗这么的意思了。坛城啊是吧？那么中间因为有有个坛城是上师，所以9个图案圆圈那个形成一个图案。那周边是什么呢？莲花生大师传给我们的法门呢，观音法门呢是吧？还有什么普巴金刚法门呢？还有什么那个呃观音菩萨的愤怒像的那个呃码头国民王法了。所以我们宁玛巴一卖一法宁玛宁玛巴的宁玛法门。这个依法的所有的坛城，而这里面重中之重是什么呢？上师本尊空行3个上师就是我们现在在修的这个成品总局的法门嘛。那么短的，你们之之之前行的那个智慧烈焰，也是上师法门上师是谁。所有上师能够把佛陀的所有的妙佛法的妙法精华浓缩起来的。就那个最高的那个莲花生大师，然后离我们最近的是谁？我后面那个我的上师是吧？然后再下来就透过他们把用我们的嘴又传播给你们啊，所以这个就叫意思的意思说一根黄金线的传承下来啊是这么一个一个概念。而这样就是对我们来讲，成就就不需要走太多的弯路，直线走下去。就像我们现在的陈律师喇嘛师父们一样，你表面看他们在看部门，在那里编辑五部大论啊啊局社论啊，中观论呢是吧？然后然后这个呃不同的这音名学啦，各各个这这个都在辩论在学习。但是最终他们还是得跟我们一样，开始学大圆满前行，做5家刑啊，然后呢练1200000 的连续新奏闭关，在官方里面又做五算的家刑，然后修上师法门，修。我们这前天修的空行法门，修本尊法门啊，那我感觉起来我们好像比他们还跳跃过去了。因为我们不需要去红发尼森的，我们不需要维持佛教的辉命，让佛法能够健康的传承下去。他们要哎所以呢他们还在理论上面不停的在那里去探探讨在学学习。昨天晚上晚一点，你们下山的都看到还在每天的不停的辩论啊。呃但是我们呢就已经走到石修方面来了。他们里面有一部分叫做高年级班的，这个我们叫叫叫做呃蛮冈子的，就诀窍诀窍班的啊。他们里面的高年级班诀窍班在学什么？就在学你们现在学的这些大圆满的，嗯，是这么实用。当然呢我们是听听课，然后自己看看书，他们是听完以后要记在这里，然后来来实修啊。这个就为什么你一直告诉你们，你们要重复不停的看，重复不停的看。因为莲花生大师，特别是前面楞把大师啊，我们的施祖他们呢把这个佛法的精华一再又一再的把它捏捏好。浓缩菩提炼出来的最核心的精华，其实就是我们现在讲的融洽念头。就大圆满前行的它里面，你们不要老是看那个前行几个字，你要看龙铅精髓的这个字儿啊。前行的意思是，当你正行空行之前呢，这个都是要前面走的意思啊，所以他叫前行。他的诀窍在于他说那宁玛啊，龙树宁玛就是大圆满的精髓啊，这个才是他真正的名称呢。好多人都看到一个前行，以为啊这个是学前班的东西啊，还是幼儿幼儿幼幼儿园学生干事情啊，就像我们很多内内地的信徒哦，这个什么这个嗯学那个葛卢派的法门呢啊，菩提道菩提光轮，菩提道菩提广论研讨班，菩提道光轮学习班，菩提呃，菩提心，菩提光论读书会。你到给路派的寺庙里面去问问那些师傅们，他们在寺庙里面变经变了，23 10 年以后才有机会接触去学习。儒菩提个菩提道，菩提广论跟密宗道，此地广论呢。因为他们不是拿来当学术研究，是怎么运用到自己身心上面去实修的方法。不是，他们不懂，他们随便看都看得懂，讲也讲得出来，这是做不到的问题。而大圆满前行也是一样的。你说在座的各位看部门，谁拿个大圆满前行，他讲的头头是道，让他再讲讲23 年都没有问题。但是为什么到后面他们诀窍班的时候才真正去学习实修呢？是因为他们觉得这个要实修做得到才能算。所以呢这些重点的精华啊，我们一定要明白。所以藐视佛法对我们来讲其实是一个很可怕的事情。因为我经常给他的弟子们说，哦，师傅，你什么时候传正行给我们？我可以啊，我今天晚上我只要花5min到十分钟时间，我就可以传了。问题传了你有用，懂吗？没有用，因为在整个前行的每一个阶段里面都有在讲诀窍。我昨天不是说了吗？光一个金金刚萨埵百字明的一个徐修观想里面就把升旗赤地我们大圆满此地啊，是吧？然后那个器皿名典里面甚至三轮回空，让你融入空行的正诀窍的所有钱都在里面了。问题是没有人能够因为这个而悟啊，再也看我们禅宗里面的菩提，本尊是心魔非明镜台。本来我是我又何来惹尘埃，本来就是空行的诀窍了。从6岁以后，我们中国人都会被啊谁误因为这个而悟了。没有为什么？没有悟，但是能悟我们为什么不悟？就是因为我们没有业力啊，业障没有净化，光懂在这个文字上面口头禅定后抹嘴皮子，没有任何意义的，没有任何意义。最简单，大家想一想，我们的导师是谁呀？伟大的释迦牟尼佛，佛陀都要苦行6年呢？我们是谁呀？如果觉悟觉悟那么简单，伟大的佛陀还要花6年的苦心吗？莲花生大师一样啊，他苦心的时间比佛陀更长。是吧几10 年如一日最后他们财政务啊，所以呢我们一定要知道，就去按部就班的，一步一步照着我们现在所学到的诀窍方面去走就对了。佛法没有任何投机取巧的方法，有佛陀早就给我们传过了是吧？不孝那么多的经历，三大二17 界啊，呃七大二17 界32 啊，这27 间这么长时间的效业力，何苦？如果有一个就是放下屠菩提屠刀，立地能成佛的法佛早就传给我们了。他只是告诉我们，放下你的屠刀坛城，吃蚂蚁，然后呢潜心休息，消完业力，最后你总能够成佛。我们讲的放下屠刀立地成佛的这个故事是趋破魔喇嘛杀了九呃呃499 个人的那个嗯啊999 个人啊，最后准备杀佛，准备杀他母亲的那个啊，后来被佛调伏。他说世间人要调伏藏呢，用拳头跟武器，佛陀调伏藏怎么用软绵绵语言，就哎把佛陀用他的深深奥的妙法，就可以把我这个强硬的心调伏的软绵绵。这个是他的原话，归顺佛陀开始潜心修行，一辈子就在一个像窑洞一样的山洞里面呢，自修自己忏悔，晚年的时候成了独绝罗汉，独绝罗汉。另外一个名字叫辟之否独绝佛。所以为什么叫我们说放下屠刀立地成佛？就是这个人的故事，不是所有人都适合讲这个话。这个米拉热巴大师一样嘛，年轻的时候他还学学诅咒人家，杀死了他叔叔家一家人，对吧？啊，给人家下冰雹啊，这些都一辈子忏悔，一辈子修行，晚年成为大成就者。是这个意思，他不代表不需要硝烟。至于什么好多人需要经经历什么99 81 难，那些是神话故事那个孙悟空的那西游记编的东西。因为有的弟子在发信息问我这个事儿，所以顺便就解脱一下啊，可能你们将来也会遇到有人问这个问题啊，所以呢简单来讲啊，能够在这么殊胜，我们自己亲手在人间打造的莲花生大师的这个法生，呃报身佛身的殿里面呢，我们自己在这里修行。我们把我们人世间所有最美好的一切供养给呃释放诸佛菩萨，然后靠我们的虔诚心来持戒念经，甚至就每天都在念真实名经。文殊菩萨的真实名经呃，真实名经里面是玉眼莲花生大师是在佛陀在真实名经里面真实名经啊啊那里面是以国王的形象来来利益众生嘛。你们看到那句话念的，哎，我觉得我们的app多就可能37000000 ，3个前这个中文我也不太编译的起来啊，释迦牟尼佛亲自预言的，我将来会化成一个国王啊，用传密法的方式，用国王的身体来传播佛法，给浊世的众生。就在这个真实名经，我们每天都在念的里面，佛陀受祭了，莲花生大师将降临。这个瞬间呢。二所以呢我们有机有幸呢成为他佛陀自己亲自预言的莲花生大师的弟子。然后透过我们这种虔诚心魔们，又搭造了这么舒适的殿堂，然后更舒适的。你看大家这这前几天都看到了，我们喇嘛袖在绑上面的飘带的时候，发现脸师手上拿的长寿宝瓶下面一只牛肝露水啊，不是一点的一大堆啊，我们今天就把它倒在那个呃甘甘露水里面呢，把它放在里面。等会儿喇嘛师父会请你们每个人都品品一点加持我浊世时代啊，我们念这个年年年诗的这这个呃极乐这个命运的渠道文里面，他不是讲了好几个地方吗？一个是联系在浊世里面，他以佑师佛，巴佛的形象出现了。所以你看这些甘露啊，我们毫无怀疑的就知道它对我们这些浊世之终身的需要宵夜，身体的疾病，心魔的疾病以联是要师的形象出现来加持我们，要不然哪里来这样的东西是吧？大家不要小看这样一个莲师像啊，里面帘是自己的，自己亲自用过的佛珠，他的衣服，他的头发啊，他的法器都供奉在里面了。这个没有夹持，你哪有夹持你旁边的一些作家，2位佛母里面供奉着他们2位的头发，嗯，功夫在里面。那在佛陀的这个舍利子啊，这就更是了。然后你们再看一看我们这个莲花生大师的这个右手这个地方啊，有跟其他电视不一样。这是什么呢？有是念师财神的。嗯，他一定会给我们这种浊世的时候，我我们这些虔诚的弟子绝对会带来我们所需要的粗暴的。嗯，所以这个主要还是要看我们自己的前行性康定的，虽然多人很很觉得很像，哎，你们张律师的脸是右边的时候，这个怎么会这个地方怎么会有个模拟保证呢？我说这时候老上师以前预言的让夹趴夹趴这个地方的人来给我塑造莲师像。结果他们来的时候发现这个地方多了一个母女堡。哦，原来是莲师财神的隐藏在那里面。哎，所以他这个是输肾的源源头。呃，中英当中啊，我们人死亡的时候，中英当中会特别恐惧。因为我们的这个四大要要离开分解。然后随着我们的四大身体的水啊，土啊风啊这些呃热量的分解啊，会看到很多恐怖的景象。包括我们被一辈子造的一些恶业障后，会有很低狱的喽啰啊等等。那妖魔鬼怪的形象出现会恐吓，我们甚至看到这些不同的身体分解出来的光啊，这些时候我们会产生恐惧啊，这个时候就需要旁边有人师兄姐住院的话，他能够告诉我们现在出现的这些情况。实际上你就直接可以观一下，是佛菩萨的啊，中阴百尊的形象啊，佛菩萨的形象啊，八大菩萨的形象啊，前面让诸佛菩萨引导你走后面这些呃诸佛啊呃空行门嘛，空行就是永福永母，就是男众菩萨。女众菩萨们在后面陪伴着你走，让我们平常修的这些护法门呢，帮你被驱驱魔呃，去除这些伤害你的模模型，然后让我们能够很心很稳的不堕落到三恶道或者是这6道里面去啊，甚至想投胎作为人的时候都帮你把它堵住。然后里面还有我们这个唐王伽博大师的那个文庙心魔，里面的有这个呃读6道的那个6字大明咒的那个修行方法门。我们有两个6字大明咒的这个修行方法，一个是极速驾驶前行送那个另外一个就是6字大明6字真言及那个。因为里面都很清楚的，每一个欧阿欧啊，欧曼那边霓红方光的时候堵住哪一个道的地狱恶鬼出身道这些门呢。所以对我们来讲是一个修法当中非常好的。在这正确啊，就是喇嘛师父们每次去做操度的的之之前的，在往往者者边边上师的那我们也不太可能，就是说每次都请到喇嘛师父到旁边助练。那么既然你们要助念的话，我们就把这个口传给。大家以后呢，那么密法就是这样了，要么就要功德，要么就要口传得到了。这个以后就是我们就得到真传了，所以我们是可以实修的。所以呢精进谋一轨，我们经常讲说这个中阴百尊，中阴百尊，实际上它是什么呢？这个几进啊42 尊愤怒58 尊呢啊这些是出自男人呢，其实就是我们心平常火药的大脑，跟我们心脏里面的这些我们的这思绪啊净化以后，它就叫中阴百尊了。他们主尊是神金刚乘沙狗跟那个菩萨奥图来佛。然后在他们的这种带领之下，让我们身体里面的这些善的念头全部转换成佛。菩萨的形象，然后来帮助我们消除恐惧。面面对中印的这种恐惧的时候，由他来他们来引导我们走向解脱的道路。那包括你们现在现在看到的这些呃，我们叫王生贝，实际上就见即解脱陀罗尼咒语。我们上上师做的这这个呢非常如法的，然后把它盖在呃往生者的身体，让那个皱纹对着他。因为平常你们是哪里？你看我们粮食店的正面的极端门上面，然后在这呃呃南面，然后北北北北面这这个地方，我们是放在那那个你们精进门的头顶，就是你们从下面经过的时候，透过它来假持你们。那是有的什么呢？就是全部大画画网里面的间谍解脱金，以及呢这个中英本尊的剑级解脱金的这些咒语等等。那么这这个推广喇嘛是法门念经假持，然后包括你看那个金刚砂每年的金刚砂都法门多少次，多少喇嘛，师父放在坛城里面加持，或者头上撒一撒，业障很很容易把我们消掉。那2张纸是用来干嘛的呢？主要是因为你出殡的时候，可能会有冲到煞了，或者是气不对了，方法不对了。然后你们很多时候用送火葬场，可能这个时间又不一定。对，那你也没办法选择的时候呢，这两那纸就起起那个效果了，就破灾的效果啊，破灾的效果就把它放在放在身上。一个是放在头上这枕头上面，一个是放在屁股下面的嘛啊这个就放在那儿，这说就都有很大的帮助啊。这个那我们再脏去呢，以前就是用用纸张，用完以后就直接放在这个防生者的胸部。这样啊，你们平常看能把现在这个这个整个一个被子这样去套去，其实挺好的啊。所以这些呢就是密法的善巧了见即解脱，触即解脱，长期解脱。那么是什么呢？看到就能够让你得到佛菩萨的加持，咒人的加持嘛，这个是上面的文字，然后促使又让他接助你的身体，让你从此以后呢宵夜能够解脱。那肠是什么呢？像甘露丸呢，包括金刚砂，这些都是让你正感受到以后起码你让你的恶业障成熟嘛，恶业障要先成熟是吧？我们起码没有把恶业消干净，起码让我们的善报先成熟。这样的话有我们下一次投胎到更好的一个修行的环境。比如像来昌林寺投胎，投胎到这里，面生人坐在这里修行。我们没有办法，立马人物王上莲花生大师净土，阿弥陀佛，净土能去。当然最好大家第一发现肯定是要去那边的。但如果再也不能去那边的话，起码投胎做一个好的出家的人嘛，这是绝对有可能的。我们不是一直在讲嘛，1957 年的我57 年还是58 年的时候，曾那是那个老老呃我们的那个现在讲的那个老庙那个地方啊，重建了一次，重建完以后在二楼啊，做大灰共修一楼，做大灰共。我外公是当时的大功德主，呃，他是成立社的首席大管家。他们当时用他们经商啊，就像你们现在，其实他们那个时候扮演的角色是他们算是瑜伽室。对，就是半修行人办生意人。我外公是是商人，然后他他们几个去筹了很多的资金的，做了100000 大回供是什么意思呢？我们看到用糍粑里面要加酥油奶渣，红糖啊，这么大一坨一坨的那个贡品呢做了100000 个100000 个来供佛。所以后来也因为这个他他死在监狱里面嘛，说浪费人民的血汗嘛。啊，这是这这是他们的这个自己经商的得来的财富买的啊。但也许可能呢他那个时候也功德回向了一点点，他未来的顺子我吧啊所以我的福报也是比较好的。呵呵那个然后呢那个这个当时啊做完这个会跟我我我自我们一直在讲这个故事嘛，就在那个老庙二楼，就是我们经常说以前行上师住住的的那个地方，那个小房间里面的当时条件不是很好，所以呢请来的高僧大德全部在那里打地铺啊，没办法有谁。那就是当时本尊市最有名的一个大堪布，叫做你叫叫堪布。然后呢，这个我们昌林市的嘎头最有名的堪布，叫叫玻利堪布。然后呢这个呃一个修宁特的格鲁派的大哥西叫做高维格西。反正很多还有嗯嗯那个我们这边那个堪布，他们家家里的，以前那个苏工呃，主要特别看薄，经常活佛脚啊，出来出来堪布都是。当时你们把各教派以及各陆派里面赫赫有名的大师们在这里做会工沙拉师傅的爸爸是他们的随从，就是小跟班儿在那里做做做大。这就是跑前跑跑后的最年轻的，他也是大鱼加蛇，但是他是年纪最小，当时大家就这在做完会共修，就大家很欢喜啊，功德也回向了。然后呢，就是这个休宁特的格鲁派的大歌星，他是他就突然讲说，哎，师兄们高兴的事情已经结束了，大家应该收敛一下了。下面可是劫难要来了，大家都知道的很快，这这一切都都都不会有太久了，无偿到来了。现在我们要做的是不是说高兴，而是要发愿了以后怎么办？他说他大大家坐在那以后，他说那这样吧，生死自在的人都先走啊，劫难来这些都死了。算了啊，都不要待在这个地方啊。然后他说他们商量说，那将来啊这个重新这个劫难结束以后呢，这个嘉隆藏区的佛法的星星之火将会从苍烈式点燃第一盏火，由有能力会把这个火苗送往各地。所以呢师兄们啊，我们现在就好好发愿，他说我们这都都走都走走了以后呢，等开始可以那个传继续传播佛法，弘扬佛法的时候，我们再投胎过来啊，当时是这样发愿的，他们这样发愿以后，让也让下面的老百姓说都发愿，说无偿要来了。你想呢那个时候文革还没开始比苹果早很多。1959 年他们最后玩的时候是59 年，文革68 年才开始。好，就那时之后慢慢慢慢就大家就陆陆续续都那盘了，只剩下一个人3345 的爸爸。因为当时最年轻嘛，他他就挨了一对批斗啊，可能当时功夫还没有那么深呢啊可是他留下来是有意义的。他是当时最年轻的睡在那个那个老老庙的门口的啊，其他高校都是在里面，然后就这样就文革结束了嘛。然后1979 年的时候，我们就把陈林是那个，因为文革的时候，他把上面都拆了，墙体都在，我们就把它老喇嘛就把它恢复起来。我们小不点在边边上点点小杂物，这样面面堪布啊，这个呃等喇喇嘛又说我们就要算比较大的上师康波。我们在那边阿加索啊，你在那个打杂帮忙，嗯，他做不了什么事，太小了，然后慢慢慢慢就就就那你就到了19 那个82 年的时候，我们就很多就开始当小喇嘛了学藏文的小当小喇嘛啊，那年班禅大师也来了。10 月份的时候，我们连袈裟都不会穿的，没穿过袈裟，我还记得我的袈裟是我爷爷帮我穿的，然后穿的是谁呢？我爷爷叔叔，我们寺庙一个在西藏修行回来的一个老歌西的衣服啊，你82 年我多大？那个老老老老喇嘛的衣服，我裙子我穿在身上，穿完以后把另外一半往下放下去。人家都说你穿两个裙子干什么，还要一高一低的，你没有啊，哪来没有嘛？没有没有，所以就只能那样穿。好在呃那个p g r那个里面这个这个我他们留下了清代时候的几个很豪华的东西啊，这真的是那种既恰金，是那种豪华的，又留下来，那衣服都很好。我还记得那个披的那个披单呢，是那个古代西藏贵族们用的羊绒，就是那个我们现在讲藏羚羊的羊绒，那种披肩一个披肩的。我拍披的那个你喇嘛里面，我是穿的最豪华的那个。然后班禅大师看到我们一群小喇嘛高兴的大师，开心的不得了。因为今天很少看到那些年轻喇嘛王者是82 年的。10 月份当时讲在马尔康讲了两两天的经摸底呢，这常律师负责搞接待。然后但我们也听不懂大师在说什么。后来听说他跟我们那些年长的人说，好好培养这些小喇嘛，让他们将来成才了啊。就当时这句话到了年底的呃呃，这时候这个差不多12 月份的时候，我们寺庙的老喇嘛就开始商量了。这一群里有44 50 个人呢，40 几个人嘛。如果我们只是教他们这些念经啊，持咒啊，打手印敲锣打鼓，这佛法精通很难呢，应该给他们找个老师才对啊。然后这个时候桑上师我的爸爸就出面了。这个我有办法，我去找一个我熟悉的人是我们权杖区宁玛巴里面目前最资深的大干部。听说最近到金金川那个阿克里桑桑室里面见他的师兄啊，我去那我去那边找找他，看他愿不愿意过来啊。然后呢，大家都说好好好，他说我一个人去不了，你要你们要找个人陪我一起去，他们就选了我舅舅，是我们的佛学老师。他说那个丹坡陪你去，他们两个就去去见老上师，好像是满口答应，说没有问题啊。过了春节以后我就过来啊，结果呢就是呃3月底的时候，老上师局来了，83 年了，就在这个昌林寺老寺庙下面那个那个地方，你就现现在我我们基本在你们吃饭往上一点点，那个地方好上，师从那边骑马过来，我们所有的还飘着雪。你像张旭的那4月份的呃，3月底4月份的时候还漂着选。我记得老上师，老上师马上还披了袈裟，黄色的袈裟好魁梧。你想劳桑桑是250 60 斤装，还骑着白马，然后戴一个什么德国的金丝边眼镜啊。他一个他一个师弟从德国回来，给他带了一副眼镜回来啊，水晶的嗯嚯金光闪闪的呢，呃然后就飘点小雪，我们在路上，然后就一看到我们老上师从马背上下来很灵活。呃，他我们寺庙的好多那个这个居士啦，喇嘛们陪他一起上山嘛。我们是在山上见我下去以后，我们拿哈拿去线，然后他就用他的头碰碰我们头梆当一下，看看不是我这个有那个碰完头，我立马把头抬起来，结果看到的时候老上师还头还这样往一看，整个后脑勺全部没有头发。第一次看到秃头的，我之前没看过秃头的，所以我一直以为堪布就是说头没有头发的，不过现在看起来好像也迷演了阿根堪布也没有头发，只能堪布也没有头发。你看好多堪布都没有头发了啊，那是老上师的真传呢。你像我们有头发的，就没有得到太大的增长了。哼就在这里，就就就在老庙里面呢，我们是在边上的那个废墟里面搭棚子。老上师讲了快两个月的，有观观音菩萨，阿里顶江大大圆满。那些我们前面就讲了不说了，这里就是他做大礼拜的地方，这样才慢慢慢慢的。唉，让我们每天晚上就是跟老老上师叔，爸爸每天都给我们我们讲大圆满前行啊，这也听不懂啊，他用加庭语讲，我们也听不懂。因为佛法概念没有概念，老上师受游牧民族语言根本听不懂，反正就每天都傻傻的全部盯着老上师看。两2~3个小时，一只嘴巴一张一合，一只巴一喝一会儿。就他那个讲到最兴奋的时候，他突然就像吃那个好吃的东西啊，啪嗒一下一个弹头，觉得哇这么好吃啊，他这也搞不清楚啊，蒋欣就是这样，老上师蒋金原来都是那种在吃美食一样，一会儿啪嗒一下一口，他掐一下嘴啊。然后就晚上有一天晚上我们在就那个报关证见，包括最近呢我们在里面练练那个，结果天已经黑黑了，没有灯光满山上。嗯，结果呢这老上师突然自己就悄悄的来了。这个是后来我师兄别老师兄跟我讲的，他说你们的小朋友的鞋子在庙门口啊，整个排的满满的。他说我正准备从上面跨过去的时候，楼上师坐后楼这个背面衣服直接把我往外拽出去了。他说你干什么了？你没有看到这里全都是在传说，人家发愿的那些都回来了。你现在要把这个鞋放边儿上，我才敢从上面过去。老上师当然谦虚啊，对吧？嗯，所以白罗师兄那个时候就说奇了怪了，一群连语言都不懂，讲鬼话的人，他一直把我们加入，一说是鬼话啊，这感觉是鬼的语言了，因为他自己也听不懂。所以一群讲鬼话的人，老上师花那么多的心魔，你们调皮捣蛋他也开心，你们用心学习，他也开心，你们打架都他也开心啊。嗯阿根堪布有次努力的在那里学习学习学习。然后那个11 个师兄一天到晚去逗他，然后他说不要逗你这样这正行行，那个人就一直不听那个阿根堪布，所以说这样啪一下给他一个耳光。嗯，然后呢那个人就跑到老上师那边去告状，说师傅那个啊阿根打我了。师，不是说你说什么，他说阿根打我了，哈哈哈，阿根会打人的，他说太好了，他说他还有生气的机会时间呢，所以大家觉得不可思议，我也是要调皮捣蛋那个一直但是老上师就从来不不醉的。但不过呢，大师兄可是管得严呢啊啊随时都盯着你就是，真的就是在盯着你，随时准备揍你呢。所以贝罗师兄说一次不得其解，说一群这么调皮捣蛋，然后拨电话。然后呢，为什么师傅看你们就是好像就每次你们干什么事情都是对的，好像你们身上没有错误，那么多游牧民族的信徒，那么多会听得懂他语言的人跟着他学习，他全部精力用在你们这些讲鬼话的身上。他说到了现在，我终于明白了，所有师傅的弟子里面除了2位师兄啊，3位师兄啊，扎西活佛，扎西大干部跟那个这个说家师兄以外全是加绒的。就倡联斯的周活佛裤子，他们的也全是加绒的。所以他说现在终于明白为什么事故，当时看你们是因为他最近神通看到你们的将来。所以所有的这这一切呢是真的是不可思议的力量。那个时候看不懂。包克斯，我昨天说每一个月都做1~2次会工，那我们就觉得哎呀这么也就这么一点点东西，为什么每次都要做会工来把它用完？有一点点不是更好吗？是不是我不需要，但是将来你们需要啊，所以你看所有的这些，我们是他的徒子徒孙，只有我们自己有钱真心的各位。虔诚心，只要有虔诚心，魔佛菩萨的假持戒，上师加持，戒永远都在我们身上。你人是用他身上流出这样干乱的方式告诉我们，上一次上一回是我们大连市要完工的时候，天降牛奶啊，大家都看到那个照片了啊，我喝了喝了好多的，还收藏了好多瓶，味道呢，有点像那个养乐多的感觉啊。对对对，有点像他们啊，我们去藏语里面叫做什么呢？卢士，这个那就呃红白红呃百甘露，红白菩提，红白甘露，上一次是白菩提是吧？这次是红甘露，那天我也尝了一下，还有点像蜂蜜啊。那我们将来会把这些拿来做一个袁思聪这样的方式告诉我们，实际上他的假持戒无处不在啊，所以呢希望都能够保佑我们在这个浑浊的时代，通过自己对虔诚心魔事的祈祷，让联事的加持也融入我们每个人的心魔。让我们外在破除我们活在人世间当中的一切。外围的障碍经济上面呢人人情事故方面呢天灾人祸啦，冰刀结啦，疾病啊等等内在能够调伏。我们最大的病就是我们的坛城吃蚂蚁对吧？有天能够让我们自己清洁。莲师能够让粮食粮食持戒，就像他的嗡阿轰红白这种沟独白马斯帝红里面的舍得烘一样，能够他的一切的成就融入我们身体里面，我们也跟他一样能够成就啊，所以就祝福大家，大家都能健康平安。
+2025-05-18 22:02:09,400 - INFO - Client Event: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 22:02:09,400 - INFO - Client Event: [调试] 文本结果文件已关闭
+2025-05-18 22:02:09,400 - INFO - Client Event: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 22:02:09,430 - INFO - Client Event: [DEBUG] JSON result file written and closed
+2025-05-18 22:02:10,135 - INFO - Server Response: Processing Completed
+2025-05-18 22:02:10,154 - INFO - Server Response: Namespace: (host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250512-上师-莲师殿开示/250512-上师-莲师殿开示-1080.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 22:02:10,154 - INFO - Server Response: Processing Completed
+2025-05-18 22:02:10,163 - INFO - Task Success: File 250512-上师-莲师殿开示-1080.wav recognition completed.
+2025-05-18 22:04:20,836 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 22:04:20,839 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:04:32,663 - INFO - System Event: Switched to English interface
+2025-05-18 22:04:32,668 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:04:40,501 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 22:04:40,504 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:04:51,819 - INFO - 系统事件: 应用程序关闭
+2025-05-18 22:04:51,820 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:05:04,391 - INFO - 系统事件: 应用程序初始化
+2025-05-18 22:05:04,391 - INFO - 系统事件: 应用程序初始化
+2025-05-18 22:05:04,416 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:05:04,417 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 22:05:08,945 - INFO - 用户操作: 未选择文件
+2025-05-18 22:05:09,520 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 22:05:09,535 - INFO - 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 22:05:09,609 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 22:05:11,619 - INFO - 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 22:05:11,619 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 22:05:18,289 - INFO - 用户操作: 已选择文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:05:19,165 - INFO - 用户操作: 开始识别音频/视频文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:05:19,172 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:05:19,172 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 22:05:19,459 - INFO - 客户端事件: [指令] 发送WebSocket配置: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 22:05:19,460 - INFO - 服务器响应: 上传进度: 0%
+2025-05-18 22:05:19,470 - INFO - 服务器响应: 上传进度: 10%
+2025-05-18 22:05:19,478 - INFO - 服务器响应: 上传进度: 20%
+2025-05-18 22:05:19,503 - INFO - 服务器响应: 上传进度: 30%
+2025-05-18 22:05:19,505 - INFO - 服务器响应: 上传进度: 40%
+2025-05-18 22:05:19,513 - INFO - 服务器响应: 上传进度: 50%
+2025-05-18 22:05:19,523 - INFO - 服务器响应: 上传进度: 60%
+2025-05-18 22:05:19,534 - INFO - 服务器响应: 上传进度: 70%
+2025-05-18 22:05:19,545 - INFO - 服务器响应: 上传进度: 80%
+2025-05-18 22:05:19,556 - INFO - 服务器响应: 上传进度: 90%
+2025-05-18 22:05:19,565 - INFO - 服务器响应: 上传进度: 100%
+2025-05-18 22:05:19,565 - INFO - 客户端事件: [指令] 发送WebSocket配置: {"is_speaking": false}
+2025-05-18 22:05:46,778 - INFO - 服务器响应: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 22:05:46,906 - INFO - 服务器响应: 命名空间: (host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 22:05:46,907 - INFO - 服务器响应: 处理完成
+2025-05-18 22:05:46,916 - INFO - 任务成功: 文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav 识别完成。
+2025-05-18 22:05:52,938 - INFO - System Event: Switched to English interface
+2025-05-18 22:05:52,942 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:05:55,968 - INFO - User Action: Attempting to connect to server: 100.100.167.50:10095 (SSL: enabled)
+2025-05-18 22:05:55,980 - INFO - Attempting WebSocket connection to: wss://100.100.167.50:10095
+2025-05-18 22:05:56,027 - INFO - System Event: WebSocket connected and test message sent
+2025-05-18 22:05:58,033 - INFO - No response received from WebSocket server within timeout, but connection established
+2025-05-18 22:05:58,033 - INFO - System Event: WebSocket connection test successful
+2025-05-18 22:06:01,999 - INFO - User Action: Starting recognition for audio/video file: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:06:02,001 - INFO - Task Start: Recognizing file 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:06:02,001 - INFO - Recognition results will be saved in: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 22:06:02,712 - INFO - Client Event: [调试] 使用SSL连接
+2025-05-18 22:06:02,725 - INFO - Client Event: [调试] 连接到 wss://100.100.167.50:10095
+2025-05-18 22:06:02,753 - INFO - Client Event: [调试] 连接已建立
+2025-05-18 22:06:02,753 - INFO - Client Event: [调试] 处理文件数: 1
+2025-05-18 22:06:02,753 - INFO - Client Event: [调试] 处理文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:06:02,753 - INFO - Client Event: [调试] 文件大小: 25.96MB
+2025-05-18 22:06:02,759 - INFO - Client Event: [调试] 已读取WAV文件，采样率: 16000, 大小: 25.95MB
+2025-05-18 22:06:02,760 - INFO - Client Event: [调试] 分块数: 416, 每块大小: 64.00KB (注：offline模式下stride值仅用于分块，不影响协议)
+2025-05-18 22:06:02,760 - INFO - Client Event: [Instruction] Sent WebSocket config: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 22:06:02,760 - INFO - Server Response: Upload Progress: 0%
+2025-05-18 22:06:02,760 - INFO - Client Event: [DEBUG] Waiting for messages...
+2025-05-18 22:06:02,779 - INFO - Server Response: Upload Progress: 10%
+2025-05-18 22:06:02,810 - INFO - Server Response: Upload Progress: 20%
+2025-05-18 22:06:02,817 - INFO - Server Response: Upload Progress: 30%
+2025-05-18 22:06:02,827 - INFO - Server Response: Upload Progress: 40%
+2025-05-18 22:06:02,838 - INFO - Server Response: Upload Progress: 50%
+2025-05-18 22:06:02,848 - INFO - Server Response: Upload Progress: 60%
+2025-05-18 22:06:02,883 - INFO - Server Response: Upload Progress: 70%
+2025-05-18 22:06:02,945 - INFO - Server Response: Upload Progress: 80%
+2025-05-18 22:06:02,976 - INFO - Server Response: Upload Progress: 90%
+2025-05-18 22:06:03,006 - INFO - Server Response: Upload Progress: 100%
+2025-05-18 22:06:03,006 - INFO - Client Event: [Instruction] Sent WebSocket config: {"is_speaking": false}
+2025-05-18 22:06:03,006 - INFO - Server Response: Processing Completed
+2025-05-18 22:06:30,630 - INFO - Client Event: [调试] 已接收消息，大小: 0.14MB
+2025-05-18 22:06:30,633 - INFO - Client Event: [调试] 离线模式收到非空文本，识别完成
+2025-05-18 22:06:30,634 - INFO - Server Response: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 22:06:30,634 - INFO - Client Event: [调试] 收到结束标志或完整结果，退出消息循环
+2025-05-18 22:06:30,634 - INFO - Client Event: [调试] 文本结果文件已关闭
+2025-05-18 22:06:30,634 - INFO - Client Event: [调试] 尝试写入JSON结果文件，包含 1 条记录
+2025-05-18 22:06:30,641 - INFO - Client Event: [DEBUG] JSON result file written and closed
+2025-05-18 22:06:31,209 - INFO - Server Response: Processing Completed
+2025-05-18 22:06:31,267 - INFO - Server Response: Namespace: (host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 22:06:31,267 - INFO - Server Response: Processing Completed
+2025-05-18 22:06:31,276 - INFO - Task Success: File 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav recognition completed.
+2025-05-18 22:06:57,596 - INFO - System Event: Application closing
+2025-05-18 22:06:57,598 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:18:05,324 - INFO - 系统事件: 应用程序初始化
+2025-05-18 22:18:05,324 - INFO - 系统事件: 应用程序初始化
+2025-05-18 22:18:05,348 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:18:05,349 - INFO - System Event: Checking required dependencies
+2025-05-18 22:18:07,813 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 22:18:07,817 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:18:09,508 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 22:18:09,523 - INFO - 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 22:18:09,547 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 22:18:11,552 - INFO - 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 22:18:11,552 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 22:18:15,758 - INFO - 用户操作: 已选择文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:18:16,807 - INFO - 用户操作: 开始识别音频/视频文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:18:16,830 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:18:16,831 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 22:18:16,938 - ERROR - 任务失败: 文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav 识别出错。返回码: 2
+2025-05-18 22:18:16,938 - ERROR - 子进程错误输出:
+usage: simple_funasr_client.py [-h] [--host HOST] [--port PORT]
+                               [--chunk_size CHUNK_SIZE]
+                               [--chunk_interval CHUNK_INTERVAL]
+                               [--hotword HOTWORD] --audio_in AUDIO_IN
+                               [--audio_fs AUDIO_FS] [--send_without_sleep]
+                               [--thread_num THREAD_NUM]
+                               [--words_max_print WORDS_MAX_PRINT]
+                               [--output_dir OUTPUT_DIR] [--ssl SSL]
+                               [--use_itn USE_ITN] [--no-itn] [--no-ssl]
+                               [--mode MODE]
+simple_funasr_client.py: error: unrecognized arguments: --upload_step 5
+2025-05-18 22:18:44,357 - INFO - 系统事件: 应用程序关闭
+2025-05-18 22:18:44,358 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:19:15,738 - INFO - 系统事件: 应用程序初始化
+2025-05-18 22:19:15,738 - INFO - 系统事件: 应用程序初始化
+2025-05-18 22:19:15,764 - INFO - 系统事件: 配置文件已加载: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:19:15,765 - INFO - 系统事件: 开始检查必要的依赖
+2025-05-18 22:19:17,707 - INFO - 用户操作: 尝试连接服务器: 100.100.167.50:10095 (SSL: 启用)
+2025-05-18 22:19:17,721 - INFO - 尝试WebSocket连接到: wss://100.100.167.50:10095
+2025-05-18 22:19:17,743 - INFO - 系统事件: WebSocket已连接并发送测试消息
+2025-05-18 22:19:19,754 - INFO - 未在超时时间内收到WebSocket服务器响应，但连接已建立
+2025-05-18 22:19:19,754 - INFO - 系统事件: WebSocket连接测试成功
+2025-05-18 22:19:23,274 - INFO - 用户操作: 已选择文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:19:23,993 - INFO - 用户操作: 开始识别音频/视频文件: C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:19:23,994 - INFO - 任务开始: 正在识别文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav
+2025-05-18 22:19:23,994 - INFO - 识别结果将保存在: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\results
+2025-05-18 22:19:24,308 - INFO - 客户端事件: [指令] 发送WebSocket配置: {"mode": "offline", "audio_fs": 16000, "wav_name": "250514-\u4e0a\u5e08\u5173\u4e8e\u300a\u90ac\u91d1\u83b2\u5e08\u7948\u7977\u6587-\u610f\u4e50\u4efb\u8fd0\u81ea\u6210\u300b\u5f00\u793a.wav", "wav_format": "pcm", "is_speaking": true, "hotwords": "", "itn": true}
+2025-05-18 22:19:24,308 - INFO - 服务器响应: 上传进度: 0%
+2025-05-18 22:19:24,322 - INFO - 服务器响应: 上传进度: 10%
+2025-05-18 22:19:24,338 - INFO - 服务器响应: 上传进度: 20%
+2025-05-18 22:19:24,359 - INFO - 服务器响应: 上传进度: 30%
+2025-05-18 22:19:24,366 - INFO - 服务器响应: 上传进度: 40%
+2025-05-18 22:19:24,408 - INFO - 服务器响应: 上传进度: 50%
+2025-05-18 22:19:24,434 - INFO - 服务器响应: 上传进度: 60%
+2025-05-18 22:19:24,485 - INFO - 服务器响应: 上传进度: 70%
+2025-05-18 22:19:24,496 - INFO - 服务器响应: 上传进度: 80%
+2025-05-18 22:19:24,501 - INFO - 服务器响应: 上传进度: 90%
+2025-05-18 22:19:24,513 - INFO - 服务器响应: 上传进度: 100%
+2025-05-18 22:19:24,513 - INFO - 客户端事件: [指令] 发送WebSocket配置: {"is_speaking": false}
+2025-05-18 22:19:51,425 - INFO - 服务器响应: 识别结果: 啊，这个我今年时期，请问医疗人员存这个自成就啊，这这个法门呢是莲花生大师亲自护葬。然后为了浊世的众生呢，有大伏藏师珍珠单独机大师，让珍珠单独机大师服装部服装的里面呢卡图式的那个湿度的模型。19 大师也增加了碳伏藏的视距。曼莲花生大师。为了这个所有的那个申诉，一切友情终生呢，在浊世来临的时候，特别是呃瘟疫蔓延呢，瘟疫蔓蔓延以及呢战争啊灾难啊，水火冲突的时候的灾难降临的这个浊世的时候呢，特别是红石啊等等。然后呢，有形的这个人之间的彼人与人之间的彼此的伤害啊，铁大自然的伤害，无形当中的自己的烦恼的伤害等等。为了这从来解脱了，年年是一大慈悲。然后希希望我们毋庸置疑的一心的恋爱，这个呢也跟他祈祷，将会得到年时的无上的加持戒。所以呢能够破破除所有的这个呃灾难啊，灾祸啊等等。所以呢莲花生大师呢有自己用很呃这个作为一个呃莲呃莲花吉祥铜色山莲莲花光宫殿的宫殿殿的这个所有上师门总总集尊，就是说历代所传承上师门总集尊的莲花生大师时当五浊世事来临的时候呢，希望莲花生大师你的悲悯的八慈悲催催。呃，这慈悲悯呢是我们所有的众生呢，让我们追随你能能够你能够随时随刻都想到我们。然后在我们头顶的这个莲花的呃呃呃上面的日月的轮轮上面呢，作者呃这个无上的大宝莲花生大师，然后呢所有传承的上师们呢，在你的左边呢围绕着将你的眷属围绕着你的周边呢那么前行。莲花生大师呢希望能够消除我们所有的那那身口意所有的一切的业力啊，然后给予我们呢娱乐人运的成成就的这个加持。小年是加持我们，然后呢莲花生大师以他不同的形象的方式告诉我们在东方啊达拉国系这个宫殿中啊，他年世呢这个时候成了药师佛啊，就是药药师佛的佛中的五金。莲花生大师呢周边围绕着药师八佛以及所有他的慈悲眷说呢我们跟他这个时候祈祷呢，能够消除我们各种现在着实时候的不同的这种产生的这些病啊，不同的病变磨难啊，病变的磨难。所以呢希望能和一个人员从我们一直这个加持。那么在燃烧的火焰的这个供电中，供电中呢，一旦听到燃烧这个字，我们就知道台经就是愤怒像了。刚才是上师，现在就正行进入本尊了。所以呢就以呃千出黑路杆，也就是呃佛陀的这个愤怒像啊呃佛陀的这个愤怒像的形形象出现做边呢。那当然我们就知道这个呃大多数来的愤怒像就就叫做呃医学呃这个尊医学尊啊嗯这个愤愤怒尊那么勇猛的本尊父母啊，呃那就是以中英本尊呢几近呃42 尊呃，勇猛呢就是呃呃50 呃58 寸呢对58 尊等等来围绕他。啊。也就是说他他以这个2年是以愤怒的这个本尊的形象出现的周边围绕都是所有的这些本尊的法门。门法本尊的这个这些婆菩萨们呢，希望能够给予我们呢成成就的呃加持啊，成就的加持，让我们所心魔的所有的一切能够成就是吧？然后这个是刚才前面是上师，现在是本尊了。那接下来就是空行在空行清净度，呃，这个光芒就是5个五，我也我也五色的光芒啊。五色，我们大家都知道嘛，中央大日如来的颜色是蓝色的，东方是阿楚，活佛是白色的。然后呃保身佛是黄色的，阿弥陀佛是红宝石里的颜色，然后呢不空陈酒，佛是绿色的。那么这个五色的光芒的这个宫殿中呢，呃连是以空行主尊的这个呃坐在那儿啊空行的主尊。那么我们一般听到空行，大家就是以为空行只是女众，实际上不是的呃，用户也的呃永母空行与空心魔。那么这是指修行密法成就的这些呃菩萨们，那么难种叫做呃空空行妇女种叫空行母，统称叫空行。所以呢很多时候我们听到空行卷书，重围绕的时候，很多人以为说你要是周边围绕着一大堆女人的菩萨，实际上不是这个意思，是男众女众都有就靠密法成就的这些按照我们贤中的讲法叫做菩萨。在密法里面它也就称为什么呢？就是说呃成名者或者是说空行用户，这这个就是他的名称的公信眷属中要提醒他们呃呃，做什么呢？就是消除我们内外的一些障碍。那内外障碍。那我们当然了，外障碍现在是呃国家与国家之间的战争啊，呃区域的不平衡啊，经济的战争呢哦这个文化的呃纷争啊，宗教的战争纷争啊，然后呢有什么的水灾啦，火灾啦呃天灾，特别是我们现在所谓的战争到冰刀劫嘛，冰刀的劫难啊等等。所以我们的这些战争呢希望外在消除这一切，内在呢最大的敌人，最大的呃烦恼，还是我们自己的那个贪嗔恨马移。所以希望能够因为这些而产生出来的一些障碍的吸小于法界当中啊，所以呢一乐人员呃自称此加持，就是希望莲花生大师在我们不需要太过度付出的过程当中向你祈祷以后，用你的加持力跟我的前行祈祷力，能够破除所有的这一些障碍。那么当个残暴的魔障啊呃呃这个呃这些产生的时候，莲花生大师亦有亦又以这个破除这些残钵末状的这个墨掌主的形象啊呃出现。你看我们这个说莲莲花生大师是菩提心魔擦的。所有魔鬼的时候，他显现的这些愤怒。像啊我们魔鬼，我们说的智慧烈焰啊等等等。因为莲花生大师是是以护法的这个愤怒的形形象出现的。所以呢护法本尊呢这个是我们称莲花生大师的某某项嘛。我们比如像骑那个呃老虎的那个斗鸡佐罗金刚乘罗啊，还有那这个杀生年日啊，就是4只猴年石啊，愤怒莲师啊，这些都是以莲师有猛相出现的。那么主要是他以护法组的形象出现以后呢，可以这在让这个呃他的智慧啊，让世间的所有的一切护法门跟随着他。所以呢只有你看莲花生大师这这种修行的大成就者，大大成名者，才有那么多的护法眷属，横围绕着打围绕他干什么呢？就是呃回遮回遮浊世时候的一切浊世之乱轮回遮的时候，把让他倒回去，可能这些恶业违规布施坏了，然后山川江河大地污染啊等等引起的这些混乱啊，战争啊那本来是可能会带给终身伤害的，让他还回去要回遮，就要让他回遮。所以有的时候我们拍手掌啊，回遮就是这个意思。希望所有的钱能够平息掉，能够消失到让他不要杀生掉。杀生，这是这样。嗯，那么呃就是提醒莲花生大师是有我们这方面的加持力。嗯，在这个不变珍宝的功德之中啊，这个宝藏的功德之中呢，就基本上就是成了什么呢？我我们讲的财神的功德了，在财神爷的宫殿里，财神的功德里面呢，那么所有一些成就的来源了，莲花生大师就又转换成什联食财神了。然后周边围绕着什么呢？比如像我们经常上师讲的，呃，那么对治就多文天王就是说财报天王啦啊，什么黄财神红财神白财神啊这些，以及呢把马财神啊这些所有的财神就变成围绕着联食的周边呢，提前他的们的家庭里啊如玉的倔强。为什么呢？因为现在主要是所有的一切财富来来之不易，那么付出了很多。但不一不一定有时候成。所以这个时候希望能能年是一些财子，人们呢加持我们，让我们该拥有的福报，能够最早早的承受在我们身上，增长我们世间的财富的福报，生命健康呃，身体健康的福报，长寿的福报，以及与自在的福报，拥有知知识面的福报，拥有智慧的福报。简单来讲就是说功德于所有智慧之量，皆能够圆满。希望年是以年是财神的方式来加持我们。那么所以呢他也周边10 方所有诸佛呃菩萨眷属的围绕着这个莲花生大师是呃呃呃形象出现的，是我们祈祷莲花生大师啊，建议我们所有的众生呢能够往生堂到他的无心净土，莲花光宫殿的呃净土当中，让我们付出了修行的努力以后呢，不需要太过多的辛苦当中，能够给予我们这方面的成就。所以呢我们就呢我们和我们莲花生大师的申口译跟我们的申口译上金刚上师啊完成功德是金刚上师。呃，然后莲花就是斑马是莲花，所以金刚上师莲华就是莲花生大师的意思。你把你的所有的成就啊，不管是世间的出世间的所有成就，那你的成名，所有的一切，慈悲的成就，生活的这些成就呢能够给予我们给予我们后母呢就是身口意世业功德，所有的一切能够承受在我们身上。师生呃是整个气球温是是在这以上，那么下面那个就叫回遮法。所以呢呃天上日日日月以及星辰的所有的一切的双方日月形成的这个呃变规则。意思就是说因为大了这个星辰的变化，对地球运转的轨道的变化，会对大地产生很大的影响的。包括海啸了很多这些灾难了，实际上跟星存的这种变化也也有关系。那这里面又有其他的生物生物住在那里，那么这一切呢就呃就会产生对人类的影响。下方呢有地神呐，龙神啊这些，又或者是这个山川教河皆有神灵嘛。但我人类一不小心污染了他们的环境来了，他们就会暴富报复的话，就是天灾融化就可能就因此而来，所以威严因此而来，所以所有的这些能够呃消失。那么中间呢这个正呢一般也是指人间的神嘛，我们叫神明。这些东西它不是菩萨，也不是佛。所以呢你对他好，他可能有有所求的经经需求你也供养。但是如果你做不到的话，他有的时候也会危害社会，这些都是我们看不到的东西，包括用林地布施。22 子，你看一前行的莲花生大师，到藏区的时候，很多妖魔鬼鬼怪在呃虚坏。最后莲花生大师一一把，他们降毁，构成了藏区的所有的复发省，包括印度啊，尼泊尔不丹啊，这些地方都有很多复发省的这所以呢当时这个主要他们能够对什么产生影响呢？水火风土就大地大地的这个土壤的影响。泥石牛拉还有什么这个地震啊，这类的土地的影影响。然后水的影响吧，这就说雨雨该下雨的时候不下雨，呃，该不该下雨的时候下雨，然后对治水泛滥啊等等。然后风的力量就是是像台风啊，暴风啊，然后就是风灾啊这些这些，那么热热的力量就更可怕了，就干旱了啊，这这个呃雨水减少了啊，半壁就缺水了。这些等等就形成的很多病痛啊，能够在莲花生大师的加持戒呃当中呢，能够消除密法界当中啊上面嗯加呃嗯么那那比。比如比如说龙，就是从四方所有呃四方啊四四方呃以及八运的意思是什么呢？4个方向的各有一方分4个角落加起来就八种。所有的这些，不管是来自于四面八方的意思，来自于四面八方的。所有的这一切呃魔杖呢魔杖魔鬼的军队们能够在想伤害众生的时候，或者是他们有能力伤害众生的时候，希望莲花生大师呢我们向你祈祷，用你猛发猛烈的加持力，能够稍微所有的一切都回遮取消与法本当中啊，就是这么一个法门的。
+2025-05-18 22:19:51,834 - INFO - 服务器响应: 命名空间: (host='100.100.167.50', port=10095, chunk_size=[5, 10, 5], chunk_interval=10, hotword='', audio_in='C:/Users/wangminle/Documents/2025-伟大的ASR/12-2025-5法会开示/20250514-上师关于邬金莲师祈祷文的开示/250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav', audio_fs=16000, send_without_sleep=True, thread_num=1, words_max_print=10000, output_dir='C:\\Users\\wangminle\\Documents\\VSCode\\2-Cursor实战记录\\2-FunASR-practice\\funasr-gui-win-ver2504\\release\\results', ssl=1, use_itn=1, mode='offline')
+2025-05-18 22:19:51,834 - INFO - 服务器响应: 处理完成
+2025-05-18 22:19:51,843 - INFO - 任务成功: 文件 250514-上师关于《邬金莲师祈祷文-意乐任运自成》开示.wav 识别完成。
+2025-05-18 22:20:17,266 - INFO - System Event: Switched to English interface
+2025-05-18 22:20:17,268 - INFO - System Event: Configuration saved to C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:20:20,597 - INFO - System Event: Starting speed test. File 1: tv-report-1.mp4 (20.6328125MB), File 2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 22:20:20,597 - INFO - System Event: Starting test for file 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 22:20:20,882 - INFO - Speed Test: File 1 upload started
+2025-05-18 22:20:20,969 - INFO - Speed Test: File 1 upload completed, duration: 0.09s
+2025-05-18 22:20:26,933 - INFO - Speed Test: File 1 transcription completed, duration: 5.96s
+2025-05-18 22:20:27,095 - INFO - Speed Test: File 1 test completed. Upload: 0.09s, Transcription: 5.96s
+2025-05-18 22:20:27,095 - INFO - System Event: Starting test for file 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 22:20:27,399 - INFO - Speed Test: File 2 upload started
+2025-05-18 22:20:27,443 - INFO - Speed Test: File 2 upload completed, duration: 0.04s
+2025-05-18 22:20:33,266 - INFO - Speed Test: File 2 transcription completed, duration: 5.82s
+2025-05-18 22:20:33,582 - INFO - Speed Test: File 2 test completed. Upload: 0.04s, Transcription: 5.82s
+2025-05-18 22:20:33,582 - INFO - Speed Test Results: Upload Speed 200.74 MB/s, Transcription Speed 30.54x
+2025-05-18 22:20:38,109 - INFO - 系统事件: 已切换到中文界面
+2025-05-18 22:20:38,112 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json
+2025-05-18 22:20:44,755 - INFO - 系统事件: 开始速度测试，文件1: tv-report-1.mp4 (20.6328125MB), 文件2: tv-report-1.wav (5.482938766479492MB)
+2025-05-18 22:20:44,755 - INFO - 系统事件: 开始测试文件 1: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.mp4
+2025-05-18 22:20:45,071 - INFO - 速度测试: 文件 1 上传开始
+2025-05-18 22:20:45,221 - INFO - 速度测试: 文件 1 上传完成，耗时: 0.15秒
+2025-05-18 22:20:51,115 - INFO - 速度测试: 文件 1 转写完成，耗时: 5.89秒
+2025-05-18 22:20:51,287 - INFO - 速度测试: 文件 1 测试完成，上传耗时: 0.15秒，转写耗时: 5.89秒
+2025-05-18 22:20:51,287 - INFO - 系统事件: 开始测试文件 2: C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\demo\tv-report-1.wav
+2025-05-18 22:20:51,584 - INFO - 速度测试: 文件 2 上传开始
+2025-05-18 22:20:51,635 - INFO - 速度测试: 文件 2 上传完成，耗时: 0.05秒
+2025-05-18 22:20:57,612 - INFO - 速度测试: 文件 2 转写完成，耗时: 5.98秒
+2025-05-18 22:20:57,755 - INFO - 速度测试: 文件 2 测试完成，上传耗时: 0.05秒，转写耗时: 5.98秒
+2025-05-18 22:20:57,755 - INFO - 速度测试结果: 上传速度 129.96 MB/s, 转写速度 30.32x
+2025-05-18 22:22:09,054 - INFO - 系统事件: 应用程序关闭
+2025-05-18 22:22:09,054 - INFO - 系统事件: 配置已保存到 C:\Users\wangminle\Documents\VSCode\2-Cursor实战记录\2-FunASR-practice\funasr-gui-win-ver2504\release\config\config.json

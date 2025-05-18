@@ -70,8 +70,8 @@
 ## 性能与可靠性
 
 - [x] **(P1) 优化 Offline 上传速度:**
-    - [ ] 调研并决定是否在调用脚本时添加 `--send_without_sleep` 参数。
-    - [ ] 或考虑修改 `simple_funasr_client.py` 移除 offline 模式下的 `sleep`。
+    - [x] 调研并决定是否在调用脚本时添加 `--send_without_sleep` 参数。
+    - [x] 或考虑修改 `simple_funasr_client.py` 移除 offline 模式下的 `sleep`。
 - [x] **(P1) 确保 Offline 模式协议正确性:**
     - [x] 修正 `simple_funasr_client.py` 在 offline 模式下发送的初始消息，使其不包含 chunk 参数。
     - [x] 修正 `simple_funasr_client.py` 对单个文件输入时的 `wav_name` 处理。
