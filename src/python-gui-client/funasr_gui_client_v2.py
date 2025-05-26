@@ -617,6 +617,47 @@ class LanguageManager:
                 "zh": "系统警告: 识别过程未正常结束，正在强制终止。",
                 "en": "System Warning: Recognition process did not end normally, forcibly terminating."
             },
+            # 新增的音频时长预估功能相关翻译
+            "duration_calculation_with_time": {
+                "zh": "转写时长计算 - 文件时长: {}, 等待超时: {}秒, 预估时长: {}",
+                "en": "Transcription Duration Calculation - File duration: {}, Wait timeout: {}s, Estimated time: {}"
+            },
+            "duration_calculation_without_time": {
+                "zh": "转写时长计算 - 无法获取真实文件时长, 等待超时: {}秒, 预估时长: {}",
+                "en": "Transcription Duration Calculation - Unable to get real file duration, Wait timeout: {}s, Estimated time: {}"
+            },
+            "transcribing_with_speed_estimate": {
+                "zh": "正在转写 {} (预估: {})",
+                "en": "Transcribing {} (Estimated: {})"
+            },
+            "transcribing_with_basic_estimate": {
+                "zh": "正在转写 {} (预估: {}，基于基础预估)",
+                "en": "Transcribing {} (Estimated: {}, based on basic estimation)"
+            },
+            "transcribing_inaccurate_estimate": {
+                "zh": "正在转写 {} (预估时长不准确，请耐心等待)",
+                "en": "Transcribing {} (Inaccurate time estimate, please be patient)"
+            },
+            "transcribing_progress_with_speed": {
+                "zh": "转写中 {} - 进度: {}% (剩余: {})",
+                "en": "Transcribing {} - Progress: {}% (Remaining: {})"
+            },
+            "transcribing_progress_basic_estimate": {
+                "zh": "转写中 {} - 进度: {}% (剩余: {}，如需准确预估请先进行速度测试)",
+                "en": "Transcribing {} - Progress: {}% (Remaining: {}, for accurate estimation please run speed test first)"
+            },
+            "transcribing_exceeded_speed_estimate": {
+                "zh": "转写中 {} - 已超预估时间 (已用时: {})",
+                "en": "Transcribing {} - Exceeded estimated time (Elapsed: {})"
+            },
+            "transcribing_exceeded_basic_estimate": {
+                "zh": "转写中 {} - 已超基础预估时间 (已用时: {})",
+                "en": "Transcribing {} - Exceeded basic estimated time (Elapsed: {})"
+            },
+            "transcribing_inaccurate_progress": {
+                "zh": "转写中 {} - 预估不准确 (已用时: {})",
+                "en": "Transcribing {} - Inaccurate estimation (Elapsed: {})"
+            },
             "force_kill": {
                 "zh": "系统警告: 强制终止超时，正在强制杀死进程。",
                 "en": "System Warning: Force termination timeout, killing the process."
@@ -781,7 +822,7 @@ class TranscribeTimeManager:
         self.current_file_size = None  # 字节
         
         # 计算结果
-        self.transcribe_wait_timeout = 600  # 系统超时时长（秒）
+        self.transcribe_wait_timeout = 1200  # 系统超时时长（秒）- 兜底默认值20分钟
         self.transcribe_estimate_time = None  # 用户预估时长（秒）
         
     def set_speed_test_results(self, upload_speed_mbps, transcribe_speed_x):
@@ -815,10 +856,11 @@ class TranscribeTimeManager:
         self.current_file_duration = self.get_audio_duration(file_path)
         self.current_file_size = os.path.getsize(file_path) if os.path.exists(file_path) else None
         
-        # 如果无法获取文件时长，使用默认值
-        if self.current_file_duration is None:
-            self.transcribe_wait_timeout = 600  # 默认10分钟
-            self.transcribe_estimate_time = 60   # 默认1分钟预估
+        # 如果无法获取文件时长或时长为0，使用兜底策略
+        if self.current_file_duration is None or self.current_file_duration <= 0:
+            self.transcribe_wait_timeout = 1200  # 固定20分钟等待时长
+            self.transcribe_estimate_time = None  # 预估时长设为None，表示无法预估
+            logging.warning(f"无法获取文件 {os.path.basename(file_path)} 的真实媒体时长，使用固定的20分钟等待时长")
             return self.transcribe_wait_timeout, self.transcribe_estimate_time
         
         # 如果没有测速结果，使用基础公式
@@ -846,7 +888,7 @@ class TranscribeTimeManager:
         self.last_transcribe_speed = None
         self.current_file_duration = None
         self.current_file_size = None
-        self.transcribe_wait_timeout = 600
+        self.transcribe_wait_timeout = 1200  # 兜底默认值：20分钟
         self.transcribe_estimate_time = None
 
 # --- Main Application Class ---
@@ -1505,19 +1547,28 @@ class FunASRGUIClient(tk.Tk):
         wait_timeout, estimate_time = self.time_manager.calculate_transcribe_times(audio_in)
         
         # 记录时长计算结果
-        if self.time_manager.current_file_duration:
+        if self.time_manager.current_file_duration and self.time_manager.current_file_duration > 0:
             duration_text = f"{int(self.time_manager.current_file_duration//60)}分{int(self.time_manager.current_file_duration%60)}秒"
-            logging.info(f"转写时长计算 - 文件时长: {duration_text}, 等待超时: {wait_timeout}秒, 预估时长: {estimate_time}秒")
+            estimate_text = f"{estimate_time}秒" if estimate_time else "无法预估"
+            logging.info(self.lang_manager.get("duration_calculation_with_time", duration_text, wait_timeout, estimate_text))
         else:
-            logging.info(f"转写时长计算 - 使用默认值, 等待超时: {wait_timeout}秒, 预估时长: {estimate_time}秒")
+            estimate_text = f"{estimate_time}秒" if estimate_time else "无法预估"
+            logging.info(self.lang_manager.get("duration_calculation_without_time", wait_timeout, estimate_text))
 
         # 禁用按钮，防止重复点击
         self.start_button.config(state=tk.DISABLED)
         self.select_button.config(state=tk.DISABLED)
         
         # 显示预估时长信息
-        estimate_text = f"{int(estimate_time//60)}分{int(estimate_time%60)}秒" if estimate_time >= 60 else f"{estimate_time}秒"
-        self.status_var.set(f"正在转写 {os.path.basename(audio_in)} (预估: {estimate_text})")
+        if estimate_time:
+            estimate_text = f"{int(estimate_time//60)}分{int(estimate_time%60)}秒" if estimate_time >= 60 else f"{estimate_time}秒"
+            # 如果没有测速结果，添加基础预估提示
+            if self.time_manager.last_transcribe_speed is None:
+                self.status_var.set(self.lang_manager.get("transcribing_with_basic_estimate", os.path.basename(audio_in), estimate_text))
+            else:
+                self.status_var.set(self.lang_manager.get("transcribing_with_speed_estimate", os.path.basename(audio_in), estimate_text))
+        else:
+            self.status_var.set(self.lang_manager.get("transcribing_inaccurate_estimate", os.path.basename(audio_in)))
         
         logging.info(self.lang_manager.get("starting_recognition", audio_in))
         logging.debug(self.lang_manager.get("recognition_params", ip, port, audio_in, self.use_itn_var.get()))
@@ -1569,6 +1620,7 @@ class FunASRGUIClient(tk.Tk):
         upload_completed = False      # 上传是否完成
         estimate_remaining = estimate_time  # 剩余预估时间
         task_completed = False        # 任务是否完成
+        process = None                # 子进程对象
         
         last_reported_progress = -1 # 用于跟踪上次报告的进度
         last_message_time = time.time() # 初始化上次收到消息的时间
@@ -1583,27 +1635,40 @@ class FunASRGUIClient(tk.Tk):
             if upload_completed and transcribe_start_time:
                 # 转写阶段，显示倒计时
                 elapsed = time.time() - transcribe_start_time
-                remaining = max(0, estimate_time - elapsed)
                 
-                if remaining > 0:
-                    remaining_text = f"{int(remaining//60)}分{int(remaining%60)}秒" if remaining >= 60 else f"{int(remaining)}秒"
-                    progress_percent = min(100, int((elapsed / estimate_time) * 100))
-                    self.status_var.set(f"转写中 {os.path.basename(audio_in)} - 进度: {progress_percent}% (剩余: {remaining_text})")
-                    # 继续更新倒计时
-                    self.after(1000, update_countdown)
+                if estimate_time:
+                    # 有预估时长的情况
+                    remaining = max(0, estimate_time - elapsed)
+                    
+                    if remaining > 0:
+                        remaining_text = f"{int(remaining//60)}分{int(remaining%60)}秒" if remaining >= 60 else f"{int(remaining)}秒"
+                        progress_percent = min(100, int((elapsed / estimate_time) * 100))
+                        # 如果没有测速结果，在转写过程中添加速度测试提示
+                        if self.time_manager.last_transcribe_speed is None:
+                            self.status_var.set(self.lang_manager.get("transcribing_progress_basic_estimate", os.path.basename(audio_in), progress_percent, remaining_text))
+                        else:
+                            self.status_var.set(self.lang_manager.get("transcribing_progress_with_speed", os.path.basename(audio_in), progress_percent, remaining_text))
+                    else:
+                        # 预估时间已过，显示超时状态
+                        elapsed_text = f"{int(elapsed//60)}分{int(elapsed%60)}秒" if elapsed >= 60 else f"{int(elapsed)}秒"
+                        if self.time_manager.last_transcribe_speed is None:
+                            self.status_var.set(self.lang_manager.get("transcribing_exceeded_basic_estimate", os.path.basename(audio_in), elapsed_text))
+                        else:
+                            self.status_var.set(self.lang_manager.get("transcribing_exceeded_speed_estimate", os.path.basename(audio_in), elapsed_text))
                 else:
-                    # 预估时间已过，显示超时状态
+                    # 无预估时长的情况
                     elapsed_text = f"{int(elapsed//60)}分{int(elapsed%60)}秒" if elapsed >= 60 else f"{int(elapsed)}秒"
-                    self.status_var.set(f"转写中 {os.path.basename(audio_in)} - 已超预估时间 (已用时: {elapsed_text})")
-                    self.after(1000, update_countdown)
+                    self.status_var.set(self.lang_manager.get("transcribing_inaccurate_progress", os.path.basename(audio_in), elapsed_text))
+                
+                # 继续更新倒计时
+                self.after(1000, update_countdown)
             elif not upload_completed:
                 # 上传阶段，显示上传状态
                 self.status_var.set(f"上传中 {os.path.basename(audio_in)}...")
                 self.after(1000, update_countdown)
 
         def run_in_thread():
-            nonlocal last_reported_progress, last_message_time, transcribe_start_time, upload_completed, task_completed # 允许修改外部变量
-            process = None
+            nonlocal last_reported_progress, last_message_time, transcribe_start_time, upload_completed, task_completed, process # 允许修改外部变量
             # 添加变量以跟踪上次记录的上传进度
             last_logged_progress = -5  # 初始值设为-5，确保0%会被打印
             
@@ -1758,7 +1823,7 @@ class FunASRGUIClient(tk.Tk):
 
         # 启动超时监控 - 使用动态计算的wait_timeout
         def check_timeout():
-            nonlocal last_message_time, task_completed
+            nonlocal last_message_time, task_completed, process
             current_time = time.time()
             
             # 如果任务已完成，停止超时检查

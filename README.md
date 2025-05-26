@@ -18,6 +18,8 @@ This is a Tkinter-based graphical user interface (GUI) client for interacting wi
 *   **Protocol Optimization**: Corrects protocol handling in offline mode, ensuring correct communication with the server.
 *   **File Structure Optimization**: Restructures file storage, storing configuration files, logs, and recognition results in separate directories.
 *   **Server Speed Testing**: Provides a dedicated button to test the server's upload speed and transcription speed, using test files from the demo directory to calculate and display upload speed (MB/s) and transcription speed (real-time factor).
+*   **Smart Duration Estimation**: Automatically detects the real duration of audio/video files, dynamically calculates transcription estimated time and waiting timeout based on speed test results, and provides real-time progress display and countdown functionality.
+*   **Fallback Strategy**: When unable to obtain audio duration, uses a fixed 20-minute waiting timeout to ensure all files can be processed normally.
 *   **Internationalization Support**: Provides language switching between Chinese and English interfaces to meet the needs of users with different language backgrounds.
 
 ## 🐍 Requirements
@@ -27,6 +29,7 @@ This is a Tkinter-based graphical user interface (GUI) client for interacting wi
 *   **Necessary Python Packages**:
     *   `websockets`: For WebSocket communication.
     *   `asyncio`: For asynchronous operations.
+    *   `mutagen`: For detecting audio/video file duration.
     *   `logging`: For generating log files (Python standard library).
     *   *(Note: The GUI client will attempt to automatically install these dependencies upon first connection or recognition)*
 
@@ -37,7 +40,7 @@ This is a Tkinter-based graphical user interface (GUI) client for interacting wi
 3.  **Install Dependencies**:
     *   You can install manually:
         ```bash
-        pip install websockets asyncio
+        pip install websockets asyncio mutagen
         ```
     *   Or start the GUI client, which will attempt to automatically install them when needed.
 
@@ -95,21 +98,26 @@ funasr-gui-win-ver2504/
 ## ⚠️ Known Issues and Limitations
 
 *   Currently mainly supports FunASR's **offline** recognition mode.
-*   Error handling and prompts can be further improved.
 *   Visual configuration for all `funasr_wss_client.py` command line parameters (such as `chunk_size`, `chunk_interval`, `hotword`, etc.) is not yet implemented.
+*   Some audio files may have corrupted metadata, in which case the fallback strategy (fixed 20-minute waiting timeout) will be automatically activated.
 
 ## 🔜 Development Plan
 
 According to the project management document, the following features are under development:
 
 *   **Separation of Results and Logs**: Displaying recognition results and running logs separately to provide a clearer user experience.
-*   **Enhanced Status Bar Information**: Displaying more detailed recognition stage and progress information.
-*   **Enhanced Error Handling**: Capturing and displaying common errors in a friendly manner.
 *   **Adding "Cancel" Button**: Allowing users to abort an ongoing recognition task.
 *   **Supporting Hotword Files**: Adding the function to select hotword files to improve recognition accuracy in specific domains.
 *   **Configurable Output Directory**: Allowing users to customize the location where results are saved.
 *   **Supporting Online and 2Pass Modes**: Extending support for more recognition modes to meet different scenario requirements.
-*   **Internationalization Support Enhancement**: Improving the Chinese and English interface switching functionality, enhancing user experience, and facilitating the addition of more language support.
+
+## ✅ Recent Updates (V2.2)
+
+*   **Smart Duration Estimation**: Completed automatic audio duration detection and intelligent estimation functionality.
+*   **Fallback Strategy**: Implemented fallback mechanism when audio duration acquisition fails.
+*   **Enhanced Status Bar Information**: Completed real-time transcription progress display and countdown functionality.
+*   **Enhanced Error Handling**: Improved error handling and user-friendly prompts.
+*   **Internationalization Support Enhancement**: Completed Chinese and English interface switching functionality, including complete translation of new features.
 
 ## 🤝 Contribution
 

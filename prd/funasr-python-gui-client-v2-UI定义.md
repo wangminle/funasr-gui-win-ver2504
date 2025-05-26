@@ -1,6 +1,6 @@
 # FunASR GUI 客户端 - V2 UI 布局详细定义
 
-**版本**: 2.1 (基于实际代码 `funasr_gui_client_v2.py` 更新)
+**版本**: 2.2 (基于实际代码 `funasr_gui_client_v2.py` 更新，新增智能时长预估功能)
 
 ## 1. 前端方案概述
 
@@ -194,8 +194,46 @@
 *   **外观**: `relief=tk.SUNKEN`, `anchor=tk.W`
 *   **布局**: `pack(side=tk.BOTTOM, fill=tk.X)` (固定在窗口底部并横向填充)
 *   **效果**: 通过更新 `self.status_var.set(...)` 来显示当前操作的简短状态，如 "正在连接..."/"Connecting...", "识别完成"/"Recognition Complete", "错误："/"Error:" 等。
+*   **新增功能**: 支持智能转写进度显示，包括：
+    *   转写开始时显示预估时长信息（区分有/无速度测试结果）
+    *   转写过程中实时显示进度百分比和剩余时间
+    *   超过预估时间后显示已用时信息
+    *   无法预估时显示"预估时长不准确，请耐心等待"提示
 
-## 9. 国际化实现
+## 9. 智能转写时长预估系统
+
+*   **核心类**: `TranscribeTimeManager`
+*   **主要功能**:
+    *   **音频时长检测**: 使用 mutagen 库自动检测音频/视频文件的真实播放时长
+    *   **智能时长计算**: 根据业务规则和速度测试结果计算转写预估时间和等待超时时长
+    *   **兜底策略**: 当无法获取音频时长时，使用固定20分钟等待时长
+    *   **实时进度显示**: 在状态栏显示转写进度百分比和剩余时间倒计时
+
+*   **业务逻辑规则**:
+    *   **无速度测试结果时**:
+        *   等待超时时长 = ⌈音频时长/5⌉ 分钟（向上取整）
+        *   预估时长 = ⌈音频时长/10⌉ 分钟（向上取整）
+    *   **有速度测试结果时**:
+        *   预估时长 = ⌈(音频时长/转写倍速) × 120%⌉ 分钟（向上取整）
+        *   等待超时时长 = 若倍速>5则用⌈音频时长/5⌉，否则用⌈音频时长⌉
+    *   **兜底情况**（无法获取音频时长）:
+        *   等待超时时长 = 20分钟（固定值）
+        *   预估时长 = None（显示"预估时长不准确"）
+
+*   **UI状态消息对应关系**:
+    *   开始转写时：
+        *   有速度测试："正在转写 xxx.mp4 (预估: 8秒)" / "Transcribing xxx.mp4 (Estimated: 8s)"
+        *   无速度测试："正在转写 xxx.mp4 (预估: 18秒，基于基础预估)" / "Transcribing xxx.mp4 (Estimated: 18s, based on basic estimation)"
+        *   无法预估："正在转写 xxx.mp4 (预估时长不准确，请耐心等待)" / "Transcribing xxx.mp4 (Inaccurate time estimate, please be patient)"
+    *   转写进行中：
+        *   有速度测试："转写中 xxx.mp4 - 进度: 50% (剩余: 4秒)" / "Transcribing xxx.mp4 - Progress: 50% (Remaining: 4s)"
+        *   无速度测试："转写中 xxx.mp4 - 进度: 50% (剩余: 9秒，如需准确预估请先进行速度测试)" / "Transcribing xxx.mp4 - Progress: 50% (Remaining: 9s, for accurate estimation please run speed test first)"
+    *   超过预估时间：
+        *   有速度测试："转写中 xxx.mp4 - 已超预估时间 (已用时: 15秒)" / "Transcribing xxx.mp4 - Exceeded estimated time (Elapsed: 15s)"
+        *   无速度测试："转写中 xxx.mp4 - 已超基础预估时间 (已用时: 25秒)" / "Transcribing xxx.mp4 - Exceeded basic estimated time (Elapsed: 25s)"
+        *   无法预估："转写中 xxx.mp4 - 预估不准确 (已用时: 35秒)" / "Transcribing xxx.mp4 - Inaccurate estimation (Elapsed: 35s)"
+
+## 10. 国际化实现
 
 *   **语言资源管理**: 
     *   **资源文件**: `language_resources.py` 或类似文件包含中英文字符串映射。
