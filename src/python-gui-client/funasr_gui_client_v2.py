@@ -767,6 +767,88 @@ class GuiLogHandler(logging.Handler):
         # 再次调度自己
         self.text_widget.after(100, self.poll_log_queue)
 
+# --- 转写时长管理类 ---
+class TranscribeTimeManager:
+    """管理转写时长预估和等待时长计算"""
+    
+    def __init__(self):
+        # 测速结果
+        self.last_upload_speed = None  # MB/s
+        self.last_transcribe_speed = None  # 倍速 (例如: 30x)
+        
+        # 当前文件信息
+        self.current_file_duration = None  # 秒
+        self.current_file_size = None  # 字节
+        
+        # 计算结果
+        self.transcribe_wait_timeout = 600  # 系统超时时长（秒）
+        self.transcribe_estimate_time = None  # 用户预估时长（秒）
+        
+    def set_speed_test_results(self, upload_speed_mbps, transcribe_speed_x):
+        """设置测速结果"""
+        self.last_upload_speed = upload_speed_mbps
+        self.last_transcribe_speed = transcribe_speed_x
+        
+    def get_audio_duration(self, file_path):
+        """获取音频/视频文件时长（秒）"""
+        try:
+            from mutagen import File
+            audio_file = File(file_path)
+            if audio_file is not None and hasattr(audio_file, 'info') and hasattr(audio_file.info, 'length'):
+                return audio_file.info.length
+            else:
+                # 如果mutagen无法识别，返回None
+                return None
+        except Exception as e:
+            logging.warning(f"获取音频时长失败: {e}")
+            return None
+            
+    def calculate_transcribe_times(self, file_path):
+        """
+        计算转写等待时长和预估时长
+        返回: (wait_timeout, estimate_time) 单位为秒
+        """
+        import os
+        import math
+        
+        # 获取文件信息
+        self.current_file_duration = self.get_audio_duration(file_path)
+        self.current_file_size = os.path.getsize(file_path) if os.path.exists(file_path) else None
+        
+        # 如果无法获取文件时长，使用默认值
+        if self.current_file_duration is None:
+            self.transcribe_wait_timeout = 600  # 默认10分钟
+            self.transcribe_estimate_time = 60   # 默认1分钟预估
+            return self.transcribe_wait_timeout, self.transcribe_estimate_time
+        
+        # 如果没有测速结果，使用基础公式
+        if self.last_transcribe_speed is None:
+            # (1) 没有测速结果的情况
+            self.transcribe_wait_timeout = math.ceil(self.current_file_duration / 5)  # 音频时长/5，向上取整
+            self.transcribe_estimate_time = math.ceil(self.current_file_duration / 10)  # 音频时长/10，向上取整
+        else:
+            # (2) 有测速结果的情况
+            # 转写预估时长：(音频时长 / 转写倍速) × 120%，向上取整
+            base_estimate = self.current_file_duration / self.last_transcribe_speed
+            self.transcribe_estimate_time = math.ceil(base_estimate * 1.2)
+            
+            # 转写等待时长：如果倍速>5用音频时长/5，否则用音频时长
+            if self.last_transcribe_speed > 5:
+                self.transcribe_wait_timeout = math.ceil(self.current_file_duration / 5)
+            else:
+                self.transcribe_wait_timeout = math.ceil(self.current_file_duration)
+        
+        return self.transcribe_wait_timeout, self.transcribe_estimate_time
+    
+    def clear_session_data(self):
+        """清除会话数据（软件关闭时调用）"""
+        self.last_upload_speed = None
+        self.last_transcribe_speed = None
+        self.current_file_duration = None
+        self.current_file_size = None
+        self.transcribe_wait_timeout = 600
+        self.transcribe_estimate_time = None
+
 # --- Main Application Class ---
 class FunASRGUIClient(tk.Tk):
     def __init__(self):
@@ -774,6 +856,9 @@ class FunASRGUIClient(tk.Tk):
         
         # 初始化语言管理器
         self.lang_manager = LanguageManager()
+        
+        # 初始化转写时长管理器
+        self.time_manager = TranscribeTimeManager()
         
         self.title(self.lang_manager.get("app_title"))
         # 增加窗口默认高度，确保状态栏完全可见
@@ -965,7 +1050,11 @@ class FunASRGUIClient(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         # 检查必要的依赖 (Log the process)
-        self.check_dependencies()
+        if not self.check_dependencies():
+            # 依赖检查失败，直接退出
+            logging.error("程序启动失败：依赖检查未通过")
+            self.destroy()
+            return
 
     def create_language_button(self):
         """创建语言切换按钮"""
@@ -1211,6 +1300,11 @@ class FunASRGUIClient(tk.Tk):
         """窗口关闭时的处理"""
         try:
             logging.info(self.lang_manager.get("app_closing"))
+            
+            # 清除转写时长管理器的会话数据
+            self.time_manager.clear_session_data()
+            logging.debug("转写时长管理器会话数据已清除")
+            
             self.save_config()
             self.destroy()
         except Exception as e:
@@ -1221,7 +1315,7 @@ class FunASRGUIClient(tk.Tk):
     def check_dependencies(self):
         """检查必要的依赖是否已安装"""
         logging.info(self.lang_manager.get("checking_dependencies"))
-        required_packages = ['websockets', 'asyncio']
+        required_packages = ['websockets', 'mutagen']  # 添加mutagen到必需依赖
         missing_packages = []
         
         for package in required_packages:
@@ -1234,9 +1328,15 @@ class FunASRGUIClient(tk.Tk):
         
         if missing_packages:
             logging.warning(self.lang_manager.get("missing_dependencies", ", ".join(missing_packages)))
-            logging.info(self.lang_manager.get("auto_install_hint"))
+            # 显示更明确的依赖缺失提示
+            missing_str = ", ".join(missing_packages)
+            error_msg = f"缺少必要的依赖包: {missing_str}\n\n请运行以下命令安装:\npip install {' '.join(missing_packages)}\n\n或者运行:\npip install -r requirements.txt"
+            messagebox.showerror("依赖缺失", error_msg)
+            logging.error(f"启动检查失败: 缺少依赖包 {missing_str}")
+            return False
         else:
             logging.debug(self.lang_manager.get("all_dependencies_installed"))
+            return True
 
     def install_dependencies(self, packages):
         """安装所需的依赖包"""
@@ -1348,9 +1448,18 @@ class FunASRGUIClient(tk.Tk):
         filepath = filedialog.askopenfilename(title=self.lang_manager.get("file_dialog_title"), filetypes=filetypes)
         if filepath:
             self.file_path_var.set(filepath)
-            self.status_var.set(f"{self.lang_manager.get('file_selected')}: {os.path.basename(filepath)}")
+            
+            # 获取文件时长信息
+            duration = self.time_manager.get_audio_duration(filepath)
+            if duration is not None:
+                duration_text = f"{int(duration//60)}分{int(duration%60)}秒"
+                self.status_var.set(f"{self.lang_manager.get('file_selected')}: {os.path.basename(filepath)} (时长: {duration_text})")
+                logging.info(f"文件选择: {filepath}, 时长: {duration:.1f}秒 ({duration_text})")
+            else:
+                self.status_var.set(f"{self.lang_manager.get('file_selected')}: {os.path.basename(filepath)}")
+                logging.info(f"文件选择: {filepath}, 无法获取时长信息")
+            
             # 记录文件选择事件
-            logging.info(self.lang_manager.get("file_selected", filepath))
             logging.debug(f"调试信息: 文件大小: {os.path.getsize(filepath)} 字节")
             logging.debug(f"调试信息: 文件类型: {os.path.splitext(filepath)[1]}")
         else:
@@ -1392,18 +1501,32 @@ class FunASRGUIClient(tk.Tk):
                 logging.warning("系统警告: 服务器连接测试未成功，但仍将尝试识别")
                 logging.warning("用户提示: 如果识别失败，请先使用'连接服务器'按钮测试连接")
 
+        # 计算转写时长
+        wait_timeout, estimate_time = self.time_manager.calculate_transcribe_times(audio_in)
+        
+        # 记录时长计算结果
+        if self.time_manager.current_file_duration:
+            duration_text = f"{int(self.time_manager.current_file_duration//60)}分{int(self.time_manager.current_file_duration%60)}秒"
+            logging.info(f"转写时长计算 - 文件时长: {duration_text}, 等待超时: {wait_timeout}秒, 预估时长: {estimate_time}秒")
+        else:
+            logging.info(f"转写时长计算 - 使用默认值, 等待超时: {wait_timeout}秒, 预估时长: {estimate_time}秒")
+
         # 禁用按钮，防止重复点击
         self.start_button.config(state=tk.DISABLED)
         self.select_button.config(state=tk.DISABLED)
-        self.status_var.set(self.lang_manager.get("recognizing", os.path.basename(audio_in)))
+        
+        # 显示预估时长信息
+        estimate_text = f"{int(estimate_time//60)}分{int(estimate_time%60)}秒" if estimate_time >= 60 else f"{estimate_time}秒"
+        self.status_var.set(f"正在转写 {os.path.basename(audio_in)} (预估: {estimate_text})")
+        
         logging.info(self.lang_manager.get("starting_recognition", audio_in))
         logging.debug(self.lang_manager.get("recognition_params", ip, port, audio_in, self.use_itn_var.get()))
 
         # 在新线程中运行识别脚本
-        thread = threading.Thread(target=self._run_script, args=(ip, port, audio_in), daemon=True)
+        thread = threading.Thread(target=self._run_script, args=(ip, port, audio_in, wait_timeout, estimate_time), daemon=True)
         thread.start()
 
-    def _run_script(self, ip, port, audio_in):
+    def _run_script(self, ip, port, audio_in, wait_timeout=600, estimate_time=60):
         """在新线程中运行 simple_funasr_client.py 脚本。"""
         
         # 构造要传递给子进程的参数列表
@@ -1425,6 +1548,7 @@ class FunASRGUIClient(tk.Tk):
             "--port", str(port),
             "--audio_in", audio_in,
             "--output_dir", results_dir,  # 添加输出目录参数
+            "--transcribe_timeout", str(wait_timeout),  # 添加动态超时参数
             # 根据 Checkbutton 状态添加 --no-itn 或 --no-ssl
         ]
         if self.use_itn_var.get() == 0:
@@ -1438,15 +1562,47 @@ class FunASRGUIClient(tk.Tk):
         self.log_text.configure(state='disabled')
         logging.info(self.lang_manager.get("task_start", os.path.basename(audio_in)))
         logging.info(self.lang_manager.get("results_save_location", results_dir))
-        self.status_var.set(self.lang_manager.get("recognizing", os.path.basename(audio_in)))
         self.start_button.config(state=tk.DISABLED) # 禁用开始按钮
 
+        # 进度倒计时相关变量
+        transcribe_start_time = None  # 转写开始时间
+        upload_completed = False      # 上传是否完成
+        estimate_remaining = estimate_time  # 剩余预估时间
+        task_completed = False        # 任务是否完成
+        
         last_reported_progress = -1 # 用于跟踪上次报告的进度
         last_message_time = time.time() # 初始化上次收到消息的时间
-        timeout_duration = 10 # 设置超时时间（秒）
+
+        # 倒计时更新函数
+        def update_countdown():
+            nonlocal estimate_remaining, upload_completed, transcribe_start_time, task_completed
+            # 如果任务已完成，停止倒计时
+            if task_completed:
+                return
+                
+            if upload_completed and transcribe_start_time:
+                # 转写阶段，显示倒计时
+                elapsed = time.time() - transcribe_start_time
+                remaining = max(0, estimate_time - elapsed)
+                
+                if remaining > 0:
+                    remaining_text = f"{int(remaining//60)}分{int(remaining%60)}秒" if remaining >= 60 else f"{int(remaining)}秒"
+                    progress_percent = min(100, int((elapsed / estimate_time) * 100))
+                    self.status_var.set(f"转写中 {os.path.basename(audio_in)} - 进度: {progress_percent}% (剩余: {remaining_text})")
+                    # 继续更新倒计时
+                    self.after(1000, update_countdown)
+                else:
+                    # 预估时间已过，显示超时状态
+                    elapsed_text = f"{int(elapsed//60)}分{int(elapsed%60)}秒" if elapsed >= 60 else f"{int(elapsed)}秒"
+                    self.status_var.set(f"转写中 {os.path.basename(audio_in)} - 已超预估时间 (已用时: {elapsed_text})")
+                    self.after(1000, update_countdown)
+            elif not upload_completed:
+                # 上传阶段，显示上传状态
+                self.status_var.set(f"上传中 {os.path.basename(audio_in)}...")
+                self.after(1000, update_countdown)
 
         def run_in_thread():
-            nonlocal last_reported_progress, last_message_time # 允许修改外部变量
+            nonlocal last_reported_progress, last_message_time, transcribe_start_time, upload_completed, task_completed # 允许修改外部变量
             process = None
             # 添加变量以跟踪上次记录的上传进度
             last_logged_progress = -5  # 初始值设为-5，确保0%会被打印
@@ -1516,6 +1672,12 @@ class FunASRGUIClient(tk.Tk):
                                         progress_text = f"{progress_value}%"
                                         logging.info(f"{self.lang_manager.get('server_response')}: {self.lang_manager.get('upload_progress')}: {progress_text}")
                                         last_logged_progress = progress_value if progress_value != 100 else last_logged_progress # 避免100%后阻止后续可能的其他类型日志打印
+                                    
+                                    # 检测上传完成，开始转写倒计时
+                                    if progress_value == 100 and not upload_completed:
+                                        upload_completed = True
+                                        transcribe_start_time = time.time()
+                                        logging.info("转写阶段开始，启动进度倒计时")
                                 else:
                                     # 旧的提取逻辑作为后备
                                     if ":" in stripped_line:
@@ -1555,11 +1717,13 @@ class FunASRGUIClient(tk.Tk):
                 # 检查返回码
                 if return_code == 0:
                     logging.info(self.lang_manager.get("task_success", os.path.basename(audio_in)))
+                    task_completed = True  # 标记任务完成，停止倒计时
                     self.after(0, self.status_var.set, self.lang_manager.get("recognition_completed"))
                 else:
                     logging.error(self.lang_manager.get("task_failed", os.path.basename(audio_in), return_code))
                     if stderr_output:
                         logging.error(f"{self.lang_manager.get('subprocess_error')}\n{stderr_output}")
+                    task_completed = True  # 即使失败也标记任务完成，停止倒计时
                     self.after(0, self.status_var.set, self.lang_manager.get("recognition_failed", return_code))
                     # Display error in a popup
                     self.after(0, lambda: messagebox.showerror(
@@ -1569,11 +1733,13 @@ class FunASRGUIClient(tk.Tk):
 
             except FileNotFoundError:
                 logging.error(f"{self.lang_manager.get('python_not_found', sys.executable, script_path)}")
+                task_completed = True  # 标记任务完成，停止倒计时
                 self.after(0, self.status_var.set, self.lang_manager.get("script_not_found_error"))
                 self.after(0, lambda: messagebox.showerror(self.lang_manager.get("startup_error_title"), self.lang_manager.get("python_env_check")))
             except Exception as e:
                 error_details = traceback.format_exc()
                 logging.error(f"{self.lang_manager.get('system_error')}: {self.lang_manager.get('unexpected_error_msg', e, error_details)}")
+                task_completed = True  # 标记任务完成，停止倒计时
                 self.after(0, self.status_var.set, self.lang_manager.get("running_unexpected_error", e))
                 self.after(0, lambda: messagebox.showerror(self.lang_manager.get("unexpected_error_title"), self.lang_manager.get("unexpected_error_popup", e)))
             finally:
@@ -1590,26 +1756,45 @@ class FunASRGUIClient(tk.Tk):
                         logging.warning(self.lang_manager.get("force_kill"))
                         process.kill() # Force kill if terminate doesn't work
 
-        # 启动超时监控
+        # 启动超时监控 - 使用动态计算的wait_timeout
         def check_timeout():
-            nonlocal last_message_time
-            if time.time() - last_message_time > timeout_duration:
-                 if process and process.poll() is None: # 检查进程是否存在且仍在运行
-                    logging.warning(f"系统警告: {timeout_duration}秒内未收到服务器响应，可能发生超时。正在尝试终止进程。")
-                    process.terminate() # 尝试终止进程
+            nonlocal last_message_time, task_completed
+            current_time = time.time()
+            
+            # 如果任务已完成，停止超时检查
+            if task_completed:
+                return
+            
+            # 检查是否超过系统等待超时时间
+            if transcribe_start_time and (current_time - transcribe_start_time) > wait_timeout:
+                if process and process.poll() is None:
+                    logging.warning(f"系统警告: 转写超过系统等待时长 {wait_timeout}秒，正在终止进程。")
+                    process.terminate()
                     try:
-                        process.wait(timeout=5) # 等待终止
+                        process.wait(timeout=5)
                     except subprocess.TimeoutExpired:
                         logging.warning("系统警告: 终止进程超时，正在强制杀死。")
-                        process.kill() # 强制杀死
-                    self.after(0, self.status_var.set, "错误: 连接超时")
-                    self.after(0, lambda: messagebox.showerror("连接超时", f"超过 {timeout_duration} 秒未收到服务器响应。"))
-                    self.after(0, lambda: self.start_button.config(state=tk.NORMAL)) # 超时后恢复按钮
-            elif process and process.poll() is None: # 如果进程仍在运行，继续监控
-                self.after(1000, check_timeout) # 每秒检查一次
+                        process.kill()
+                    self.after(0, self.status_var.set, f"错误: 转写超时 (超过{wait_timeout}秒)")
+                    self.after(0, lambda: messagebox.showerror("转写超时", f"转写时间超过系统等待时长 {wait_timeout} 秒。"))
+                    self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
+            # 检查通信超时（10秒内无任何消息）
+            elif (current_time - last_message_time) > 10:
+                if process and process.poll() is None:
+                    logging.warning("系统警告: 10秒内未收到服务器响应，可能发生通信超时。正在尝试终止进程。")
+                    process.terminate()
+                    try:
+                        process.wait(timeout=5)
+                    except subprocess.TimeoutExpired:
+                        logging.warning("系统警告: 终止进程超时，正在强制杀死。")
+                        process.kill()
+                    self.after(0, self.status_var.set, "错误: 通信超时")
+                    self.after(0, lambda: messagebox.showerror("通信超时", "超过 10 秒未收到服务器响应。"))
+                    self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
+            elif process and process.poll() is None:
+                # 如果进程仍在运行，继续监控
+                self.after(1000, check_timeout)
             # 如果进程已结束，则停止监控
-            # elif process and process.poll() is not None:
-            #    logging.debug("调试信息：识别进程已结束，停止超时监控。")
 
 
         # 在新线程中运行脚本
@@ -1617,8 +1802,9 @@ class FunASRGUIClient(tk.Tk):
         thread.daemon = True # 设置为守护线程，以便主程序退出时子线程也退出
         thread.start()
         
-        # 启动超时检查
-        # self.after(1000, check_timeout) # 延迟1秒开始检查
+        # 启动倒计时更新和超时检查
+        self.after(1000, update_countdown)  # 启动倒计时更新
+        self.after(1000, check_timeout)     # 启动超时检查
 
     async def _async_test_connection(self, ip, port, ssl_enabled):
         """异步测试WebSocket连接"""
@@ -2072,6 +2258,10 @@ class FunASRGUIClient(tk.Tk):
             self.speed_test_running = False
             
             logging.info(self.lang_manager.get("speed_test_results_log", upload_speed, transcribe_speed))
+            
+            # 更新时长管理器的测速结果
+            self.time_manager.set_speed_test_results(upload_speed, transcribe_speed)
+            logging.debug(f"已更新转写时长管理器: 上传速度 {upload_speed:.2f} MB/s, 转写倍速 {transcribe_speed:.2f}x")
             
             # 显示详细结果
             detail_msg = (

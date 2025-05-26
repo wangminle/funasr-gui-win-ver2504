@@ -18,6 +18,7 @@ This is a Tkinter-based graphical user interface (GUI) client for interacting wi
 *   **Protocol Optimization**: Corrects protocol handling in offline mode, ensuring correct communication with the server.
 *   **File Structure Optimization**: Restructures file storage, storing configuration files, logs, and recognition results in separate directories.
 *   **Server Speed Testing**: Provides a dedicated button to test the server's upload speed and transcription speed, using test files from the demo directory to calculate and display upload speed (MB/s) and transcription speed (real-time factor).
+*   **Internationalization Support**: Provides language switching between Chinese and English interfaces to meet the needs of users with different language backgrounds.
 
 ## 🐍 Requirements
 
@@ -51,11 +52,12 @@ This is a Tkinter-based graphical user interface (GUI) client for interacting wi
 3.  **Test Connection (Optional)**: Click the "Connect to Server" button to check network connectivity. The indicator will turn green after a successful connection.
 4.  **Select File**: Click the "Select Audio/Video File" button to choose the audio or video file you want to recognize.
 5.  **Configure Options (Optional)**: Check or uncheck "Enable ITN" and "Enable SSL" as needed.
-6.  **Start Recognition**: Click the "Start Recognition" button.
-7.  **View Results**: Logs and final results during the recognition process will be displayed in the "Running Logs and Results" area. The status bar will show the current status. Recognition result text files will be saved in the `release/results/` directory.
-8.  **View Logs**: Click the "Open Log File" button to open the log file and view detailed operation records and error information.
-9.  **View Recognition Results**: Click the "Open Results Directory" button to directly open the directory where recognition results are saved.
-10. **Test Server Speed**: Click the "Speed Test" button to test the server's upload speed and transcription speed. The test will automatically use test files (tv-report-1.mp4 and tv-report-1.wav) from the demo directory to perform two tests, and calculate the average upload speed (MB/s) and transcription speed (real-time factor). After the test is completed, the results will be displayed on the interface, and a detailed test results dialog will pop up.
+6.  **Switch Language (Optional)**: Select "中文" or "English" from the language dropdown to switch the interface language.
+7.  **Start Recognition**: Click the "Start Recognition" button.
+8.  **View Results**: Logs and final results during the recognition process will be displayed in the "Running Logs and Results" area. The status bar will show the current status. Recognition result text files will be saved in the `release/results/` directory.
+9.  **View Logs**: Click the "Open Log File" button to open the log file and view detailed operation records and error information.
+10. **View Recognition Results**: Click the "Open Results Directory" button to directly open the directory where recognition results are saved.
+11. **Test Server Speed**: Click the "Speed Test" button to test the server's upload speed and transcription speed. The test will automatically use test files (tv-report-1.mp4 and tv-report-1.wav) from the demo directory to perform two tests, and calculate the average upload speed (MB/s) and transcription speed (real-time factor). After the test is completed, the results will be displayed on the interface, and a detailed test results dialog will pop up.
 
 ## 📁 File Structure
 
@@ -64,6 +66,7 @@ funasr-gui-win-ver2504/
 ├── src/
 │   └── python-gui-client/
 │       ├── funasr_gui_client_v2.py   # GUI client main program
+│       ├── language_resources.py     # Language resource file containing Chinese and English string mappings
 │       └── simple_funasr_client.py   # WebSocket client script that actually performs recognition
 ├── release/
 │   ├── config/                       # Configuration file directory
@@ -106,6 +109,7 @@ According to the project management document, the following features are under d
 *   **Supporting Hotword Files**: Adding the function to select hotword files to improve recognition accuracy in specific domains.
 *   **Configurable Output Directory**: Allowing users to customize the location where results are saved.
 *   **Supporting Online and 2Pass Modes**: Extending support for more recognition modes to meet different scenario requirements.
+*   **Internationalization Support Enhancement**: Improving the Chinese and English interface switching functionality, enhancing user experience, and facilitating the addition of more language support.
 
 ## 🤝 Contribution
 

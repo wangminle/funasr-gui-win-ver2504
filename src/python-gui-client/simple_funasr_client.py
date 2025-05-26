@@ -79,6 +79,10 @@ parser.add_argument("--mode",
                     type=str,
                     default="offline",
                     help="offline, online, 2pass")
+parser.add_argument("--transcribe_timeout",
+                    type=int,
+                    default=600,
+                    help="transcribe timeout in seconds for offline mode")
 
 # 初始化全局变量
 args = parser.parse_args()
@@ -230,7 +234,7 @@ async def record_from_scp(chunk_begin, chunk_size):
     # 离线模式需要等待结果接收完成
     if args.mode == "offline":
         log("等待服务器处理完成...")
-        timeout = 600  # 修改为10分钟超时
+        timeout = args.transcribe_timeout  # 使用动态超时时间
         start_time = time.time()
         while not offline_msg_done:
             await asyncio.sleep(1)
