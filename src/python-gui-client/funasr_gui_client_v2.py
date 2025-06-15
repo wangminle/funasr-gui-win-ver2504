@@ -296,6 +296,30 @@ class LanguageManager:
                 "zh": "连接超时: 服务器无响应",
                 "en": "Connection timeout: Server not responding"
             },
+            "communication_timeout": {
+                "zh": "通信超时",
+                "en": "Communication Timeout"
+            },
+            "communication_timeout_msg": {
+                "zh": "超过 {} 秒未收到服务器响应。",
+                "en": "No server response received for {} seconds."
+            },
+            "communication_timeout_warning": {
+                "zh": "系统警告: {}秒内未收到服务器响应，可能发生通信超时。正在尝试终止进程。",
+                "en": "System Warning: No server response received for {} seconds, possible communication timeout. Attempting to terminate process."
+            },
+            "transcription_timeout": {
+                "zh": "转写超时",
+                "en": "Transcription Timeout"
+            },
+            "transcription_timeout_msg": {
+                "zh": "转写时间超过系统等待时长 {} 秒。",
+                "en": "Transcription time exceeded system wait timeout of {} seconds."
+            },
+            "transcription_timeout_warning": {
+                "zh": "系统警告: 转写超过系统等待时长 {}秒，正在终止进程。",
+                "en": "System Warning: Transcription exceeded system wait timeout of {} seconds, terminating process."
+            },
             "error_msg": {
                 "zh": "错误：{}",
                 "en": "Error: {}"
@@ -1833,7 +1857,7 @@ class FunASRGUIClient(tk.Tk):
             # 检查是否超过系统等待超时时间
             if transcribe_start_time and (current_time - transcribe_start_time) > wait_timeout:
                 if process and process.poll() is None:
-                    logging.warning(f"系统警告: 转写超过系统等待时长 {wait_timeout}秒，正在终止进程。")
+                    logging.warning(self.lang_manager.get("transcription_timeout_warning", wait_timeout))
                     process.terminate()
                     try:
                         process.wait(timeout=5)
@@ -1841,20 +1865,21 @@ class FunASRGUIClient(tk.Tk):
                         logging.warning("系统警告: 终止进程超时，正在强制杀死。")
                         process.kill()
                     self.after(0, self.status_var.set, f"错误: 转写超时 (超过{wait_timeout}秒)")
-                    self.after(0, lambda: messagebox.showerror("转写超时", f"转写时间超过系统等待时长 {wait_timeout} 秒。"))
+                    self.after(0, lambda: messagebox.showerror(self.lang_manager.get("transcription_timeout"), self.lang_manager.get("transcription_timeout_msg", wait_timeout)))
                     self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
-            # 检查通信超时（10秒内无任何消息）
-            elif (current_time - last_message_time) > 10:
+            # 检查通信超时（基于预估时间的动态超时，最小30秒）
+            elif (current_time - last_message_time) > max(30, estimate_time * 2):  # 动态设置通信超时时间，最小30秒
+                communication_timeout = max(30, estimate_time * 2)
                 if process and process.poll() is None:
-                    logging.warning("系统警告: 10秒内未收到服务器响应，可能发生通信超时。正在尝试终止进程。")
+                    logging.warning(self.lang_manager.get("communication_timeout_warning", communication_timeout))
                     process.terminate()
                     try:
                         process.wait(timeout=5)
                     except subprocess.TimeoutExpired:
                         logging.warning("系统警告: 终止进程超时，正在强制杀死。")
                         process.kill()
-                    self.after(0, self.status_var.set, "错误: 通信超时")
-                    self.after(0, lambda: messagebox.showerror("通信超时", "超过 10 秒未收到服务器响应。"))
+                    self.after(0, self.status_var.set, f"错误: {self.lang_manager.get('communication_timeout')}")
+                    self.after(0, lambda: messagebox.showerror(self.lang_manager.get("communication_timeout"), self.lang_manager.get("communication_timeout_msg", communication_timeout)))
                     self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
             elif process and process.poll() is None:
                 # 如果进程仍在运行，继续监控

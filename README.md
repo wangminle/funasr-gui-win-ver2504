@@ -118,6 +118,8 @@ According to the project management document, the following features are under d
 *   **Enhanced Status Bar Information**: Completed real-time transcription progress display and countdown functionality.
 *   **Enhanced Error Handling**: Improved error handling and user-friendly prompts.
 *   **Internationalization Support Enhancement**: Completed Chinese and English interface switching functionality, including complete translation of new features.
+*   **Timeout Mechanism Optimization**: Fixed the hardcoded 10-second communication timeout issue, replaced with intelligent dynamic timeout based on audio duration.
+*   **Multi-layer Timeout Protection**: Implemented three-layer protection mechanism with main timeout, communication timeout, and fallback timeout.
 
 ## 🤝 Contribution
 
