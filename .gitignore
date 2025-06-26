@@ -5,3 +5,10 @@
 /release/logs
 /release
 /test
+release/logs/funasr_gui_client.log
+
+# Python缓存文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
