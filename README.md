@@ -1,129 +1,132 @@
 # FunASR GUI Client V2
 
-This is a Tkinter-based graphical user interface (GUI) client for interacting with FunASR (FunASR ASR) WebSocket service to implement speech recognition functionality.
+A Tkinter-based graphical user interface (GUI) client for interacting with FunASR (FunASR ASR) WebSocket services to perform speech recognition.
 
 ## ✨ Features
 
 *   **Server Connection Configuration**: Allows users to input the IP address and port of the FunASR WebSocket server.
-*   **Connection Testing**: Provides a button to test the WebSocket connection status with the server (including SSL).
+*   **Connection Testing**: Provides a button to test WebSocket connection status with the server (including SSL).
 *   **File Selection**: Supports selecting local audio/video files (such as `.wav`, `.mp3`, `.pcm`, `.mp4`, etc.) or `.scp` list files for recognition.
 *   **Offline Recognition**: Executes FunASR's offline recognition mode by calling the client script (`simple_funasr_client.py`).
-*   **Real-time Output Display**: Displays status information and final recognition results in real-time in the GUI.
+*   **Real-time Output Display**: Displays status information and final recognition results in real-time within the GUI during the recognition process.
 *   **Advanced Options**: Supports enabling/disabling Inverse Text Normalization (ITN) and SSL connections.
-*   **Dependency Check and Installation**: Automatically checks and prompts/attempts to install required Python dependency packages (`websockets`, `asyncio`).
-*   **Status Feedback**: Provides clear operation status feedback through the status bar and output area.
+*   **Dependency Check and Installation**: Automatically checks and prompts/attempts to install required Python dependencies (`websockets`, `asyncio`).
+*   **Status Feedback**: Provides clear operational status feedback through the status bar and output area.
 *   **Logging**: Generates independent log files containing detailed operation records and error information for troubleshooting.
-*   **Configuration Persistence**: Saves the last used server IP, port, and advanced option settings, which are automatically loaded at next startup.
-*   **Upload Speed Optimization**: Optimizes upload speed for offline mode, improving processing efficiency.
-*   **Protocol Optimization**: Corrects protocol handling in offline mode, ensuring correct communication with the server.
-*   **File Structure Optimization**: Restructures file storage, storing configuration files, logs, and recognition results in separate directories.
-*   **Server Speed Testing**: Provides a dedicated button to test the server's upload speed and transcription speed, using test files from the demo directory to calculate and display upload speed (MB/s) and transcription speed (real-time factor).
-*   **Smart Duration Estimation**: Automatically detects the real duration of audio/video files, dynamically calculates transcription estimated time and waiting timeout based on speed test results, and provides real-time progress display and countdown functionality.
-*   **Fallback Strategy**: When unable to obtain audio duration, uses a fixed 20-minute waiting timeout to ensure all files can be processed normally.
-*   **Internationalization Support**: Provides language switching between Chinese and English interfaces to meet the needs of users with different language backgrounds.
+*   **Configuration Persistence**: Saves the last used server IP, port, and advanced option settings, automatically loading them on next startup.
+*   **Upload Speed Optimization**: Optimized upload speed for offline mode, improving processing efficiency.
+*   **Protocol Optimization**: Fixed protocol handling in offline mode to ensure proper communication with the server.
+*   **File Structure Optimization**: Restructured file storage, storing configuration files, logs, and recognition results in separate directories.
+*   **Server Speed Testing**: Provides dedicated button to test server upload speed and transcription speed, using test files from the demo directory to calculate and display upload speed (MB/s) and transcription speed (RTF).
+*   **Intelligent Duration Estimation**: Automatically detects the actual playback duration of audio/video files, dynamically calculates transcription estimated time and wait timeout based on speed test results, providing real-time progress display and countdown functionality.
+*   **Fallback Strategy**: Uses a fixed 20-minute wait time when unable to obtain audio duration, ensuring all files can be processed normally.
+*   **Internationalization Support**: Provides Chinese and English interface switching to meet the needs of users with different language backgrounds.
 
 ## 🐍 Requirements
 
-*   **Python**: 3.8 or higher (recommended to use the Python version used in the project runtime, e.g., 3.12).
+*   **Python**: 3.8 or higher (recommended to use the Python version used during project runtime, e.g., 3.12).
 *   **Tkinter**: Python standard library, usually installed with Python.
-*   **Necessary Python Packages**:
+*   **Required Python Packages**:
     *   `websockets`: For WebSocket communication.
     *   `asyncio`: For asynchronous operations.
     *   `mutagen`: For detecting audio/video file duration.
     *   `logging`: For generating log files (Python standard library).
-    *   *(Note: The GUI client will attempt to automatically install these dependencies upon first connection or recognition)*
+    *   *(Note: The GUI client will attempt to automatically install these dependencies when first connecting or recognizing)*
 
 ## 🚀 Installation and Setup
 
 1.  **Get the Code**: Clone or download this repository to your local computer.
-2.  **FunASR Server**: Ensure you have deployed and are running the WebSocket server according to the FunASR official documentation (including `wss_server_online.py` or `wss_server_offline.py`). Note down the server's IP address and port.
+2.  **FunASR Server**: Ensure you have deployed and are running the WebSocket server according to the official FunASR documentation (including `wss_server_online.py` or `wss_server_offline.py`). Note the server's IP address and port.
 3.  **Install Dependencies**:
     *   You can install manually:
         ```bash
         pip install websockets asyncio mutagen
         ```
-    *   Or start the GUI client, which will attempt to automatically install them when needed.
+    *   Or, start the GUI client and it will attempt to install automatically when needed.
 
 ## 🛠️ Usage
 
 1.  **Start GUI**:
     ```bash
-    cd path/to/funasr-gui-win-ver2504 # Navigate to the project root directory
-    python src/python-gui-client/funasr_gui_client_v2.py
+    cd path/to/funasr-gui-win-ver2504 # Enter project root directory
+    python dev/src/python-gui-client/funasr_gui_client_v2.py
     ```
 2.  **Configure Server**: Enter the IP address and port of the FunASR WebSocket server in the "Server Connection Configuration" area.
-3.  **Test Connection (Optional)**: Click the "Connect to Server" button to check network connectivity. The indicator will turn green after a successful connection.
+3.  **Test Connection (Optional)**: Click the "Connect Server" button to check network connectivity. The indicator will turn green when connection is successful.
 4.  **Select File**: Click the "Select Audio/Video File" button to choose the audio or video file you want to recognize.
 5.  **Configure Options (Optional)**: Check or uncheck "Enable ITN" and "Enable SSL" as needed.
 6.  **Switch Language (Optional)**: Select "中文" or "English" from the language dropdown to switch the interface language.
 7.  **Start Recognition**: Click the "Start Recognition" button.
-8.  **View Results**: Logs and final results during the recognition process will be displayed in the "Running Logs and Results" area. The status bar will show the current status. Recognition result text files will be saved in the `release/results/` directory.
+8.  **View Results**: Logs and final results during the recognition process will be displayed in the "Logs and Results" area. The status bar will show the current status. Recognition result text files will be saved in the `dev/output/` directory.
 9.  **View Logs**: Click the "Open Log File" button to open the log file and view detailed operation records and error information.
 10. **View Recognition Results**: Click the "Open Results Directory" button to directly open the directory where recognition results are saved.
-11. **Test Server Speed**: Click the "Speed Test" button to test the server's upload speed and transcription speed. The test will automatically use test files (tv-report-1.mp4 and tv-report-1.wav) from the demo directory to perform two tests, and calculate the average upload speed (MB/s) and transcription speed (real-time factor). After the test is completed, the results will be displayed on the interface, and a detailed test results dialog will pop up.
+11. **Test Server Speed**: Click the "Speed Test" button to test server upload speed and transcription speed. The test will automatically use test files from the demo directory (tv-report-1.mp4 and tv-report-1.wav) for two tests, calculating average upload speed (MB/s) and transcription speed (RTF). After completion, results will be displayed on the interface with a detailed test results dialog.
 
 ## 📁 File Structure
 
 ```
 funasr-gui-win-ver2504/
-├── src/
-│   └── python-gui-client/
-│       ├── funasr_gui_client_v2.py   # GUI client main program
-│       ├── language_resources.py     # Language resource file containing Chinese and English string mappings
-│       └── simple_funasr_client.py   # WebSocket client script that actually performs recognition
-├── release/
-│   ├── config/                       # Configuration file directory
-│   │   └── config.json               # File that saves user configuration
-│   ├── logs/                         # Log file directory
-│   │   └── funasr_gui_client.log     # Program running log file
-│   └── results/                      # Directory for storing recognition result text files
-│       └── speed_test/               # Subdirectory for storing speed test results
-├── ref_codes/                        # Reference code directory
-│   ├── funasr_client_api.py          # FunASR client API
-│   ├── funasr_wss_client.py          # Original FunASR WebSocket client
-│   └── requirements_client.txt       # Client dependency list
-├── ref_docs/                         # Reference document directory
-├── demo/                             # Demo audio and video file directory
-│   ├── tv-report-1.mp4               # Example video file (for speed testing)
-│   └── tv-report-1.wav               # Example audio file (for speed testing)
-├── prd/                              # Project requirements and documentation directory
+├── dev/
+│   ├── src/
+│   │   └── python-gui-client/
+│   │       ├── funasr_gui_client_v2.py   # GUI client main program
+│   │       ├── language_resources.py     # Language resource file with Chinese-English string mappings
+│   │       └── simple_funasr_client.py   # WebSocket client script that performs actual recognition
+│   ├── config/                           # Configuration file directory
+│   │   └── config.json                   # User configuration file
+│   ├── logs/                             # Log file directory
+│   │   └── funasr_gui_client.log         # Program runtime log file
+│   └── output/                           # Directory for recognition result text files
+│       └── speed_test/                   # Subdirectory for speed test results
+├── docs/                                 # Project documentation directory
 │   ├── funasr-python-gui-client-v2-需求文档.md # Project requirements document
 │   ├── funasr-python-gui-client-v2-项目管理.md # Project management document
-│   ├── funasr-python-gui-client-v2-UI定义.md   # Detailed UI definition document
-│   ├── FunASR客户端流程记录.md                 # Client and server interaction process record
-│   └── FunASR-performance.md                   # Performance test record
-└── README.md                                   # This document
+│   ├── funasr-python-gui-client-v2-UI定义.md   # UI detailed definition document
+│   ├── funasr-python-gui-client-v2-架构设计.md # Architecture design document
+│   └── funasr-python-gui-client-v2-CS协议解析.md # CS protocol analysis document
+├── tests/                                # Test file directory
+├── ref/                                  # Reference materials directory
+│   ├── ref_codes/                        # Reference code directory
+│   │   ├── funasr_client_api.py          # FunASR client API
+│   │   ├── funasr_wss_client.py          # Original FunASR WebSocket client
+│   │   └── requirements_client.txt       # Client dependency list
+│   └── ref_docs/                         # Reference documentation directory
+├── demo/                                 # Demo audio/video file directory
+│   ├── tv-report-1.mp4                   # Sample video file (for speed testing)
+│   └── tv-report-1.wav                   # Sample audio file (for speed testing)
+├── README.md                             # This document (English README)
+└── README_cn.md                          # Chinese version README
 ```
 
 ## ⚠️ Known Issues and Limitations
 
 *   Currently mainly supports FunASR's **offline** recognition mode.
-*   Visual configuration for all `funasr_wss_client.py` command line parameters (such as `chunk_size`, `chunk_interval`, `hotword`, etc.) is not yet implemented.
-*   Some audio files may have corrupted metadata, in which case the fallback strategy (fixed 20-minute waiting timeout) will be automatically activated.
+*   Visual configuration for all `funasr_wss_client.py` command-line parameters (such as `chunk_size`, `chunk_interval`, `hotword`, etc.) is not yet implemented.
+*   Some audio files may have corrupted metadata, in which case the fallback strategy (fixed 20-minute wait time) is automatically enabled.
 
 ## 🔜 Development Plan
 
 According to the project management document, the following features are under development:
 
-*   **Separation of Results and Logs**: Displaying recognition results and running logs separately to provide a clearer user experience.
-*   **Adding "Cancel" Button**: Allowing users to abort an ongoing recognition task.
-*   **Supporting Hotword Files**: Adding the function to select hotword files to improve recognition accuracy in specific domains.
-*   **Configurable Output Directory**: Allowing users to customize the location where results are saved.
-*   **Supporting Online and 2Pass Modes**: Extending support for more recognition modes to meet different scenario requirements.
+*   **Results and Logs Separation**: Separate display of recognition results and runtime logs for a clearer user experience.
+*   **Add "Cancel" Button**: Allow users to abort ongoing recognition tasks.
+*   **Support for Hotword Files**: Add functionality to select hotword files, improving recognition accuracy for specific domains.
+*   **Configure Output Directory**: Allow users to customize result save location.
+*   **Support for Online and 2Pass Modes**: Extend support for more recognition modes to meet different scenario needs.
 
 ## ✅ Recent Updates (V2.2)
 
-*   **Smart Duration Estimation**: Completed automatic audio duration detection and intelligent estimation functionality.
+*   **Intelligent Duration Estimation**: Completed audio duration auto-detection and intelligent estimation functionality.
 *   **Fallback Strategy**: Implemented fallback mechanism when audio duration acquisition fails.
 *   **Enhanced Status Bar Information**: Completed real-time transcription progress display and countdown functionality.
 *   **Enhanced Error Handling**: Improved error handling and user-friendly prompts.
-*   **Internationalization Support Enhancement**: Completed Chinese and English interface switching functionality, including complete translation of new features.
-*   **Timeout Mechanism Optimization**: Fixed the hardcoded 10-second communication timeout issue, replaced with intelligent dynamic timeout based on audio duration.
+*   **Complete Internationalization Support**: Completed Chinese-English interface switching functionality, including complete translation of new features.
+*   **Timeout Mechanism Optimization**: Fixed hard-coded 10-second communication timeout issue, changed to intelligent dynamic timeout based on audio duration.
 *   **Multi-layer Timeout Protection**: Implemented three-layer protection mechanism with main timeout, communication timeout, and fallback timeout.
 
-## 🤝 Contribution
+## 🤝 Contributing
 
-Questions, bug reports, or code improvements are welcome!
+Welcome to raise issues, report bugs, or contribute code improvements!
 
 ## 📄 License
 

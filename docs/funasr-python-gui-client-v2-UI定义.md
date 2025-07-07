@@ -125,13 +125,13 @@
         *   **文本**: "打开日志文件" / "Open Log File"
         *   **位置**: `grid(row=0, column=2, padx=15, pady=2, sticky=tk.W)`
         *   **操作**: 点击后调用 `self.open_log_file` 方法。
-        *   **效果**: 根据操作系统尝试打开日志文件 (`release/logs/funasr_gui_client.log`) 或其所在目录。
+        *   **效果**: 根据操作系统尝试打开日志文件 (`dev/logs/funasr_gui_client.log`) 或其所在目录。
     *   **打开结果目录 按钮 (`ttk.Button`)**
         *   **控件变量名**: `self.open_results_button`
         *   **文本**: "打开结果目录" / "Open Results Directory"
         *   **位置**: `grid(row=0, column=3, padx=15, pady=2, sticky=tk.W)`
         *   **操作**: 点击后调用 `self.open_results_folder` 方法。
-        *   **效果**: 根据操作系统尝试打开识别结果保存目录 (`release/results`) 或其所在目录。
+        *   **效果**: 根据操作系统尝试打开识别结果保存目录 (`dev/output`) 或其所在目录。
     *   **语言选择 下拉框 (`ttk.Combobox`)**
         *   **控件变量名**: `self.language_combo`
         *   **文本标签**: "界面语言:" / "UI Language:"
@@ -290,7 +290,7 @@
 
 *   **配置持久化**:
     *   语言设置作为用户配置的一部分保存，下次启动时自动加载。
-    *   配置保存在 `release/config/config.json` 文件中。
+    *   配置保存在 `dev/config/config.json` 文件中。
 
 *   **取消功能国际化**:
     *   **按钮文本**: "开始识别"/"Start Recognition" 和 "取消识别"/"Cancel Recognition"

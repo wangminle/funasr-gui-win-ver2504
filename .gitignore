@@ -1,14 +1,27 @@
 .DS_Store
 /.venv
-/src/python-gui-client/__pycache__
-/release/results
-/release/logs
-/release
-/test
-release/logs/funasr_gui_client.log
 
 # Python缓存文件
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+/dev/src/python-gui-client/__pycache__
+
+# 开发过程中的输出文件
+/dev/output/
+/dev/logs/
+dev/logs/funasr_gui_client.log
+
+# 测试临时文件
+/tests/temp_*
+/tests/test_results_*
+
+# IDE和编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+Thumbs.db

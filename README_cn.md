@@ -49,7 +49,7 @@
 1.  **启动 GUI**:
     ```bash
     cd path/to/funasr-gui-win-ver2504 # 进入项目根目录
-    python src/python-gui-client/funasr_gui_client_v2.py
+    python dev/src/python-gui-client/funasr_gui_client_v2.py
     ```
 2.  **配置服务器**: 在 "服务器连接配置" 区域输入 FunASR WebSocket 服务器的 IP 地址和端口。
 3.  **测试连接 (可选)**: 点击 "连接服务器" 按钮检查网络连通性。连接成功后，指示灯会变绿。
@@ -57,7 +57,7 @@
 5.  **配置选项 (可选)**: 根据需要勾选或取消勾选 "启用 ITN" 和 "启用 SSL"。
 6.  **切换语言 (可选)**: 从语言下拉框中选择"中文"或"English"来切换界面语言。
 7.  **开始识别**: 点击 "开始识别" 按钮。
-8.  **查看结果**: 识别过程中的日志和最终结果将显示在 "运行日志与结果" 区域。状态栏会显示当前状态。识别结果文本文件将保存在 `release/results/` 目录下。
+8.  **查看结果**: 识别过程中的日志和最终结果将显示在 "运行日志与结果" 区域。状态栏会显示当前状态。识别结果文本文件将保存在 `dev/output/` 目录下。
 9.  **查看日志**: 点击 "打开日志文件" 按钮可以打开日志文件，查看详细的操作记录和错误信息。
 10. **查看识别结果**: 点击 "打开结果目录" 按钮可以直接打开保存识别结果的目录。
 11. **测试服务器速度**: 点击 "速度测试" 按钮可以测试服务器的上传速度和转写速度。测试会自动使用demo目录中的测试文件（tv-report-1.mp4和tv-report-1.wav）进行两次测试，并计算平均上传速度（MB/s）和转写速度（倍时）。测试完成后，会在界面上显示结果，并弹出详细的测试结果对话框。
@@ -66,34 +66,36 @@
 
 ```
 funasr-gui-win-ver2504/
-├── src/
-│   └── python-gui-client/
-│       ├── funasr_gui_client_v2.py   # GUI 客户端主程序
-│       ├── language_resources.py     # 语言资源文件，包含中英文字符串映射
-│       └── simple_funasr_client.py   # 实际执行识别的 WebSocket 客户端脚本
-├── release/
-│   ├── config/                       # 配置文件目录
-│   │   └── config.json               # 保存用户配置的文件
-│   ├── logs/                         # 日志文件目录
-│   │   └── funasr_gui_client.log     # 程序运行日志文件
-│   └── results/                      # 存放识别结果文本文件的目录
-│       └── speed_test/               # 存放速度测试结果的子目录
-├── ref_codes/                        # 参考代码目录
-│   ├── funasr_client_api.py          # FunASR 客户端 API
-│   ├── funasr_wss_client.py          # FunASR 原始 WebSocket 客户端
-│   └── requirements_client.txt       # 客户端依赖项列表
-├── ref_docs/                         # 参考文档目录
-├── demo/                             # 演示音视频文件目录
-│   ├── tv-report-1.mp4               # 示例视频文件 (用于速度测试)
-│   └── tv-report-1.wav               # 示例音频文件 (用于速度测试)
-├── prd/                              # 项目需求和文档目录
+├── dev/
+│   ├── src/
+│   │   └── python-gui-client/
+│   │       ├── funasr_gui_client_v2.py   # GUI 客户端主程序
+│   │       ├── language_resources.py     # 语言资源文件，包含中英文字符串映射
+│   │       └── simple_funasr_client.py   # 实际执行识别的 WebSocket 客户端脚本
+│   ├── config/                           # 配置文件目录
+│   │   └── config.json                   # 保存用户配置的文件
+│   ├── logs/                             # 日志文件目录
+│   │   └── funasr_gui_client.log         # 程序运行日志文件
+│   └── output/                           # 存放识别结果文本文件的目录
+│       └── speed_test/                   # 存放速度测试结果的子目录
+├── docs/                                 # 项目文档目录
 │   ├── funasr-python-gui-client-v2-需求文档.md # 项目需求文档
 │   ├── funasr-python-gui-client-v2-项目管理.md # 项目管理文档
 │   ├── funasr-python-gui-client-v2-UI定义.md   # UI 详细定义文档
-│   ├── FunASR客户端流程记录.md                 # 客户端与服务端交互流程记录
-│   └── FunASR-performance.md                   # 性能测试记录
-├── README.md                                   # 项目主 README (英文版)
-└── README_cn.md                                # 本文档 (中文版 README)
+│   ├── funasr-python-gui-client-v2-架构设计.md # 架构设计文档
+│   └── funasr-python-gui-client-v2-CS协议解析.md # CS协议解析文档
+├── tests/                                # 测试文件目录
+├── ref/                                  # 参考资料目录
+│   ├── ref_codes/                        # 参考代码目录
+│   │   ├── funasr_client_api.py          # FunASR 客户端 API
+│   │   ├── funasr_wss_client.py          # FunASR 原始 WebSocket 客户端
+│   │   └── requirements_client.txt       # 客户端依赖项列表
+│   └── ref_docs/                         # 参考文档目录
+├── demo/                                 # 演示音视频文件目录
+│   ├── tv-report-1.mp4                   # 示例视频文件 (用于速度测试)
+│   └── tv-report-1.wav                   # 示例音频文件 (用于速度测试)
+├── README.md                             # 项目主 README (英文版)
+└── README_cn.md                          # 本文档 (中文版 README)
 ```
 
 ## ⚠️ 已知问题与限制

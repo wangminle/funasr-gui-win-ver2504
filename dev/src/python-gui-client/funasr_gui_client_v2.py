@@ -1002,12 +1002,12 @@ class FunASRGUIClient(tk.Tk):
         
         # 配置文件路径设置
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.project_root = os.path.abspath(os.path.join(self.current_dir, os.pardir, os.pardir))
+        self.project_root = os.path.abspath(os.path.join(self.current_dir, os.pardir, os.pardir, os.pardir))
         
-        # 新的配置和日志文件路径
-        self.release_dir = os.path.join(self.project_root, 'release')
-        self.config_dir = os.path.join(self.release_dir, 'config')
-        self.logs_dir = os.path.join(self.release_dir, 'logs')
+        # 新的配置和日志文件路径 - 现在放在dev目录下
+        self.dev_dir = os.path.join(self.project_root, 'dev')
+        self.config_dir = os.path.join(self.dev_dir, 'config')
+        self.logs_dir = os.path.join(self.dev_dir, 'logs')
         
         # 确保目录存在
         os.makedirs(self.config_dir, exist_ok=True)
@@ -1824,8 +1824,8 @@ class FunASRGUIClient(tk.Tk):
             self.status_var.set(self.lang_manager.get("script_not_found_status"))
             return
 
-        # 设置输出目录到 release/results 文件夹
-        results_dir = os.path.join(self.release_dir, 'results')
+        # 设置输出目录到 dev/output 文件夹
+        results_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'dev', 'output')
         os.makedirs(results_dir, exist_ok=True)
         
         args = [
@@ -2326,7 +2326,7 @@ class FunASRGUIClient(tk.Tk):
 
     def open_results_folder(self):
         """打开结果目录"""
-        results_dir = os.path.join(self.release_dir, 'results')
+        results_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'dev', 'output')
         logging.info(f"用户操作: 尝试打开结果目录: {results_dir}")
         try:
             if sys.platform == "win32":
@@ -2469,8 +2469,8 @@ class FunASRGUIClient(tk.Tk):
             self.after(0, self._handle_test_error, "脚本未找到")
             return
 
-        # 设置输出目录到 release/results/speed_test 文件夹
-        results_dir = os.path.join(self.release_dir, 'results', 'speed_test')
+        # 设置输出目录到 dev/output/speed_test 文件夹
+        results_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'dev', 'output', 'speed_test')
         os.makedirs(results_dir, exist_ok=True)
         
         args = [

@@ -29,7 +29,7 @@
     - [x] 保存上次使用的服务器 IP、端口。
     - [x] 保存上次使用的高级选项（ITN, SSL 等）。
     - [x] 程序启动时自动加载保存的配置。
-    - [x] 配置文件保存在 `release/config/config.json`。
+    - [x] 配置文件保存在 `dev/config/config.json`。
 - [x] **(P1) 进度显示优化:**
     - [x] 优化实时进度显示（代码中已有处理 `\r` 的尝试，但需改进）。
     - [x] 添加进度条显示总体完成百分比。
@@ -53,7 +53,7 @@
     - [ ] 将热词文件路径传递给 `--hotword` 参数。
     - [ ] （可选）提供热词文件格式的简单说明。
 - [x] **(P1) 配置输出目录:**
-    - [x] 识别结果默认保存到 `release/results` 目录。
+    - [x] 识别结果默认保存到 `dev/output` 目录。
     - [x] 识别完成后提示结果已保存。
     - [x] 提供"打开结果目录"按钮。
     - [ ] （可选）添加输入框允许用户自定义输出目录。
@@ -95,7 +95,7 @@
     - [ ] 在高级选项中添加 `--thread_num` 的配置，用于 `.scp` 文件处理。
 - [x] **(P0) 生成独立的日志文件:**
     - [x] 引入 Python `logging` 模块。
-    - [x] 将日志同时输出到"运行日志"区域和本地文件 (`release/logs/funasr_gui_client.log`)。
+    - [x] 将日志同时输出到"运行日志"区域和本地文件 (`dev/logs/funasr_gui_client.log`)。
     - [x] 日志包含时间戳、级别和类别前缀。
     - [x] 已实现日志轮转 (`RotatingFileHandler`)。
     - [x] 已提供"打开日志文件"的按钮。
@@ -111,9 +111,9 @@
 ## 文件结构优化
 
 - [x] **(P1) 文件路径优化:**
-    - [x] 将配置文件从 `src/python-gui-client/config.json` 移动到 `release/config/config.json`。
-    - [x] 将日志文件从 `src/python-gui-client/funasr_gui_client.log` 移动到 `release/logs/funasr_gui_client.log`。
-    - [x] 将识别结果输出目录设置为 `release/results`。
+    - [x] 将配置文件从 `src/python-gui-client/config.json` 移动到 `dev/config/config.json`。
+    - [x] 将日志文件从 `src/python-gui-client/funasr_gui_client.log` 移动到 `dev/logs/funasr_gui_client.log`。
+    - [x] 将识别结果输出目录设置为 `dev/output`。
     - [x] 添加"打开结果目录"按钮，方便用户查看识别结果。
     - [x] 实现旧配置文件和日志文件的自动迁移功能。
 
