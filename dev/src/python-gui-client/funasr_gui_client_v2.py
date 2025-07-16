@@ -92,10 +92,6 @@ class LanguageManager:
                 "zh": "开始识别",
                 "en": "Start Recognition"
             },
-            "cancel_recognition": {
-                "zh": "取消识别",
-                "en": "Cancel Recognition"
-            },
             # 高级选项
             "enable_itn": {
                 "zh": "启用 ITN",
@@ -143,39 +139,7 @@ class LanguageManager:
                 "zh": "准备就绪",
                 "en": "Ready"
             },
-            # 取消识别相关
-            "cancelling_recognition": {
-                "zh": "正在取消识别...",
-                "en": "Cancelling recognition..."
-            },
-            "recognition_cancelled": {
-                "zh": "识别已取消",
-                "en": "Recognition cancelled"
-            },
-            "cancel_success": {
-                "zh": "用户操作: 识别任务已成功取消",
-                "en": "User Action: Recognition task cancelled successfully"
-            },
-            "cancel_graceful_shutdown": {
-                "zh": "系统事件: 尝试优雅关闭识别进程...",
-                "en": "System Event: Attempting graceful shutdown of recognition process..."
-            },
-            "cancel_terminating_process": {
-                "zh": "系统事件: 正在终止识别进程...",
-                "en": "System Event: Terminating recognition process..."
-            },
-            "cancel_process_terminated": {
-                "zh": "系统事件: 识别进程已终止",
-                "en": "System Event: Recognition process terminated"
-            },
-            "cancel_force_kill": {
-                "zh": "系统警告: 进程终止超时，正在强制结束",
-                "en": "System Warning: Process termination timeout, force killing"
-            },
-            "cancel_cleanup_complete": {
-                "zh": "系统事件: 取消操作清理完成",
-                "en": "System Event: Cancellation cleanup completed"
-            },
+
             # 语言切换按钮
             "switch_to_en": {
                 "zh": "EN",
@@ -965,7 +929,6 @@ class TranscribeTimeManager:
 
 # --- Main Application Class ---
 class FunASRGUIClient(tk.Tk):
-    """FunASR GUI 客户端主窗口"""
     def __init__(self):
         super().__init__()
         
@@ -979,12 +942,6 @@ class FunASRGUIClient(tk.Tk):
         # 增加窗口默认高度，确保状态栏完全可见
         self.geometry("800x650")
         self.connection_status = False  # 连接状态标志
-        
-        # 取消识别相关变量
-        self.recognition_running = False  # 识别是否正在运行
-        self.current_process = None  # 当前运行的子进程
-        self.cancel_event = threading.Event()  # 取消事件信号
-        self.countdown_timer_id = None  # 新增：用于存储倒计时器的ID
         
         # 不再创建顶部语言切换按钮
         # self.create_language_button()
@@ -1002,12 +959,12 @@ class FunASRGUIClient(tk.Tk):
         
         # 配置文件路径设置
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.project_root = os.path.abspath(os.path.join(self.current_dir, os.pardir, os.pardir, os.pardir))
+        self.project_root = os.path.abspath(os.path.join(self.current_dir, os.pardir, os.pardir))
         
-        # 新的配置和日志文件路径 - 现在放在dev目录下
-        self.dev_dir = os.path.join(self.project_root, 'dev')
-        self.config_dir = os.path.join(self.dev_dir, 'config')
-        self.logs_dir = os.path.join(self.dev_dir, 'logs')
+        # 新的配置和日志文件路径
+        self.release_dir = os.path.join(self.project_root, 'release')
+        self.config_dir = os.path.join(self.release_dir, 'config')
+        self.logs_dir = os.path.join(self.release_dir, 'logs')
         
         # 确保目录存在
         os.makedirs(self.config_dir, exist_ok=True)
@@ -1244,12 +1201,7 @@ class FunASRGUIClient(tk.Tk):
                             if "选择" in child.cget("text") or "Select" in child.cget("text"):
                                 child.config(text=self.lang_manager.get("select_file"))
                             elif "开始" in child.cget("text") or "Start" in child.cget("text"):
-                                if self.recognition_running:
-                                    child.config(text=self.lang_manager.get("cancel_recognition"))
-                                else:
-                                    child.config(text=self.lang_manager.get("start_recognition"))
-                            elif "取消" in child.cget("text") or "Cancel" in child.cget("text"):
-                                child.config(text=self.lang_manager.get("cancel_recognition"))
+                                child.config(text=self.lang_manager.get("start_recognition"))
                 
                 # 更新高级选项区域
                 elif "高级选项" in widget.cget("text") or "Advanced Options" in widget.cget("text"):
@@ -1593,12 +1545,7 @@ class FunASRGUIClient(tk.Tk):
             logging.info(self.lang_manager.get("no_file_selected"))
 
     def start_recognition(self):
-        """启动识别过程或取消识别"""
-        # 如果当前正在识别，则执行取消操作
-        if self.recognition_running:
-            self.cancel_recognition()
-            return
-            
+        """启动识别过程"""
         ip = self.ip_var.get()
         port = self.port_var.get()
         audio_in = self.file_path_var.get()
@@ -1644,10 +1591,8 @@ class FunASRGUIClient(tk.Tk):
             estimate_text = f"{estimate_time}秒" if estimate_time else "无法预估"
             logging.info(self.lang_manager.get("duration_calculation_without_time", wait_timeout, estimate_text))
 
-        # 设置识别状态并更新按钮
-        self.recognition_running = True
-        self.cancel_event.clear()  # 清除取消信号
-        self.start_button.config(text=self.lang_manager.get("cancel_recognition"))
+        # 禁用按钮，防止重复点击
+        self.start_button.config(state=tk.DISABLED)
         self.select_button.config(state=tk.DISABLED)
         
         # 显示预估时长信息
@@ -1668,150 +1613,7 @@ class FunASRGUIClient(tk.Tk):
         thread = threading.Thread(target=self._run_script, args=(ip, port, audio_in, wait_timeout, estimate_time), daemon=True)
         thread.start()
 
-    def cancel_recognition(self):
-        """取消当前的识别任务"""
-        logging.info(self.lang_manager.get("cancel_success"))
-        
-        # 设置取消信号
-        self.cancel_event.set()
-        
-        # 停止状态栏的倒计时更新
-        if self.countdown_timer_id:
-            self.after_cancel(self.countdown_timer_id)
-            self.countdown_timer_id = None
-        
-        # 更新状态为等待取消确认
-        self.status_var.set("正在取消识别任务...")
-        
-        # 如果有正在运行的进程，向其发送取消命令
-        if self.current_process and self.current_process.poll() is None:
-            try:
-                # 发送JSON格式的取消命令到 stdin
-                cancel_command = {
-                    "type": "cancel_request",
-                    "action": "close_websocket",  # 明确指示关闭WebSocket
-                    "timestamp": time.time(),
-                    "reason": "user_initiated"
-                }
-                command_str = json.dumps(cancel_command) + '\n'
-                
-                logging.info(self.lang_manager.get("cancel_graceful_shutdown"))
-                self.current_process.stdin.write(command_str)
-                self.current_process.stdin.flush()
-                
-                logging.info("已发送JSON取消命令到WebSocket客户端")
-                
-                # 设置等待回执的超时时间（5秒）
-                self._wait_for_cancel_response_timeout = 5
-                self._cancel_response_received = False
-                
-                # 启动等待回执的检查
-                self._check_cancel_response()
-                
-            except (IOError, BrokenPipeError) as e:
-                logging.warning(f"发送取消命令失败 ({type(e).__name__})，直接强制终止进程")
-                self._force_terminate_process()
-        else:
-            # 没有正在运行的进程，直接重置状态
-            self._reset_recognition_state()
-            self.status_var.set(self.lang_manager.get("recognition_cancelled"))
 
-    def _check_cancel_response(self):
-        """检查取消响应，带超时机制"""
-        if self._cancel_response_received:
-            return
-        
-        if self._wait_for_cancel_response_timeout <= 0:
-            logging.warning("等待取消确认超时，强制终止进程")
-            self.status_var.set("取消确认超时，强制终止进程...")
-            self._force_terminate_process()
-            return
-        
-        # 每秒检查一次，并更新超时计数
-        self._wait_for_cancel_response_timeout -= 1
-        self.status_var.set(f"等待取消确认... ({self._wait_for_cancel_response_timeout}秒)")
-        
-        # 继续检查
-        self.after(1000, self._check_cancel_response)
-
-    def _handle_cancel_response(self, response_data):
-        """处理来自WebSocket客户端的取消回执"""
-        self._cancel_response_received = True
-        
-        if response_data.get("success", False):
-            logging.info(f"收到取消确认: {response_data.get('message', '取消成功')}")
-            self.status_var.set("服务器已确认取消，正在清理...")
-            
-            # 给一点时间让WebSocket客户端完成清理
-            self.after(1000, lambda: self._complete_cancellation(True))
-        else:
-            error_msg = response_data.get('message', '取消失败')
-            logging.warning(f"取消失败: {error_msg}")
-            self.status_var.set(f"取消失败: {error_msg}")
-            
-            # 即使WebSocket取消失败，也要强制终止进程
-            self.after(1000, lambda: self._force_terminate_process())
-
-    def _complete_cancellation(self, graceful=True):
-        """完成取消操作"""
-        if graceful:
-            logging.info("取消操作完成")
-        else:
-            logging.warning("强制取消完成")
-        
-        # 确保进程已终止
-        if self.current_process and self.current_process.poll() is None:
-            try:
-                self.current_process.wait(timeout=2)
-            except subprocess.TimeoutExpired:
-                self.current_process.kill()
-                self.current_process.wait()
-        
-        # 重置状态
-        self._reset_recognition_state()
-        
-        # 更新最终状态
-        if graceful:
-            self.status_var.set("识别已取消")
-        else:
-            self.status_var.set("识别已强制取消")
-        
-        logging.info(self.lang_manager.get("cancel_cleanup_complete"))
-
-    def _force_terminate_process(self):
-        """强制终止进程"""
-        if self.current_process and self.current_process.poll() is None:
-            try:
-                logging.info(self.lang_manager.get("cancel_terminating_process"))
-                self.current_process.terminate()
-                self.current_process.wait(timeout=3)
-                logging.info(self.lang_manager.get("cancel_process_terminated"))
-            except subprocess.TimeoutExpired:
-                if self.current_process.poll() is None:
-                    logging.warning(self.lang_manager.get("cancel_force_kill"))
-                    self.current_process.kill()
-                    self.current_process.wait()
-            except Exception as kill_e:
-                 logging.error(f"终止或杀死进程时发生意外错误: {kill_e}")
-                 if self.current_process.poll() is None:
-                    self.current_process.kill()
-                    self.current_process.wait()
-        
-        self._complete_cancellation(False)
-
-    def _reset_recognition_state(self):
-        """重置识别状态到初始状态"""
-        self.recognition_running = False
-        self.current_process = None
-        self.cancel_event.clear()
-        
-        # 重置取消回执相关变量
-        self._cancel_response_received = False
-        self._wait_for_cancel_response_timeout = 0
-        
-        # 恢复按钮状态
-        self.start_button.config(text=self.lang_manager.get("start_recognition"))
-        self.select_button.config(state=tk.NORMAL)
 
     def _run_script(self, ip, port, audio_in, wait_timeout=600, estimate_time=60):
         """在新线程中运行 simple_funasr_client.py 脚本。"""
@@ -1824,8 +1626,8 @@ class FunASRGUIClient(tk.Tk):
             self.status_var.set(self.lang_manager.get("script_not_found_status"))
             return
 
-        # 设置输出目录到 dev/output 文件夹
-        results_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'dev', 'output')
+        # 设置输出目录到 release/results 文件夹
+        results_dir = os.path.join(self.release_dir, 'results')
         os.makedirs(results_dir, exist_ok=True)
         
         args = [
@@ -1849,6 +1651,7 @@ class FunASRGUIClient(tk.Tk):
         self.log_text.configure(state='disabled')
         logging.info(self.lang_manager.get("task_start", os.path.basename(audio_in)))
         logging.info(self.lang_manager.get("results_save_location", results_dir))
+        self.start_button.config(state=tk.DISABLED) # 禁用开始按钮
 
         # 进度倒计时相关变量
         transcribe_start_time = None  # 转写开始时间
@@ -1863,9 +1666,8 @@ class FunASRGUIClient(tk.Tk):
         # 倒计时更新函数
         def update_countdown():
             nonlocal estimate_remaining, upload_completed, transcribe_start_time, task_completed
-            # 如果任务已完成或被取消，停止倒计时
-            if task_completed or self.cancel_event.is_set():
-                self.countdown_timer_id = None # 清除ID
+            # 如果任务已完成，停止倒计时
+            if task_completed:
                 return
                 
             if upload_completed and transcribe_start_time:
@@ -1897,11 +1699,11 @@ class FunASRGUIClient(tk.Tk):
                     self.status_var.set(self.lang_manager.get("transcribing_inaccurate_progress", os.path.basename(audio_in), elapsed_text))
                 
                 # 继续更新倒计时
-                self.countdown_timer_id = self.after(1000, update_countdown)
+                self.after(1000, update_countdown)
             elif not upload_completed:
                 # 上传阶段，显示上传状态
                 self.status_var.set(f"上传中 {os.path.basename(audio_in)}...")
-                self.countdown_timer_id = self.after(1000, update_countdown)
+                self.after(1000, update_countdown)
 
         def run_in_thread():
             nonlocal last_reported_progress, last_message_time, transcribe_start_time, upload_completed, task_completed, process # 允许修改外部变量
@@ -1911,33 +1713,12 @@ class FunASRGUIClient(tk.Tk):
             received_valid_result = False
             
             try:
-                # 检查是否已经被取消
-                if self.cancel_event.is_set():
-                    logging.info("系统事件: 识别任务在启动前被取消")
-                    self.after(0, self._reset_recognition_state)
-                    return
-                
                 logging.debug(f"调试信息: 正在执行命令: {' '.join(args)}")
                 # 使用 Popen 启动子进程，捕获 stdout 和 stderr
-                process = subprocess.Popen(args, 
-                                           stdin=subprocess.PIPE, 
-                                           stdout=subprocess.PIPE, 
-                                           stderr=subprocess.PIPE, 
-                                           text=True, 
-                                           encoding='utf-8', 
-                                           bufsize=1, 
-                                           creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0)
-                
-                # 保存进程引用以便取消时使用
-                self.current_process = process
+                process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8', bufsize=1, creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0)
 
                 # 实时读取 stdout
                 while True:
-                    # 检查是否被取消
-                    if self.cancel_event.is_set():
-                        logging.info("系统事件: 检测到取消信号，停止读取输出")
-                        break
-                        
                     line = process.stdout.readline()
                     if not line and process.poll() is not None:
                         break
@@ -2033,25 +1814,11 @@ class FunASRGUIClient(tk.Tk):
                         elif "处理完成" in stripped_line:
                             # 处理完成消息
                             logging.info(f"{self.lang_manager.get('server_response')}: {self.lang_manager.get('processing_completed')}")
-                        elif stripped_line.startswith("CANCEL_RESPONSE:"):
-                            # 处理取消回执消息
-                            try:
-                                response_json = stripped_line.replace("CANCEL_RESPONSE:", "")
-                                response_data = json.loads(response_json)
-                                logging.info(f"收到取消回执: {response_data}")
-                                # 在主线程中处理回执
-                                self.after(0, lambda: self._handle_cancel_response(response_data))
-                            except json.JSONDecodeError as e:
-                                logging.error(f"解析取消回执失败: {e}, 原始数据: {stripped_line}")
                         elif not stripped_line.startswith("["):
                             # 其他未分类的输出
                             logging.info(f"{self.lang_manager.get('client_event')}: {stripped_line}")
 
-                # 检查是否被取消
-                if self.cancel_event.is_set():
-                    logging.info("系统事件: 识别任务被用户取消")
-                    task_completed = True
-                    return
+
                 
                 # 等待进程结束并获取返回码和 stderr
                 return_code = process.wait()
@@ -2088,8 +1855,9 @@ class FunASRGUIClient(tk.Tk):
                 self.after(0, self.status_var.set, self.lang_manager.get("running_unexpected_error", e))
                 self.after(0, lambda: messagebox.showerror(self.lang_manager.get("unexpected_error_title"), self.lang_manager.get("unexpected_error_popup", e)))
             finally:
-                # 重置识别状态
-                self.after(0, self._reset_recognition_state)
+                # 确保无论成功或失败，都重新启用按钮
+                self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
+                self.after(0, lambda: self.select_button.config(state=tk.NORMAL))  # 恢复文件选择按钮
                 # 确保进程被终止（如果它仍在运行）
                 if process and process.poll() is None:
                     logging.warning(self.lang_manager.get("terminating_process"))
@@ -2121,7 +1889,7 @@ class FunASRGUIClient(tk.Tk):
                         process.kill()
                     self.after(0, self.status_var.set, f"错误: 转写超时 (超过{wait_timeout}秒)")
                     self.after(0, lambda: messagebox.showerror(self.lang_manager.get("transcription_timeout"), self.lang_manager.get("transcription_timeout_msg", wait_timeout)))
-                    self.after(0, self._reset_recognition_state)
+                    self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
             # 检查通信超时（基于预估时间的动态超时，最小30秒）
             elif (current_time - last_message_time) > max(30, estimate_time * 2):  # 动态设置通信超时时间，最小30秒
                 communication_timeout = max(30, estimate_time * 2)
@@ -2135,7 +1903,7 @@ class FunASRGUIClient(tk.Tk):
                         process.kill()
                     self.after(0, self.status_var.set, f"错误: {self.lang_manager.get('communication_timeout')}")
                     self.after(0, lambda: messagebox.showerror(self.lang_manager.get("communication_timeout"), self.lang_manager.get("communication_timeout_msg", communication_timeout)))
-                    self.after(0, self._reset_recognition_state)
+                    self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
             elif process and process.poll() is None:
                 # 如果进程仍在运行，继续监控
                 self.after(1000, check_timeout)
@@ -2326,7 +2094,7 @@ class FunASRGUIClient(tk.Tk):
 
     def open_results_folder(self):
         """打开结果目录"""
-        results_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'dev', 'output')
+        results_dir = os.path.join(self.release_dir, 'results')
         logging.info(f"用户操作: 尝试打开结果目录: {results_dir}")
         try:
             if sys.platform == "win32":
@@ -2469,8 +2237,8 @@ class FunASRGUIClient(tk.Tk):
             self.after(0, self._handle_test_error, "脚本未找到")
             return
 
-        # 设置输出目录到 dev/output/speed_test 文件夹
-        results_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'dev', 'output', 'speed_test')
+        # 设置输出目录到 release/results/speed_test 文件夹
+        results_dir = os.path.join(self.release_dir, 'results', 'speed_test')
         os.makedirs(results_dir, exist_ok=True)
         
         args = [
@@ -2505,137 +2273,55 @@ class FunASRGUIClient(tk.Tk):
             )
             
             # 实时读取输出，查找上传开始、结束和转写完成的标志
-            import select
-            import threading
-            import queue
-            
-            output_queue = queue.Queue()
-            
-            def read_output(stream, stream_name):
-                """读取输出流的函数"""
-                try:
-                    for line in iter(stream.readline, ''):
-                        if not line:
-                            break
-                        output_queue.put((stream_name, line.strip()))
-                except Exception as e:
-                    logging.debug(f"读取{stream_name}流时出错: {e}")
-            
-            # 创建读取stdout和stderr的线程
-            stdout_thread = threading.Thread(target=read_output, args=(process.stdout, "stdout"))
-            stderr_thread = threading.Thread(target=read_output, args=(process.stderr, "stderr"))
-            stdout_thread.daemon = True
-            stderr_thread.daemon = True
-            stdout_thread.start()
-            stderr_thread.start()
-            
-            # 处理输出
-            while process.poll() is None or not output_queue.empty():
-                try:
-                    stream_name, line = output_queue.get(timeout=0.1)
-                    if not line:
-                        continue
-                        
-                    logging.debug(f"速度测试输出({stream_name}): {line}")
+            for line in iter(process.stdout.readline, ''):
+                if not line:
+                    break
                     
-                    # 检测上传开始 - 改进检测逻辑
-                    if (("发送初始化消息:" in line and "mode" in line) or 
-                        ("发送WebSocket:" in line and "mode" in line) or
-                        ("[指令]" in line and "mode" in line)) and upload_start_time is None:
-                        upload_start_time = time.time()
-                        logging.info(self.lang_manager.get("speed_test_upload_started", self.test_file_index + 1))
-                        logging.debug(f"检测到上传开始时间戳: {upload_start_time}")
-                    
-                    # 检测上传进度，当进度达到100%时或发送结束标志时认为上传结束
-                    if (("上传进度: 100%" in line) or 
-                        ("发送结束标志:" in line) or 
-                        ("is_speaking" in line and "false" in line.lower())) and upload_end_time is None:
-                        upload_end_time = time.time()
-                        logging.debug(f"检测到上传结束时间戳: {upload_end_time}")
-                        # 确保时间戳有效后再计算时间差
-                        if upload_start_time is not None and upload_end_time is not None:
-                            upload_duration = upload_end_time - upload_start_time
-                            logging.info(self.lang_manager.get("speed_test_upload_completed", self.test_file_index + 1, upload_duration))
-                        else:
-                            logging.warning(f"上传时间戳异常: start={upload_start_time}, end={upload_end_time}")
-                            logging.info(self.lang_manager.get("speed_test_upload_completed", self.test_file_index + 1, "未知"))
-                    
-                    # 检测转写开始 - 从发送完成后开始计算转写时间
-                    if (upload_end_time is not None and transcribe_start_time is None and
-                        (("等待服务器消息" in line) or 
-                         ("等待接收消息" in line) or
-                         ("等待服务器处理" in line) or
-                         ("WebSocket连接建立成功" in line) or
-                         ("收到识别结果" in line) or
-                         ("等待处理完成" in line))):
-                        transcribe_start_time = time.time()
-                        logging.debug(f"检测到转写开始时间戳: {transcribe_start_time}")
-                        logging.info(self.lang_manager.get("speed_test_transcription_started", self.test_file_index + 1))
-                    
-                    # 检测转写完成 - 重新设计检测逻辑，优先检测实际的识别结果输出
-                    if (("识别文本(" in line and "):" in line) or  # 实际的识别结果输出
-                        ("离线识别完成" in line) or 
-                        ("实时识别完成" in line) or
-                        ("[完成]" in line) or
-                        ("WebSocket会话结束" in line) or
-                        ("消息处理结束" in line) or
-                        ("程序执行完成" in line)) and transcribe_end_time is None:
-                        transcribe_end_time = time.time()
-                        logging.debug(f"检测到转写结束时间戳: {transcribe_end_time}, 触发行: {line}")
-                        # 确保时间戳有效后再计算时间差
-                        if transcribe_start_time is not None and transcribe_end_time is not None:
-                            transcribe_duration = transcribe_end_time - transcribe_start_time
-                            logging.info(self.lang_manager.get("speed_test_transcription_completed", self.test_file_index + 1, transcribe_duration))
-                        else:
-                            logging.warning(f"转写时间戳异常: start={transcribe_start_time}, end={transcribe_end_time}")
-                            logging.info(self.lang_manager.get("speed_test_transcription_completed", self.test_file_index + 1, "未知"))
-                            
-                except queue.Empty:
-                    continue
-                except Exception as e:
-                    logging.debug(f"处理输出时出错: {e}")
-                    continue
+                line = line.strip()
+                logging.debug(f"速度测试输出: {line}")
+                
+                # 检测上传开始（匹配实际的日志输出格式）
+                if ("发送初始化消息:" in line or "发送WebSocket:" in line) and "mode" in line and upload_start_time is None:
+                    upload_start_time = time.time()
+                    logging.info(self.lang_manager.get("speed_test_upload_started", self.test_file_index + 1))
+                
+                # 检测上传进度，当进度达到100%时认为上传结束
+                if "上传进度: 100%" in line and upload_end_time is None:
+                    upload_end_time = time.time()
+                    transcribe_start_time = time.time()  # 上传结束即开始转写
+                    # 安全检查：确保upload_start_time不为None
+                    if upload_start_time is not None:
+                        logging.info(self.lang_manager.get("speed_test_upload_completed", self.test_file_index + 1, upload_end_time - upload_start_time))
+                    else:
+                        logging.warning(f"速度测试警告: 文件{self.test_file_index + 1}未检测到上传开始时间，无法计算上传耗时")
+                
+                # 检测转写完成（匹配实际的日志输出格式）
+                if ("离线识别完成" in line or "实时识别完成" in line or "离线模式收到非空文本" in line or "收到结束标志或完整结果" in line) and transcribe_end_time is None:
+                    transcribe_end_time = time.time()
+                    # 安全检查：确保transcribe_start_time不为None
+                    if transcribe_start_time is not None:
+                        logging.info(self.lang_manager.get("speed_test_transcription_completed", self.test_file_index + 1, transcribe_end_time - transcribe_start_time))
+                    else:
+                        logging.warning(f"速度测试警告: 文件{self.test_file_index + 1}未检测到转写开始时间，无法计算转写耗时")
             
             # 确保进程结束
             process.wait()
             
-            # 如果进程结束但还没有设置转写开始时间，使用上传结束时间作为转写开始时间
-            if transcribe_start_time is None and upload_end_time is not None:
-                transcribe_start_time = upload_end_time
-                logging.debug(f"进程结束，使用上传结束时间作为转写开始时间戳: {transcribe_start_time}")
-            
-            # 如果进程结束但还没有设置转写结束时间，则使用进程结束时间
-            if transcribe_end_time is None and transcribe_start_time is not None:
-                transcribe_end_time = time.time()
-                logging.debug(f"进程结束，设置转写结束时间戳: {transcribe_end_time}")
-                if transcribe_start_time is not None and transcribe_end_time is not None:
-                    transcribe_duration = transcribe_end_time - transcribe_start_time
-                    logging.info(self.lang_manager.get("speed_test_transcription_completed", self.test_file_index + 1, transcribe_duration))
-            
             # 检查是否成功获取了所有时间点
             if upload_start_time and upload_end_time and transcribe_start_time and transcribe_end_time:
-                try:
-                    upload_time = upload_end_time - upload_start_time
-                    transcribe_time = transcribe_end_time - transcribe_start_time
-                    
-                    # 验证时间合理性
-                    if upload_time <= 0 or transcribe_time <= 0:
-                        raise ValueError(f"时间计算异常: upload_time={upload_time}, transcribe_time={transcribe_time}")
-                    
-                    # 记录时间
-                    self.upload_times.append(upload_time)
-                    self.transcribe_times.append(transcribe_time)
-                    
-                    logging.info(self.lang_manager.get("speed_test_file_completed", 
-                                                      self.test_file_index + 1, upload_time, transcribe_time))
-                    
-                    # 准备下一个测试
-                    self.test_file_index += 1
-                    self.after(0, self._run_speed_test)
-                except Exception as e:
-                    error_msg = f"时间计算错误: {e}"
-                    logging.error(f"时间计算错误: {e}")
-                    self.after(0, self._handle_test_error, error_msg)
+                upload_time = upload_end_time - upload_start_time
+                transcribe_time = transcribe_end_time - transcribe_start_time
+                
+                # 记录时间
+                self.upload_times.append(upload_time)
+                self.transcribe_times.append(transcribe_time)
+                
+                logging.info(self.lang_manager.get("speed_test_file_completed", 
+                                                  self.test_file_index + 1, upload_time, transcribe_time))
+                
+                # 准备下一个测试
+                self.test_file_index += 1
+                self.after(0, self._run_speed_test)
             else:
                 # 某些时间点未能获取到
                 missing = []
@@ -2645,7 +2331,6 @@ class FunASRGUIClient(tk.Tk):
                 if not transcribe_end_time: missing.append("转写结束时间")
                 
                 error_msg = f"未能获取到完整时间点: {', '.join(missing)}"
-                logging.error(f"时间戳获取失败详情: upload_start={upload_start_time}, upload_end={upload_end_time}, transcribe_start={transcribe_start_time}, transcribe_end={transcribe_end_time}")
                 logging.error(self.lang_manager.get("speed_test_error_missing_timestamps", ', '.join(missing)))
                 self.after(0, self._handle_test_error, error_msg)
         
