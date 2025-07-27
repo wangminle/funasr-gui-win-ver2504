@@ -1,16 +1,6 @@
-# Claude 3.7
-
-
-Read file: reference/funasr_client_api.py
-
-Read file: reference/funasr_wss_client.py
-
-Read file: reference/funasr_wss_client.py
-
-Ran tool
-根据提供的代码文件和文档，我将详细分析 FunASR 客户端从发出识别指令到获取结果的完整流程：
-
 # FunASR 客户端工作流程分析
+
+**最后更新日期:** 2025-07-23
 
 假设我们执行以下命令：
 ```bash

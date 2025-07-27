@@ -62,6 +62,38 @@ class LanguageManager:
                 "zh": "运行日志与结果",
                 "en": "Running Logs and Results"
             },
+            "display_frame": {
+                "zh": "识别结果与运行日志",
+                "en": "Recognition Results and Running Logs"
+            },
+            "result_tab": {
+                "zh": "识别结果",
+                "en": "Recognition Results"
+            },
+            "log_tab": {
+                "zh": "运行日志",
+                "en": "Running Logs"
+            },
+            "copy_result": {
+                "zh": "复制结果",
+                "en": "Copy Result"
+            },
+            "clear_result": {
+                "zh": "清空结果",
+                "en": "Clear Result"
+            },
+            "result_copied": {
+                "zh": "识别结果已复制到剪贴板",
+                "en": "Recognition result copied to clipboard"
+            },
+            "no_result_to_copy": {
+                "zh": "没有识别结果可复制",
+                "en": "No recognition result to copy"
+            },
+            "result_cleared": {
+                "zh": "识别结果已清空",
+                "en": "Recognition result cleared"
+            },
             # 服务器配置
             "server_ip": {
                 "zh": "服务器 IP:",
@@ -957,18 +989,20 @@ class FunASRGUIClient(tk.Tk):
         # 用于在语言切换时正确更新 speed_test_status_var
         self.current_speed_test_status_key_and_args = ("not_tested", [])
         
-        # 配置文件路径设置
+        # 配置文件路径设置 - 遵循架构设计文档规范
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.project_root = os.path.abspath(os.path.join(self.current_dir, os.pardir, os.pardir))
+        self.project_root = os.path.abspath(os.path.join(self.current_dir, os.pardir, os.pardir, os.pardir))
         
-        # 新的配置和日志文件路径
-        self.release_dir = os.path.join(self.project_root, 'release')
-        self.config_dir = os.path.join(self.release_dir, 'config')
-        self.logs_dir = os.path.join(self.release_dir, 'logs')
+        # 按架构设计文档使用dev目录结构
+        self.dev_dir = os.path.join(self.project_root, 'dev')
+        self.config_dir = os.path.join(self.dev_dir, 'config')
+        self.logs_dir = os.path.join(self.dev_dir, 'logs')
+        self.output_dir = os.path.join(self.dev_dir, 'output')
         
         # 确保目录存在
         os.makedirs(self.config_dir, exist_ok=True)
         os.makedirs(self.logs_dir, exist_ok=True)
+        os.makedirs(self.output_dir, exist_ok=True)
         
         self.config_file = os.path.join(self.config_dir, 'config.json')
         self.log_file = os.path.join(self.logs_dir, 'funasr_gui_client.log') # 日志文件路径
@@ -1103,15 +1137,41 @@ class FunASRGUIClient(tk.Tk):
         self.transcribe_speed_var = tk.StringVar(value="--")
         ttk.Label(result_frame, textvariable=self.transcribe_speed_var).grid(row=1, column=1, padx=5, pady=2, sticky=tk.W)
 
-        # --- 状态与结果显示区 ---
-        # Renamed frame to Log Display Area
-        log_frame = ttk.LabelFrame(self, text=self.lang_manager.get("log_frame"))
-        log_frame.pack(padx=10, pady=5, fill=tk.BOTH, expand=True)
+        # --- 结果与日志显示区（选项卡式界面）---
+        display_frame = ttk.LabelFrame(self, text=self.lang_manager.get("display_frame"))
+        display_frame.pack(padx=10, pady=5, fill=tk.BOTH, expand=True)
 
-        # Renamed text widget to log_text
-        self.log_text = scrolledtext.ScrolledText(log_frame, wrap=tk.WORD, height=15)
+        # 创建选项卡控件
+        self.notebook = ttk.Notebook(display_frame)
+        self.notebook.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        # --- 运行日志选项卡 ---（放在左边作为默认标签页）
+        self.log_frame = ttk.Frame(self.notebook)
+        self.notebook.add(self.log_frame, text=self.lang_manager.get("log_tab"))
+        
+        # 日志文本区域
+        self.log_text = scrolledtext.ScrolledText(self.log_frame, wrap=tk.WORD, height=14)
         self.log_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.log_text.configure(state='disabled') # 初始设为只读
+
+        # --- 识别结果选项卡 ---
+        self.result_frame = ttk.Frame(self.notebook)
+        self.notebook.add(self.result_frame, text=self.lang_manager.get("result_tab"))
+        
+        # 结果文本区域
+        self.result_text = scrolledtext.ScrolledText(self.result_frame, wrap=tk.WORD, height=14)
+        self.result_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        self.result_text.configure(state='disabled')
+        
+        # 结果操作按钮区
+        result_button_frame = ttk.Frame(self.result_frame)
+        result_button_frame.pack(fill=tk.X, padx=5, pady=(0, 5))
+        
+        self.copy_result_button = ttk.Button(result_button_frame, text=self.lang_manager.get("copy_result"), command=self.copy_result)
+        self.copy_result_button.pack(side=tk.LEFT, padx=(0, 5))
+        
+        self.clear_result_button = ttk.Button(result_button_frame, text=self.lang_manager.get("clear_result"), command=self.clear_result)
+        self.clear_result_button.pack(side=tk.LEFT)
 
         # Attach the GUI handler AFTER the text widget is created
         self.attach_gui_log_handler()
@@ -1232,9 +1292,9 @@ class FunASRGUIClient(tk.Tk):
                                     elif "转写" in grandchild.cget("text") or "Transcription" in grandchild.cget("text"):
                                         grandchild.config(text=self.lang_manager.get("transcription_speed"))
                 
-                # 更新日志区域
-                elif "运行日志" in widget.cget("text") or "Running Logs" in widget.cget("text"):
-                    widget.config(text=self.lang_manager.get("log_frame"))
+                # 更新显示区域
+                elif "识别结果与运行日志" in widget.cget("text") or "Recognition Results and Running Logs" in widget.cget("text"):
+                    widget.config(text=self.lang_manager.get("display_frame"))
         
         # 更新连接状态指示器
         if self.connection_status:
@@ -1248,6 +1308,14 @@ class FunASRGUIClient(tk.Tk):
         key, args = self.current_speed_test_status_key_and_args
         self.speed_test_status_var.set(self.lang_manager.get(key, *args))
         
+        # 更新选项卡标题
+        self.notebook.tab(0, text=self.lang_manager.get("log_tab"))
+        self.notebook.tab(1, text=self.lang_manager.get("result_tab"))
+        
+        # 更新按钮文本
+        self.copy_result_button.config(text=self.lang_manager.get("copy_result"))
+        self.clear_result_button.config(text=self.lang_manager.get("clear_result"))
+        
         # 更新状态栏
         current_status = self.status_var.get()
         if "准备就绪" in current_status or "Ready" in current_status:
@@ -1255,27 +1323,43 @@ class FunASRGUIClient(tk.Tk):
 
     def migrate_legacy_files(self):
         """检查并迁移旧位置的配置文件和日志文件到新位置"""
-        # 旧的配置文件路径
-        old_config_file = os.path.join(self.current_dir, 'config.json')
-        old_log_file = os.path.join(self.current_dir, 'funasr_gui_client.log')
+        import shutil
         
-        # 如果旧的配置文件存在而新的不存在，则复制
-        if os.path.exists(old_config_file) and not os.path.exists(self.config_file):
-            try:
-                import shutil
-                shutil.copy2(old_config_file, self.config_file)
-                print(f"已迁移配置文件从 {old_config_file} 到 {self.config_file}")
-            except Exception as e:
-                print(f"迁移配置文件失败: {e}")
+        # 旧的配置文件路径（按优先级顺序）
+        legacy_paths = [
+            # 最近的release目录位置
+            {
+                'config': os.path.join(self.project_root, 'release', 'config', 'config.json'),
+                'log': os.path.join(self.project_root, 'release', 'logs', 'funasr_gui_client.log')
+            },
+            # 更旧的脚本同目录位置
+            {
+                'config': os.path.join(self.current_dir, 'config.json'),
+                'log': os.path.join(self.current_dir, 'funasr_gui_client.log')
+            }
+        ]
         
-        # 如果旧的日志文件存在而新的不存在，则复制
-        if os.path.exists(old_log_file) and not os.path.exists(self.log_file):
-            try:
-                import shutil
-                shutil.copy2(old_log_file, self.log_file)
-                print(f"已迁移日志文件从 {old_log_file} 到 {self.log_file}")
-            except Exception as e:
-                print(f"迁移日志文件失败: {e}")
+        # 迁移配置文件（找到第一个存在的就迁移）
+        if not os.path.exists(self.config_file):
+            for legacy in legacy_paths:
+                if os.path.exists(legacy['config']):
+                    try:
+                        shutil.copy2(legacy['config'], self.config_file)
+                        print(f"已迁移配置文件从 {legacy['config']} 到 {self.config_file}")
+                        break
+                    except Exception as e:
+                        print(f"迁移配置文件失败: {e}")
+        
+        # 迁移日志文件（找到第一个存在的就迁移）
+        if not os.path.exists(self.log_file):
+            for legacy in legacy_paths:
+                if os.path.exists(legacy['log']):
+                    try:
+                        shutil.copy2(legacy['log'], self.log_file)
+                        print(f"已迁移日志文件从 {legacy['log']} 到 {self.log_file}")
+                        break
+                    except Exception as e:
+                        print(f"迁移日志文件失败: {e}")
 
     def setup_logging(self):
         """配置日志记录"""
@@ -1374,6 +1458,59 @@ class FunASRGUIClient(tk.Tk):
             self.status_var.set(f"保存配置失败: {e}")
             logging.error(f"系统错误: 保存配置失败: {e}", exc_info=True)
     
+    def copy_result(self):
+        """复制识别结果到剪贴板"""
+        try:
+            result_content = self.result_text.get("1.0", tk.END).strip()
+            if result_content:
+                self.clipboard_clear()
+                self.clipboard_append(result_content)
+                self.status_var.set(self.lang_manager.get("result_copied"))
+                logging.info("用户操作: 识别结果已复制到剪贴板")
+            else:
+                self.status_var.set(self.lang_manager.get("no_result_to_copy"))
+                logging.warning("用户操作: 没有识别结果可复制")
+        except Exception as e:
+            logging.error(f"复制结果时出错: {e}", exc_info=True)
+            self.status_var.set(f"复制失败: {e}")
+    
+    def clear_result(self):
+        """清空识别结果区域"""
+        try:
+            self.result_text.configure(state='normal')
+            self.result_text.delete("1.0", tk.END)
+            self.result_text.configure(state='disabled')
+            self.status_var.set(self.lang_manager.get("result_cleared"))
+            logging.info("用户操作: 识别结果已清空")
+        except Exception as e:
+            logging.error(f"清空结果时出错: {e}", exc_info=True)
+            self.status_var.set(f"清空失败: {e}")
+    
+    def _display_recognition_result(self, result_text):
+        """在结果选项卡中显示识别结果"""
+        try:
+            self.result_text.configure(state='normal')
+            
+            # 检查是否是第一个结果（需要添加标题）
+            current_content = self.result_text.get("1.0", tk.END).strip()
+            if not current_content:
+                # 添加时间戳和文件名标识
+                timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+                file_name = os.path.basename(self.file_path_var.get()) if self.file_path_var.get() else "未知文件"
+                header = f"[{timestamp}] {file_name}:\n"
+                self.result_text.insert(tk.END, header)
+            
+            # 添加识别结果
+            self.result_text.insert(tk.END, result_text + "\n")
+            self.result_text.see(tk.END)
+            self.result_text.configure(state='disabled')
+            
+            # 自动切换到结果选项卡
+            self.notebook.select(1)
+            
+        except Exception as e:
+            logging.error(f"显示识别结果时出错: {e}", exc_info=True)
+
     def on_closing(self):
         """窗口关闭时的处理"""
         try:
@@ -1626,8 +1763,8 @@ class FunASRGUIClient(tk.Tk):
             self.status_var.set(self.lang_manager.get("script_not_found_status"))
             return
 
-        # 设置输出目录到 release/results 文件夹
-        results_dir = os.path.join(self.release_dir, 'results')
+        # 设置输出目录到 dev/output 文件夹（遵循架构设计文档）
+        results_dir = self.output_dir
         os.makedirs(results_dir, exist_ok=True)
         
         args = [
@@ -1645,7 +1782,12 @@ class FunASRGUIClient(tk.Tk):
         if self.use_ssl_var.get() == 0:
             args.append("--no-ssl")
 
-        # 清空之前的识别结果区域
+        # 清空之前的识别结果区域（但保留系统日志）
+        self.result_text.configure(state='normal')
+        self.result_text.delete('1.0', tk.END)  # 清空结果区域
+        self.result_text.configure(state='disabled')
+        
+        # 日志区域不清空，保留之前的系统日志
         self.log_text.configure(state='normal')
         # self.log_text.delete('1.0', tk.END) # 取消启动时清空，不清空之前的系统日志
         self.log_text.configure(state='disabled')
@@ -1728,6 +1870,9 @@ class FunASRGUIClient(tk.Tk):
                         # 检查是否收到了有效的识别结果
                         if "识别结果:" in stripped_line and len(stripped_line) > 20:  # 确保不是空结果
                             received_valid_result = True
+                            # 提取识别结果文本并显示在结果区域
+                            result_text = stripped_line.replace("识别结果:", "").strip()
+                            self.after(0, self._display_recognition_result, result_text)
                             logging.info(f"{self.lang_manager.get('server_response')}: {stripped_line}")
                         elif stripped_line.startswith("[DEBUG]") or stripped_line.startswith(self.lang_manager.get("log_tag_debug")):
                             # 统一使用翻译后的DEBUG标签
@@ -2094,7 +2239,7 @@ class FunASRGUIClient(tk.Tk):
 
     def open_results_folder(self):
         """打开结果目录"""
-        results_dir = os.path.join(self.release_dir, 'results')
+        results_dir = self.output_dir
         logging.info(f"用户操作: 尝试打开结果目录: {results_dir}")
         try:
             if sys.platform == "win32":
@@ -2175,8 +2320,8 @@ class FunASRGUIClient(tk.Tk):
         self.status_var.set(self.lang_manager.get("status_preparing_speed_test"))
         self.speed_test_button.config(state=tk.DISABLED)
         
-        # 查找测试文件
-        demo_dir = os.path.join(self.project_root, 'demo')
+        # 查找测试文件 - 使用dev目录下的demo目录
+        demo_dir = os.path.join(self.dev_dir, 'demo')
         mp4_file = os.path.join(demo_dir, 'tv-report-1.mp4')
         wav_file = os.path.join(demo_dir, 'tv-report-1.wav')
         
@@ -2237,8 +2382,8 @@ class FunASRGUIClient(tk.Tk):
             self.after(0, self._handle_test_error, "脚本未找到")
             return
 
-        # 设置输出目录到 release/results/speed_test 文件夹
-        results_dir = os.path.join(self.release_dir, 'results', 'speed_test')
+        # 设置输出目录到 dev/output/speed_test 文件夹（遵循架构设计文档）
+        results_dir = os.path.join(self.output_dir, 'speed_test')
         os.makedirs(results_dir, exist_ok=True)
         
         args = [

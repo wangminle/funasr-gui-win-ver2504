@@ -1,5 +1,7 @@
 # FunASR Python客户端的简单需求说明书
 
+**最后更新日期:** 2025-07-23
+
 这是一个使用 Python 和 Tkinter 库创建一个简单 GUI 客户端的方案，该客户端将调用您提供的 `funasr_wss_client.py` 脚本来与 FunASR runtime 服务器交互。
 
 ## 功能描述

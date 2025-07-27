@@ -18,7 +18,7 @@ from pathlib import Path
 TEST_CONFIG = {
     "gui_client_path": "dev/src/python-gui-client/funasr_gui_client_v2.py",
     "simple_client_path": "dev/src/python-gui-client/simple_funasr_client.py",
-    "test_audio_file": "demo/tv-report-1.wav",
+    "test_audio_file": "dev/demo/tv-report-1.wav",
     "config_file": "dev/config/config.json",
     "output_dir": "dev/output",
     "results_dir": "release/results",
