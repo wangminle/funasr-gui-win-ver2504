@@ -6,11 +6,12 @@
 目标：验证修复后的速度测试功能
 """
 
-import os
-import sys
-import subprocess
-import time
 import logging
+import os
+import subprocess
+import sys
+import time
+
 
 def setup_test_environment():
     """设置测试环境"""

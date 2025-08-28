@@ -231,10 +231,6 @@ dev/config/config.json.bak
 *.ogg
 *.flac
 
-# 但保留demo文件夹中的示例文件
-!demo/*.mp3
-!demo/*.mp4
-!demo/*.wav
 
 # 打包输出文件
 /dist/

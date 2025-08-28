@@ -1,0 +1,30 @@
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+include = '\\.pyi?$'
+extend-exclude = '''
+(
+  ^/dev/output/
+  | ^/dev/logs/
+  | ^/ref/
+  | ^/docs/
+  | ^/src/resources/
+  | ^/@resources/
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+py_version = 312
+skip = [
+  "dev/output",
+  "dev/logs",
+  "ref",
+  "docs",
+  "src/resources",
+  "@resources"
+]
+
+
+

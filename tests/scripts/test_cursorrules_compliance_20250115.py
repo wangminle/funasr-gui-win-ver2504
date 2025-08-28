@@ -5,10 +5,10 @@ CursorRules符合性测试脚本
 全面检查代码实现是否符合.cursorrules中定义的所有规范
 """
 
+import inspect
+import json
 import os
 import sys
-import json
-import inspect
 from pathlib import Path
 
 # 添加项目路径以便导入
@@ -92,7 +92,7 @@ def test_code_comments_compliance():
     
     try:
         import funasr_gui_client_v2
-        
+
         # 检查主要类的注释
         classes_to_check = [
             funasr_gui_client_v2.LanguageManager,
@@ -151,7 +151,7 @@ def test_file_path_compliance():
     
     try:
         import funasr_gui_client_v2
-        
+
         # 创建GUI实例检查路径配置
         app = funasr_gui_client_v2.FunASRGUIClient()
         

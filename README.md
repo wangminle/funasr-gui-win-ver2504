@@ -37,19 +37,18 @@ A Tkinter-based graphical user interface (GUI) client for interacting with FunAS
 
 1.  **Get the Code**: Clone or download this repository to your local computer.
 2.  **FunASR Server**: Ensure you have deployed and are running the WebSocket server according to the official FunASR documentation (including `wss_server_online.py` or `wss_server_offline.py`). Note the server's IP address and port.
-3.  **Install Dependencies**:
-    *   You can install manually:
-        ```bash
-        pip install websockets mutagen
-        ```
-    *   Or, start the GUI client and it will attempt to install automatically when needed.
+3.  **Install Dependencies (pipenv)**:
+    ```bash
+    pipenv install --skip-lock
+    pipenv install --dev --skip-lock
+    ```
 
 ## 🛠️ Usage
 
 1.  **Start GUI**:
     ```bash
     cd path/to/funasr-gui-win-ver2504 # Enter project root directory
-    python dev/src/python-gui-client/funasr_gui_client_v2.py
+    pipenv run python src/python-gui-client/funasr_gui_client_v2.py
     ```
 2.  **Configure Server**: Enter the IP address and port of the FunASR WebSocket server in the "Server Connection Configuration" area.
 3.  **Test Connection (Optional)**: Click the "Connect Server" button to check network connectivity. The indicator will turn green when connection is successful.
@@ -62,38 +61,37 @@ A Tkinter-based graphical user interface (GUI) client for interacting with FunAS
 10. **View Recognition Results**: Click the "Open Results Directory" button to directly open the directory where recognition results are saved.
 11. **Test Server Speed**: Click the "Speed Test" button to test server upload speed and transcription speed. The test will automatically use test files from the demo directory (tv-report-1.mp4 and tv-report-1.wav) for two tests, calculating average upload speed (MB/s) and transcription speed (RTF). After completion, results will be displayed on the interface with a detailed test results dialog.
 
+### Lint/Type Check (pipenv)
+```bash
+pipenv run python src/tools/run_lints.py
+pipenv run python src/tools/run_lints.py --fix
+pipenv run python src/tools/run_lints.py --mypy-only --paths src
+```
+
 ## 📁 File Structure
 
 ```
 funasr-gui-win-ver2504/
 ├── dev/
-│   ├── src/
-│   │   └── python-gui-client/
-│   │       ├── funasr_gui_client_v2.py   # GUI client main program
-│   │       └── simple_funasr_client.py   # WebSocket client script that performs actual recognition
 │   ├── config/                           # Configuration file directory
 │   │   └── config.json                   # User configuration file
 │   ├── logs/                             # Log file directory
 │   │   └── funasr_gui_client.log         # Program runtime log file
 │   └── release/                          # Release directory
 │       └── results/                      # Directory for recognition result text files
+├── src/
+│   ├── python-gui-client/
+│   │   ├── funasr_gui_client_v2.py       # GUI client main program
+│   │   └── simple_funasr_client.py       # WebSocket client script that performs actual recognition
+│   └── tools/
+│       └── run_lints.py                  # Lint & type check runner
 ├── docs/                                 # Project documentation directory
-│   ├── funasr-python-gui-client-v2-需求文档.md # Project requirements document
-│   ├── funasr-python-gui-client-v2-项目管理.md # Project management document
-│   ├── funasr-python-gui-client-v2-UI定义.md   # UI detailed definition document
-│   ├── funasr-python-gui-client-v2-架构设计.md # Architecture design document
-│   └── funasr-python-gui-client-v2-CS协议解析.md # CS protocol analysis document
 ├── tests/                                # Test file directory
 ├── ref/                                  # Reference materials directory
-│   ├── ref_codes/                        # Reference code directory
-│   │   ├── funasr_client_api.py          # FunASR client API
-│   │   ├── funasr_wss_client.py          # Original FunASR WebSocket client
-│   │   └── requirements_client.txt       # Client dependency list
-│   ├── ref_docs/                         # Reference documentation directory
-│   └── v0.2.0/                           # v0.2.0 reference implementation
-├── demo/                                 # Demo audio/video file directory
-│   ├── tv-report-1.mp4                   # Sample video file (for speed testing)
-│   └── tv-report-1.wav                   # Sample audio file (for speed testing)
+├── @resources/                           # Demo audio/video files
+│   └── demo/
+│       ├── tv-report-1.mp4
+│       └── tv-report-1.wav
 ├── README.md                             # This document (English README)
 └── README_cn.md                          # Chinese version README
 ```

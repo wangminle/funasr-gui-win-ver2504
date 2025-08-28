@@ -5,11 +5,11 @@ UI分离功能实现测试脚本
 测试架构设计文档规范的目录结构修改和UI分离功能
 """
 
-import os
-import sys
 import json
-import tempfile
+import os
 import shutil
+import sys
+import tempfile
 from pathlib import Path
 
 # 添加项目路径以便导入
@@ -58,7 +58,7 @@ def test_config_file_migration():
     try:
         # 导入GUI客户端
         import funasr_gui_client_v2
-        
+
         # 创建一个临时的配置文件来测试迁移
         project_root = Path(__file__).parent.parent
         release_config_path = project_root / 'release' / 'config' / 'config.json'
@@ -113,8 +113,9 @@ def test_ui_components():
     
     try:
         import tkinter as tk
+
         import funasr_gui_client_v2
-        
+
         # 创建GUI实例
         app = funasr_gui_client_v2.FunASRGUIClient()
         
@@ -195,7 +196,7 @@ def test_language_support():
     
     try:
         import funasr_gui_client_v2
-        
+
         # 创建GUI实例
         app = funasr_gui_client_v2.FunASRGUIClient()
         

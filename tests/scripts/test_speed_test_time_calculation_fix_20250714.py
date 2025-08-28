@@ -13,15 +13,15 @@
 日期：2024-07-14
 """
 
-import sys
-import os
-import time
 import json
+import logging
+import os
+import subprocess
+import sys
 import tempfile
 import threading
-import subprocess
-import logging
-from unittest.mock import Mock, patch, MagicMock
+import time
+from unittest.mock import MagicMock, Mock, patch
 
 # 添加源代码路径
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'dev', 'src', 'python-gui-client'))
@@ -32,7 +32,7 @@ def test_normal_time_calculation():
     
     try:
         from funasr_gui_client_v2 import FunASRGUIClient
-        
+
         # 模拟GUI客户端
         app = FunASRGUIClient()
         app.withdraw()  # 隐藏窗口
@@ -147,7 +147,7 @@ def test_warning_log_output():
     try:
         # 模拟日志处理器
         import logging
-        
+
         # 创建一个内存日志处理器
         log_stream = []
         
