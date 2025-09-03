@@ -11,7 +11,6 @@ import os
 import sys
 import time
 import unittest
-from unittest.mock import MagicMock, patch
 
 # 添加dev/src目录到Python路径
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'dev', 'src', 'python-gui-client'))
