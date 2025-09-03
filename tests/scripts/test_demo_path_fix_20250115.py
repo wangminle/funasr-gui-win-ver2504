@@ -18,8 +18,8 @@ def test_demo_path_fix():
     project_root = Path(__file__).parent.parent
     print(f"项目根目录: {project_root}")
 
-    # 测试新的 demo 目录路径（迁移到 @resources/demo）
-    new_demo_dir = project_root / "@resources" / "demo"
+    # 测试新的 demo 目录路径（迁移到 项目根目录 resources/demo）
+    new_demo_dir = project_root / "resources" / "demo"
     print(f"新的demo目录: {new_demo_dir}")
 
     # 检查目录是否存在
@@ -71,7 +71,7 @@ def test_gui_client_import():
         calculated_project_root = (
             current_dir.parent.parent
         )  # python-gui-client -> src -> root
-        demo_dir = calculated_project_root / "@resources" / "demo"
+        demo_dir = calculated_project_root / "resources" / "demo"
 
         print(f"计算出的项目根目录: {calculated_project_root}")
         print(f"计算出的demo目录: {demo_dir}")

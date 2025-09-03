@@ -5,8 +5,7 @@ CursorRules符合性测试脚本
 全面检查代码实现是否符合.cursorrules中定义的所有规范
 """
 
-import inspect
-import json
+
 import os
 import sys
 from pathlib import Path

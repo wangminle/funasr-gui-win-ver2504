@@ -15,7 +15,7 @@ import time
 TEST_CONFIG = {
     "gui_client_path": "src/python-gui-client/funasr_gui_client_v2.py",
     "simple_client_path": "src/python-gui-client/simple_funasr_client.py",
-    "test_audio_file": "@resources/demo/tv-report-1.wav",
+    "test_audio_file": "resources/demo/tv-report-1.wav",
     "config_file": "dev/config/config.json",
     "output_dir": "dev/output",
     "results_dir": "release/results",

@@ -14,7 +14,6 @@
 import os
 import sys
 import unittest
-from pathlib import Path
 
 # 添加src目录到Python路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,7 +28,7 @@ class TestDemoPathUpdate(unittest.TestCase):
     def setUp(self):
         """测试初始化"""
         self.project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
-        self.demo_dir = os.path.join(self.project_root, 'src', 'resources', 'demo')
+        self.demo_dir = os.path.join(self.project_root, 'resources', 'demo')
         self.mp4_file = os.path.join(self.demo_dir, 'tv-report-1.mp4')
         self.wav_file = os.path.join(self.demo_dir, 'tv-report-1.wav')
         
@@ -75,7 +74,7 @@ class TestDemoPathUpdate(unittest.TestCase):
         # 模拟GUI客户端中的路径构建逻辑
         current_file_dir = src_dir  # 模拟当前文件所在目录
         project_root_simulated = os.path.abspath(os.path.join(current_file_dir, '..', '..'))
-        demo_dir_simulated = os.path.join(project_root_simulated, 'src', 'resources', 'demo')
+        demo_dir_simulated = os.path.join(project_root_simulated, 'resources', 'demo')
         
         # 验证模拟的路径与实际路径一致
         self.assertEqual(demo_dir_simulated, self.demo_dir, 

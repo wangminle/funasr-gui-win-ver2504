@@ -877,7 +877,7 @@ class FunASRGUIClient(tk.Tk):
         # 配置文件路径设置 - 遵循架构设计文档规范
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
         self.project_root = os.path.abspath(
-            os.path.join(self.current_dir, os.pardir, os.pardir, os.pardir)
+            os.path.join(self.current_dir, os.pardir, os.pardir)
         )
 
         # 按架构设计文档使用dev目录结构
@@ -1721,7 +1721,8 @@ class FunASRGUIClient(tk.Tk):
         filetypes = (
             (
                 self.lang_manager.get("audio_video_files"),
-                "*.mp3 *.wma *.wav *.ogg *.ac3 *.m4a *.opus *.aac *.pcm *.mp4 *.wmv *.avi *.mov *.mkv *.mpg *.mpeg *.webm *.ts *.flv",
+                "*.mp3 *.wma *.wav *.ogg *.ac3 *.m4a *.opus *.aac *.pcm "
+                "*.mp4 *.wmv *.avi *.mov *.mkv *.mpg *.mpeg *.webm *.ts *.flv",
             ),
             (self.lang_manager.get("scp_files"), "*.scp"),
             (self.lang_manager.get("all_files"), "*.*"),
@@ -1814,7 +1815,10 @@ class FunASRGUIClient(tk.Tk):
             self.time_manager.current_file_duration
             and self.time_manager.current_file_duration > 0
         ):
-            duration_text = f"{int(self.time_manager.current_file_duration//60)}分{int(self.time_manager.current_file_duration % 60)}秒"
+            duration_text = (
+                f"{int(self.time_manager.current_file_duration//60)}分"
+                f"{int(self.time_manager.current_file_duration % 60)}秒"
+            )
             estimate_text = f"{estimate_time}秒" if estimate_time else "无法预估"
             logging.info(
                 self.lang_manager.get(
@@ -2025,7 +2029,8 @@ class FunASRGUIClient(tk.Tk):
                 self.after(1000, update_countdown)
 
         def run_in_thread():
-            nonlocal transcribe_start_time, upload_completed, task_completed, process  # 允许修改外部变量
+            # 允许修改外部变量
+            nonlocal transcribe_start_time, upload_completed, task_completed, process
             # 添加变量以跟踪上次记录的上传进度
             last_logged_progress = -5  # 初始值设为-5，确保0%会被打印
             # 添加变量跟踪是否收到了有效的识别结果
@@ -2063,7 +2068,8 @@ class FunASRGUIClient(tk.Tk):
                             result_text = stripped_line.replace("识别结果:", "").strip()
                             self.after(0, self._display_recognition_result, result_text)
                             logging.info(
-                                f"{self.lang_manager.get('server_response')}: {stripped_line}"
+                                f"{self.lang_manager.get('server_response')}: "
+                                f"{stripped_line}"
                             )
                         elif stripped_line.startswith(
                             "[DEBUG]"
@@ -2087,21 +2093,26 @@ class FunASRGUIClient(tk.Tk):
                                     "连接到 wss://", ""
                                 ).split(":")
                                 if len(parts) == 2:
+                                    wss_msg = self.lang_manager.get(
+                                        "log_connected_to_wss", parts[0], parts[1]
+                                    )
                                     logging.debug(
                                         f"{self.lang_manager.get('client_event')}: "
                                         f"{self.lang_manager.get('log_tag_debug')} "
-                                        f"{self.lang_manager.get('log_connected_to_wss', parts[0], parts[1])}"
+                                        f"{wss_msg}"
                                     )
                                 else:
                                     logging.debug(
-                                        f"{self.lang_manager.get('client_debug')}: {actual_message}"
+                                        f"{self.lang_manager.get('client_debug')}: "
+                                        f"{actual_message}"
                                     )
                             elif "处理文件数:" in actual_message:
                                 count = actual_message.split(":")[1].strip()
                                 logging.debug(
                                     f"{self.lang_manager.get('client_event')}: "
                                     f"{self.lang_manager.get('log_tag_debug')} "
-                                    f"{self.lang_manager.get('log_processed_file_count')}: {count}"
+                                    f"{self.lang_manager.get('log_processed_file_count')}: "
+                                    f"{count}"
                                 )
                             elif "处理文件:" in actual_message:
                                 f_path = actual_message.split(":")[1].strip()

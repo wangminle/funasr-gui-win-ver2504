@@ -13,15 +13,10 @@
 日期：2024-07-14
 """
 
-import json
 import logging
 import os
-import subprocess
 import sys
-import tempfile
-import threading
 import time
-from unittest.mock import MagicMock, Mock, patch
 
 # 添加源代码路径
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'dev', 'src', 'python-gui-client'))
@@ -146,7 +141,7 @@ def test_warning_log_output():
     
     try:
         # 模拟日志处理器
-        import logging
+        pass  # logging already imported
 
         # 创建一个内存日志处理器
         log_stream = []

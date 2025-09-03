@@ -7,9 +7,7 @@ UI分离功能实现测试脚本
 
 import json
 import os
-import shutil
 import sys
-import tempfile
 from pathlib import Path
 
 # 添加项目路径以便导入
