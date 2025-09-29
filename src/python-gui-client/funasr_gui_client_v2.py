@@ -856,8 +856,10 @@ class FunASRGUIClient(tk.Tk):
         self.time_manager = TranscribeTimeManager()
 
         self.title(self.lang_manager.get("app_title"))
-        # 增加窗口默认高度，确保状态栏完全可见
-        self.geometry("800x650")
+        # 根据平台设置默认窗口高度，确保状态栏在macOS下也可见
+        default_width = 800
+        default_height = 700 if sys.platform == "darwin" else 650
+        self.geometry(f"{default_width}x{default_height}")
         self.connection_status = False  # 连接状态标志
 
         # 不再创建顶部语言切换按钮
@@ -892,9 +894,12 @@ class FunASRGUIClient(tk.Tk):
         os.makedirs(self.output_dir, exist_ok=True)
 
         self.config_file = os.path.join(self.config_dir, "config.json")
+        
+        # 按日期命名日志文件
+        current_date = time.strftime("%Y%m%d")
         self.log_file = os.path.join(
-            self.logs_dir, "funasr_gui_client.log"
-        )  # 日志文件路径
+            self.logs_dir, f"funasr_gui_client_{current_date}.log"
+        )  # 按日期归档的日志文件路径
 
         # 迁移旧的配置文件和日志文件
         self.migrate_legacy_files()
@@ -1112,8 +1117,9 @@ class FunASRGUIClient(tk.Tk):
         self.notebook.add(self.log_frame, text=self.lang_manager.get("log_tab"))
 
         # 日志文本区域
+        log_text_height = 13 if sys.platform == "darwin" else 14
         self.log_text = scrolledtext.ScrolledText(
-            self.log_frame, wrap=tk.WORD, height=14
+            self.log_frame, wrap=tk.WORD, height=log_text_height
         )
         self.log_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.log_text.configure(state="disabled")  # 初始设为只读
@@ -1123,8 +1129,9 @@ class FunASRGUIClient(tk.Tk):
         self.notebook.add(self.result_frame, text=self.lang_manager.get("result_tab"))
 
         # 结果文本区域
+        result_text_height = 13 if sys.platform == "darwin" else 14
         self.result_text = scrolledtext.ScrolledText(
-            self.result_frame, wrap=tk.WORD, height=14
+            self.result_frame, wrap=tk.WORD, height=result_text_height
         )
         self.result_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.result_text.configure(state="disabled")
@@ -1380,18 +1387,25 @@ class FunASRGUIClient(tk.Tk):
                         print(f"迁移配置文件失败: {e}")
 
         # 迁移日志文件（找到第一个存在的就迁移）
+        # 由于现在使用按日期归档的日志文件，只有当天的日志文件不存在时才迁移
         if not os.path.exists(self.log_file):
             for legacy in legacy_paths:
                 if os.path.exists(legacy["log"]):
                     try:
+                        # 将旧日志内容追加到当天的日志文件中
                         shutil.copy2(legacy["log"], self.log_file)
                         print(f"已迁移日志文件从 {legacy['log']} 到 {self.log_file}")
+                        # 迁移成功后，可以选择重命名旧文件以避免重复迁移
+                        backup_name = f"{legacy['log']}.migrated"
+                        if not os.path.exists(backup_name):
+                            shutil.move(legacy["log"], backup_name)
+                            print(f"已将旧日志文件重命名为 {backup_name}")
                         break
                     except Exception as e:
                         print(f"迁移日志文件失败: {e}")
 
     def setup_logging(self):
-        """配置日志记录"""
+        """配置日志记录 - 按日期归档方案"""
         log_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
         log_level = (
             logging.INFO
@@ -1402,9 +1416,9 @@ class FunASRGUIClient(tk.Tk):
         logger.setLevel(log_level)
 
         # --- File Handler ---
-        # Rotate log file, keep 3 backups, max size 5MB
-        file_handler = logging.handlers.RotatingFileHandler(
-            self.log_file, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+        # 使用按日期归档的简单FileHandler，每天一个日志文件
+        file_handler = logging.FileHandler(
+            self.log_file, mode='a', encoding="utf-8"
         )
         file_handler.setFormatter(log_formatter)
         logger.addHandler(file_handler)
@@ -1419,9 +1433,13 @@ class FunASRGUIClient(tk.Tk):
 
         # 记录启动事件
         logging.info(self.lang_manager.get("system_init"))
-        logging.debug(f"调试信息: 日志文件位置: {self.log_file}")
+        logging.debug(f"调试信息: 按日期归档的日志文件位置: {self.log_file}")
         logging.debug(f"调试信息: 当前工作目录: {os.getcwd()}")
         logging.debug(f"调试信息: Python版本: {sys.version}")
+        
+        # 记录日志归档策略
+        current_date = time.strftime("%Y%m%d")
+        logging.info(f"系统事件: 启用按日期归档的日志记录，当前日期: {current_date}")
 
     def attach_gui_log_handler(self):
         """创建并附加 GUI 日志 Handler"""
@@ -1460,11 +1478,15 @@ class FunASRGUIClient(tk.Tk):
                     self.lang_manager.current_lang = config["language"]
                     self.language_var.set(config["language"])  # 更新单选按钮状态
                     self.update_ui_language()
+                # 新增：连接测试超时（秒）
+                self.connection_test_timeout = int(config.get("connection_test_timeout", 10))
             else:
                 logging.warning(self.lang_manager.get("config_not_found"))
+                self.connection_test_timeout = 10
         except Exception as e:
             logging.error(f"系统错误: 加载配置文件失败: {e}", exc_info=True)
             logging.warning("系统警告: 使用默认配置")
+            self.connection_test_timeout = 10
 
     def save_config(self):
         """保存当前配置"""
@@ -1475,6 +1497,7 @@ class FunASRGUIClient(tk.Tk):
                 "use_itn": self.use_itn_var.get(),
                 "use_ssl": self.use_ssl_var.get(),
                 "language": self.lang_manager.current_lang,
+                "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
             }
 
             with open(self.config_file, "w", encoding="utf-8") as f:
@@ -1784,7 +1807,7 @@ class FunASRGUIClient(tk.Tk):
 
         # 如果未连接服务器，先尝试连接
         if not self.connection_status:
-            logging.info("系统事件: 未检测到服务器连接，先尝试连接服务器...")
+            logging.info("系统事件: 正在进行连接测试...")
             # 创建连接测试线程
             thread = threading.Thread(
                 target=self._test_connection,
@@ -2030,11 +2053,13 @@ class FunASRGUIClient(tk.Tk):
 
         def run_in_thread():
             # 允许修改外部变量
-            nonlocal transcribe_start_time, upload_completed, task_completed, process
+            nonlocal transcribe_start_time, upload_completed, task_completed, process, last_message_time
             # 添加变量以跟踪上次记录的上传进度
             last_logged_progress = -5  # 初始值设为-5，确保0%会被打印
             # 添加变量跟踪是否收到了有效的识别结果
             received_valid_result = False
+            # 记录是否明确写入了结果文件（来自子进程提示）
+            result_file_written = False
 
             try:
                 logging.debug(f"调试信息: 正在执行命令: {' '.join(args)}")
@@ -2051,6 +2076,21 @@ class FunASRGUIClient(tk.Tk):
                     ),
                 )
 
+                # 并发读取stderr，将错误即时写入日志
+                def _read_stderr_stream(stream):
+                    try:
+                        for err_line in iter(stream.readline, ""):
+                            if not err_line:
+                                break
+                            logging.error(f"{self.lang_manager.get('subprocess_error')}\n{err_line.strip()}")
+                    except Exception:
+                        pass
+
+                stderr_thread = threading.Thread(
+                    target=_read_stderr_stream, args=(process.stderr,), daemon=True
+                )
+                stderr_thread.start()
+
                 # 实时读取 stdout
                 while True:
                     line = process.stdout.readline()
@@ -2058,6 +2098,8 @@ class FunASRGUIClient(tk.Tk):
                         break
                     if line:
                         stripped_line = line.strip()
+                        # 更新最近消息时间，供通信超时判定
+                        last_message_time = time.time()
 
                         # 检查是否收到了有效的识别结果
                         if (
@@ -2257,6 +2299,7 @@ class FunASRGUIClient(tk.Tk):
                             logging.info(
                                 f"{self.lang_manager.get('client_event')}: {self.lang_manager.get('debug_tag')} {self.lang_manager.get('json_result_file_created')}"
                             )
+                            result_file_written = True
                         elif (
                             "Namespace" in stripped_line or "命名空间" in stripped_line
                         ):
@@ -2275,37 +2318,39 @@ class FunASRGUIClient(tk.Tk):
                                 f"{self.lang_manager.get('client_event')}: {stripped_line}"
                             )
 
-                # 等待进程结束并获取返回码和 stderr
+                # 等待进程结束并获取返回码
                 return_code = process.wait()
-                stderr_output = process.stderr.read().strip()
 
-                # 检查返回码 - 修改逻辑：如果收到了有效结果，即使返回码不为0也视为成功
-                if return_code == 0 or received_valid_result:
-                    if received_valid_result and return_code != 0:
-                        logging.info(
-                            f"系统事件: 虽然进程返回码为 {return_code}，但已收到有效识别结果，视为成功"
-                        )
+                # 严格化成功判定：仅当捕获到“识别结果:”文本，或明确写入了结果文件，
+                # 或在输出目录检测到以当前文件名为前缀的json结果文件时，才判定成功。
+                def _exists_result_file() -> bool:
+                    try:
+                        base_name = os.path.splitext(os.path.basename(audio_in))[0]
+                        for fname in os.listdir(results_dir):
+                            if fname.startswith(base_name + ".") and fname.endswith(".json"):
+                                # 文件存在且非空视为有效
+                                fpath = os.path.join(results_dir, fname)
+                                if os.path.getsize(fpath) > 0:
+                                    return True
+                        return False
+                    except Exception:
+                        return False
+
+                success_by_artifact = result_file_written or _exists_result_file()
+                if received_valid_result or success_by_artifact:
                     logging.info(
                         self.lang_manager.get(
                             "task_success", os.path.basename(audio_in)
                         )
                     )
-                    task_completed = True  # 标记任务完成，停止倒计时
-                    self.after(
-                        0,
-                        self.status_var.set,
-                        self.lang_manager.get("recognition_completed"),
-                    )
+                    task_completed = True
+                    self.after(0, self.status_var.set, self.lang_manager.get("recognition_completed"))
                 else:
                     logging.error(
                         self.lang_manager.get(
                             "task_failed", os.path.basename(audio_in), return_code
                         )
                     )
-                    if stderr_output:
-                        logging.error(
-                            f"{self.lang_manager.get('subprocess_error')}\n{stderr_output}"
-                        )
                     task_completed = True  # 即使失败也标记任务完成，停止倒计时
                     self.after(
                         0,
@@ -2317,10 +2362,7 @@ class FunASRGUIClient(tk.Tk):
                         0,
                         lambda: messagebox.showerror(
                             self.lang_manager.get("recognition_error_title"),
-                            self.lang_manager.get(
-                                "file_processing_error",
-                                stderr_output or self.lang_manager.get("unknown_error"),
-                            ),
+                            self.lang_manager.get("file_processing_error", self.lang_manager.get("unknown_error")),
                         ),
                     )
 
@@ -2479,8 +2521,8 @@ class FunASRGUIClient(tk.Tk):
             logging.info(self.lang_manager.get("trying_websocket_connection", uri))
             logging.debug(f"调试信息: SSL上下文: {ssl_context is not None}")
 
-            # 设置超时时间
-            timeout = 5
+            # 设置超时时间（从配置读取）
+            timeout = int(getattr(self, "connection_test_timeout", 10))
             logging.debug(f"调试信息: 连接超时设置: {timeout}秒")
 
             # 使用与funasr_wss_client.py相同的连接参数
@@ -2501,28 +2543,38 @@ class FunASRGUIClient(tk.Tk):
 
                 # 使用websocket作为上下文管理器
                 async with websocket:
-                    # 发送简单的ping消息检查连接
+                    # 发送简单的ping/初始化消息检查连接
                     try:
-                        # 尝试使用与funasr_wss_client.py相同的消息格式
-                        message = json.dumps({"mode": "offline", "is_speaking": True})
+                        # 尝试使用与simple_funasr_client更一致的初始化消息
+                        message = json.dumps(
+                            {
+                                "mode": "offline",
+                                "audio_fs": 16000,
+                                "wav_name": "ping",
+                                "wav_format": "others",
+                                "is_speaking": True,
+                                "hotwords": "",
+                                "itn": True,
+                            }
+                        )
                         await websocket.send(message)
                         logging.info(self.lang_manager.get("websocket_message_sent"))
                         logging.debug(f"调试信息: 发送的消息: {message}")
 
-                        # 等待服务器响应，但即使没响应也视为连接成功
+                        # 收紧判定：必须在超时内收到任意响应才算成功
                         try:
-                            response = await asyncio.wait_for(
-                                websocket.recv(), timeout=2
-                            )
-                            logging.info(
-                                self.lang_manager.get(
-                                    "websocket_response_received", response
-                                )
-                            )
+                            response = await asyncio.wait_for(websocket.recv(), timeout=timeout)
                         except asyncio.TimeoutError:
-                            logging.info(
-                                self.lang_manager.get("real_time_websocket_connect")
+                            logging.info(self.lang_manager.get("real_time_websocket_connect"))
+                            # 根据官方协议，部分服务在首包不回复，这里视为“基础连通成功但无响应”，点亮已连接，并提示
+                            self.status_var.set(self.lang_manager.get("real_time_websocket_connect"))
+                            self._update_connection_indicator(True)
+                            return
+                        logging.info(
+                            self.lang_manager.get(
+                                "websocket_response_received", response
                             )
+                        )
 
                         logging.info(
                             self.lang_manager.get("websocket_connection_test_success")
@@ -2534,13 +2586,10 @@ class FunASRGUIClient(tk.Tk):
                         self._update_connection_indicator(True)
 
                     except websockets.exceptions.ConnectionClosedOK:
-                        # 服务器主动关闭连接，也视为连接成功
-                        logging.info(self.lang_manager.get("server_closed_connection"))
-                        self.status_var.set(
-                            self.lang_manager.get("connection_success", f"{ip}:{port}")
-                        )
-                        # 更新连接状态为已连接
-                        self._update_connection_indicator(True)
+                        # 服务器主动关闭连接，不再直接记为成功（缺少有效响应）
+                        logging.warning("系统警告: 连接建立后被服务器关闭，未收到有效响应")
+                        self.status_var.set("连接建立但无响应")
+                        self._update_connection_indicator(False)
 
                     except websockets.exceptions.ConnectionClosedError as e:
                         logging.warning(f"系统警告: WebSocket连接被中断: {e}")
@@ -2559,10 +2608,9 @@ class FunASRGUIClient(tk.Tk):
                         logging.error(
                             f"系统错误: WebSocket消息发送/接收错误: {e}", exc_info=True
                         )
-                        # 连接已建立但通信有问题，仍视为部分成功
-                        self.status_var.set(f"连接成功但通信有问题: {ip}:{port}")
-                        # 更新连接状态为已连接，但用户应该注意可能有问题
-                        self._update_connection_indicator(True)
+                        # 通信有问题，视为失败
+                        self.status_var.set(f"连接失败: 通信异常 {ip}:{port}")
+                        self._update_connection_indicator(False)
 
             except asyncio.TimeoutError:
                 logging.error(f"系统错误: 连接 {uri} 超时，服务器无响应")
@@ -2765,7 +2813,7 @@ class FunASRGUIClient(tk.Tk):
 
         # 如果未连接服务器，先尝试连接
         if not self.connection_status:
-            logging.info("系统事件: 未检测到服务器连接，先尝试连接服务器...")
+            logging.info("系统事件: 正在进行连接测试...")
             # 创建连接测试线程
             thread = threading.Thread(
                 target=self._test_connection,
@@ -2937,6 +2985,19 @@ class FunASRGUIClient(tk.Tk):
                 ),
             )
 
+            # 并发读取stderr，直接透出异常栈
+            def _read_stderr_stream(stream):
+                try:
+                    for err_line in iter(stream.readline, ""):
+                        if not err_line:
+                            break
+                        logging.error(f"{self.lang_manager.get('subprocess_error')}\n{err_line.strip()}")
+                except Exception:
+                    pass
+
+            err_thread = threading.Thread(target=_read_stderr_stream, args=(process.stderr,), daemon=True)
+            err_thread.start()
+
             # 实时读取输出，查找上传开始、结束和转写完成的标志
             for line in iter(process.stdout.readline, ""):
                 if not line:
@@ -2974,6 +3035,23 @@ class FunASRGUIClient(tk.Tk):
                     else:
                         logging.warning(
                             f"速度测试警告: 文件{self.test_file_index + 1}未检测到上传开始时间，无法计算上传耗时"
+                        )
+
+                # 兜底：如果收到 is_speaking=false 指令，也视作上传阶段结束
+                if (
+                    "发送WebSocket:" in line
+                    and '"is_speaking": false' in line.replace(" ", "").lower()
+                    and upload_end_time is None
+                ):
+                    upload_end_time = time.time()
+                    transcribe_start_time = upload_end_time
+                    if upload_start_time is not None:
+                        logging.info(
+                            self.lang_manager.get(
+                                "speed_test_upload_completed",
+                                self.test_file_index + 1,
+                                upload_end_time - upload_start_time,
+                            )
                         )
 
                 # 检测转写完成（匹配实际的日志输出格式）
@@ -3045,6 +3123,9 @@ class FunASRGUIClient(tk.Tk):
                         "speed_test_error_missing_timestamps", ", ".join(missing)
                     )
                 )
+                # 若仅建立连接无上传，提供更明确提示
+                if upload_start_time is None:
+                    logging.warning("速度测试提示: 连接可能已建立，但未开始上传数据，请检查服务协议或网络限制。")
                 self.after(0, self._handle_test_error, error_msg)
 
         except Exception as e:

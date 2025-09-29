@@ -1,7 +1,7 @@
 # FunASR GUI 客户端 - V2 UI 布局详细定义
 
 **版本**: 2.2 (基于实际代码 `funasr_gui_client_v2.py` 更新，新增智能时长预估功能)  
-**最后更新日期:** 2025-07-23
+**最后更新日期:** 2025-09-29
 
 ## 1. 前端方案概述
 
@@ -22,7 +22,10 @@
 
 *   **代码实例**: `app = FunASRGUIClient()`
 *   **标题**: "FunASR GUI Client V2"
-*   **初始大小**: 800x600 (`self.geometry("800x600")`)
+*   **默认窗口大小**:
+    *   macOS: 800x700（保证状态栏默认可见）
+    *   Windows/Linux: 800x650
+*   **状态栏可见性**: 为适配macOS的窗口装饰与字体行高差异，macOS下适当增大窗口高度，并将日志与结果区域各减少1行高度，避免首次启动时状态栏被遮挡。
 
 ## 3. 服务器连接配置
 
@@ -50,19 +53,19 @@
         *   **位置**: `grid(row=0, column=3, padx=5, pady=5, sticky=tk.W)`
         *   **操作**: 用户输入 FunASR WebSocket 服务器的端口号。
         *   **映射**: 对应 `--port` 参数。
-    *   **连接服务器 按钮 (`ttk.Button`)**
+*   **连接服务器 按钮 (`ttk.Button`)**
         *   **控件变量名**: `self.connect_button`
         *   **文本**: "连接服务器" / "Connect Server"
         *   **位置**: `grid(row=0, column=4, padx=15, pady=5, sticky=tk.E)`
         *   **操作**: 点击后调用 `self.connect_server` 方法，在后台线程尝试连接服务器并测试 WebSocket 可用性。
-        *   **效果**: 点击后按钮变为禁用状态，直到连接尝试结束（成功、失败或超时）后恢复可用。状态栏和输出区域会显示连接过程信息。连接状态指示器会更新。
+        *   **效果**: 点击后按钮禁用；超时默认5秒（可配置）。若握手成功但未响应，状态栏提示“已建立但未响应，可继续测速/识别”，连接指示保持可用。
     *   **连接状态指示器 (`ttk.Label`)**
         *   **控件变量名**: `self.connection_indicator`
         *   **初始文本**: "未连接" / "Disconnected"
         *   **初始颜色**: 红色
         *   **字体**: `("Arial", 9, "bold")`
         *   **位置**: `grid(row=0, column=5, padx=5, pady=5, sticky=tk.E)`
-        *   **效果**: `self._update_connection_indicator()` 方法根据连接测试结果更新其文本和颜色（成功时为 "已连接"/"Connected"，绿色，失败时为 "未连接"/"Disconnected"，红色）。
+        *   **效果**: `self._update_connection_indicator()` 方法根据连接测试结果更新其文本和颜色。握手成功但未响应视为“已建立但未响应”，允许继续业务；提示文案统一为“系统事件: 正在进行连接测试...”。
 
 ## 4. 文件选择与执行
 
@@ -192,7 +195,7 @@
 
     *   **日志/输出 文本框 (`scrolledtext.ScrolledText`)**
         *   **控件变量名**: `self.log_text` (原 `self.output_text`)
-        *   **大小**: `height=15`, 自动换行 (`wrap=tk.WORD`), 可垂直和水平扩展 (`pack(fill=tk.BOTH, expand=True, padx=5, pady=5)`)。
+        *   **大小**: `height=13` (macOS) / `height=14` (Windows/Linux)，自动换行 (`wrap=tk.WORD`), 可垂直和水平扩展 (`pack(fill=tk.BOTH, expand=True, padx=5, pady=5)`)。
         *   **状态**: 初始和大部分时间为禁用 (`state='disabled'`)，由 `GuiLogHandler` 在更新内容时临时启用。
         *   **操作**: 显示程序运行日志（所有级别）、依赖检查信息、连接状态、识别过程中的标准输出/错误（标记为脚本输出/错误），以及最终的识别结果文本（特殊标记）。
         *   **效果**: 文本会自动滚动到最底部 (`self.log_text.see(tk.END)`)。

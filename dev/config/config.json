@@ -3,5 +3,6 @@
     "port": "10095",
     "use_itn": 1,
     "use_ssl": 1,
-    "language": "zh"
+    "language": "zh",
+    "connection_test_timeout": 5
 }

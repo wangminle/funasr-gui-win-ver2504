@@ -203,6 +203,7 @@ Temporary Items
 # 开发过程中的输出文件
 /dev/output/
 /dev/logs/
+/dev/server-logs/
 /dev/release/results/
 /dev/release/logs/
 dev/logs/funasr_gui_client.log

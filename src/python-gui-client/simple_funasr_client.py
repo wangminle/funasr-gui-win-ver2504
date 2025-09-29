@@ -396,8 +396,14 @@ async def message(id):
 
 
 async def ws_client(id, chunk_begin, chunk_size):
-    """创建WebSocket客户端并开始通信"""
+    """创建WebSocket客户端并开始通信。
+
+    返回布尔值表示整体是否成功：True 表示所有任务都成功完成；False 表示期间发生过异常。
+    """
     global offline_msg_done
+
+    # 成功标志，任一循环或连接出错则置为 False
+    overall_success = True
 
     if args.audio_in is None:
         chunk_begin = 0
@@ -429,6 +435,7 @@ async def ws_client(id, chunk_begin, chunk_size):
                 ping_interval=None,
                 ssl=ssl_context,
                 close_timeout=60,
+                proxy=None,
                 max_size=1024 * 1024 * 1024,  # 1GB的最大消息大小
             ) as ws_connection:
                 global websocket
@@ -445,19 +452,27 @@ async def ws_client(id, chunk_begin, chunk_size):
                 except websockets.exceptions.ConnectionClosedOK:
                     # 连接正常关闭，可能是服务器处理完成
                     log("连接已正常关闭，可能是处理完成")
+                except Exception as e:
+                    # 任务过程中出现异常
+                    overall_success = False
+                    log(f"任务执行异常: {e}")
+                    traceback.print_exc()
 
         except Exception as e:
+            overall_success = False
             log(f"WebSocket连接异常: {e}")
             traceback.print_exc()
 
-    sys.exit(0)
+    return overall_success
 
 
 def one_thread(id, chunk_begin, chunk_size):
     """每个线程要执行的主函数"""
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(ws_client(id, chunk_begin, chunk_size))
+    success = loop.run_until_complete(ws_client(id, chunk_begin, chunk_size))
+    # 根据结果返回合适的退出码（供父进程统计）
+    sys.exit(0 if success else 1)
 
 
 def main():
@@ -501,7 +516,12 @@ def main():
     for p in process_list:
         p.join()
 
+    # 汇总所有子进程退出码，任一非零则整体失败
+    exit_codes = [p.exitcode for p in process_list]
+    overall_success = all(code == 0 for code in exit_codes)
+
     print("处理完成")
+    sys.exit(0 if overall_success else 1)
 
 
 if __name__ == "__main__":

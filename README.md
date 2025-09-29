@@ -5,7 +5,7 @@ A Tkinter-based graphical user interface (GUI) client for interacting with FunAS
 ## ✨ Features
 
 *   **Server Connection Configuration**: Allows users to input the IP address and port of the FunASR WebSocket server.
-*   **Connection Testing**: Provides a button to test WebSocket connection status with the server (including SSL).
+*   **Connection Testing**: Provides a button to test WebSocket connection status with the server (including SSL), default timeout 5s configurable via `dev/config/config.json`.
 *   **File Selection**: Supports selecting local audio/video files (such as `.wav`, `.mp3`, `.pcm`, `.mp4`, etc.) or `.scp` list files for recognition.
 *   **Offline Recognition**: Executes FunASR's offline recognition mode by calling the client script (`simple_funasr_client.py`).
 *   **Real-time Output Display**: Displays status information and final recognition results in real-time within the GUI during the recognition process.
@@ -56,7 +56,7 @@ A Tkinter-based graphical user interface (GUI) client for interacting with FunAS
 5.  **Configure Options (Optional)**: Check or uncheck "Enable ITN" and "Enable SSL" as needed.
 6.  **Switch Language (Optional)**: Select "中文" or "English" from the language dropdown to switch the interface language.
 7.  **Start Recognition**: Click the "Start Recognition" button.
-8.  **View Results**: Logs and final results during the recognition process will be displayed in the "Logs and Results" area. The status bar will show the current status. Recognition result text files will be saved in the `release/results/` directory.
+8.  **View Results**: Logs and final results during the recognition process will be displayed in the "Logs and Results" area. The status bar will show the current status. Recognition result text files will be saved in the `dev/output/` directory.
 9.  **View Logs**: Click the "Open Log File" button to open the log file and view detailed operation records and error information.
 10. **View Recognition Results**: Click the "Open Results Directory" button to directly open the directory where recognition results are saved.
 11. **Test Server Speed**: Click the "Speed Test" button to test server upload speed and transcription speed. The test will automatically use test files from the demo directory (tv-report-1.mp4 and tv-report-1.wav) for two tests, calculating average upload speed (MB/s) and transcription speed (RTF). After completion, results will be displayed on the interface with a detailed test results dialog.
