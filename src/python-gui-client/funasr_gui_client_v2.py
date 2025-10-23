@@ -89,6 +89,27 @@ class LanguageManager:
             "enable_ssl": {"zh": "启用 SSL", "en": "Enable SSL"},
             "open_log_file": {"zh": "打开日志文件", "en": "Open Log File"},
             "open_results": {"zh": "打开结果目录", "en": "Open Results Directory"},
+            # 热词文件
+            "hotword_file": {"zh": "热词文件:", "en": "Hotword File:"},
+            "select_hotword_file": {"zh": "选择热词", "en": "Select Hotword"},
+            "clear_hotword": {"zh": "清除热词", "en": "Clear Hotword"},
+            "text_files": {"zh": "文本文件", "en": "Text Files"},
+            "select_hotword_dialog_title": {
+                "zh": "选择热词文件",
+                "en": "Select Hotword File",
+            },
+            "hotword_selected": {
+                "zh": "已选择热词文件",
+                "en": "Hotword file selected",
+            },
+            "hotword_cleared": {
+                "zh": "热词文件已清除",
+                "en": "Hotword file cleared",
+            },
+            "hotword_tooltip": {
+                "zh": "热词文件格式:\n每行一个热词,支持带权重\n例如: 阿里巴巴 20\n空文件表示不使用热词",
+                "en": "Hotword file format:\nOne hotword per line, weight supported\nExample: alibaba 20\nEmpty file means no hotwords",
+            },
             # 速度测试
             "speed_test": {"zh": "速度测试", "en": "Speed Test"},
             "not_tested": {"zh": "未测试", "en": "Not Tested"},
@@ -98,6 +119,14 @@ class LanguageManager:
             "transcription_speed": {"zh": "转写速度:", "en": "Transcription Speed:"},
             # 状态栏
             "ready": {"zh": "准备就绪", "en": "Ready"},
+            # 识别阶段状态
+            "stage_preparing": {"zh": "⚙️ 准备识别任务... {}", "en": "⚙️ Preparing recognition task... {}"},
+            "stage_reading_file": {"zh": "📖 读取文件: {}", "en": "📖 Reading file: {}"},
+            "stage_connecting": {"zh": "🔌 连接服务器... {}", "en": "🔌 Connecting to server... {}"},
+            "stage_uploading": {"zh": "⬆️ 上传音频: {}", "en": "⬆️ Uploading audio: {}"},
+            "stage_processing": {"zh": "🔄 服务器处理中{}", "en": "🔄 Server processing{}"},
+            "stage_receiving": {"zh": "⬇️ 接收识别结果...", "en": "⬇️ Receiving results..."},
+            "stage_completed": {"zh": "✅ 识别完成{}", "en": "✅ Recognition completed{}"},
             # 语言切换按钮
             "switch_to_en": {"zh": "EN", "en": "中文"},
             # 日志消息
@@ -743,6 +772,171 @@ class GuiLogHandler(logging.Handler):
         self.text_widget.after(100, self.poll_log_queue)
 
 
+# --- 状态管理类 ---
+class StatusManager:
+    """管理应用程序的状态栏信息，支持颜色区分和临时状态"""
+    
+    # 状态类型枚举
+    STATUS_SUCCESS = "success"      # 成功：绿色
+    STATUS_INFO = "info"           # 信息：蓝色
+    STATUS_WARNING = "warning"     # 警告：橙色
+    STATUS_ERROR = "error"         # 错误：红色
+    STATUS_PROCESSING = "processing"  # 处理中：深蓝色
+    
+    # 状态颜色映射（使用十六进制颜色）
+    STATUS_COLORS = {
+        STATUS_SUCCESS: "#28a745",      # 绿色
+        STATUS_INFO: "#007bff",         # 蓝色
+        STATUS_WARNING: "#ffc107",      # 橙色
+        STATUS_ERROR: "#dc3545",        # 红色
+        STATUS_PROCESSING: "#17a2b8",   # 青色
+    }
+    
+    def __init__(self, status_var, status_bar, lang_manager):
+        """初始化状态管理器
+        
+        Args:
+            status_var: tk.StringVar对象，用于更新状态文本
+            status_bar: ttk.Label对象，用于设置状态栏颜色
+            lang_manager: LanguageManager对象，用于多语言支持
+        """
+        self.status_var = status_var
+        self.status_bar = status_bar
+        self.lang_manager = lang_manager
+        
+        # 保存当前持久状态（用于临时状态恢复）
+        self.persistent_status = ""
+        self.persistent_status_type = self.STATUS_INFO
+        
+        # 临时状态恢复的定时器ID
+        self.temp_status_timer = None
+        
+        # 识别阶段定义
+        self.STAGE_IDLE = "idle"
+        self.STAGE_PREPARING = "preparing"
+        self.STAGE_READING_FILE = "reading_file"
+        self.STAGE_CONNECTING = "connecting"
+        self.STAGE_UPLOADING = "uploading"
+        self.STAGE_PROCESSING = "processing"
+        self.STAGE_RECEIVING = "receiving"
+        self.STAGE_COMPLETED = "completed"
+        
+        # 当前识别阶段
+        self.current_stage = self.STAGE_IDLE
+    
+    def set_status(self, message, status_type=STATUS_INFO, persistent=True, temp_duration=0):
+        """设置状态栏信息
+        
+        Args:
+            message: 状态消息文本
+            status_type: 状态类型（success/info/warning/error/processing）
+            persistent: 是否为持久状态（True时会保存，供临时状态恢复）
+            temp_duration: 临时状态持续时间（秒），0表示永久
+        """
+        # 取消之前的临时状态定时器
+        if self.temp_status_timer:
+            try:
+                self.status_bar.after_cancel(self.temp_status_timer)
+            except:
+                pass
+            self.temp_status_timer = None
+        
+        # 更新状态文本
+        self.status_var.set(message)
+        
+        # 更新状态栏颜色
+        color = self.STATUS_COLORS.get(status_type, self.STATUS_COLORS[self.STATUS_INFO])
+        self.status_bar.config(foreground=color)
+        
+        # 保存持久状态（临时状态不应覆盖持久状态）
+        if persistent and temp_duration == 0:
+            self.persistent_status = message
+            self.persistent_status_type = status_type
+        
+        # 设置临时状态定时器
+        if temp_duration > 0:
+            self.temp_status_timer = self.status_bar.after(
+                int(temp_duration * 1000),
+                self._restore_persistent_status
+            )
+    
+    def _restore_persistent_status(self):
+        """恢复持久状态"""
+        self.temp_status_timer = None
+        self.set_status(
+            self.persistent_status,
+            self.persistent_status_type,
+            persistent=False  # 不再更新持久状态
+        )
+    
+    def set_stage(self, stage, detail=""):
+        """设置识别阶段
+        
+        Args:
+            stage: 阶段标识（使用STAGE_*常量）
+            detail: 阶段详细信息
+        """
+        self.current_stage = stage
+        
+        # 根据阶段设置状态
+        stage_messages = {
+            self.STAGE_IDLE: (self.lang_manager.get("ready"), self.STATUS_SUCCESS),
+            self.STAGE_PREPARING: (
+                self.lang_manager.get("stage_preparing", detail if detail else ""),
+                self.STATUS_PROCESSING
+            ),
+            self.STAGE_READING_FILE: (
+                self.lang_manager.get("stage_reading_file", detail if detail else "文件"),
+                self.STATUS_PROCESSING
+            ),
+            self.STAGE_CONNECTING: (
+                self.lang_manager.get("stage_connecting", detail if detail else ""),
+                self.STATUS_PROCESSING
+            ),
+            self.STAGE_UPLOADING: (
+                self.lang_manager.get("stage_uploading", detail if detail else "0%"),
+                self.STATUS_PROCESSING
+            ),
+            self.STAGE_PROCESSING: (
+                self.lang_manager.get("stage_processing", detail if detail else ""),
+                self.STATUS_PROCESSING
+            ),
+            self.STAGE_RECEIVING: (self.lang_manager.get("stage_receiving"), self.STATUS_PROCESSING),
+            self.STAGE_COMPLETED: (
+                self.lang_manager.get("stage_completed", detail if detail else ""),
+                self.STATUS_SUCCESS
+            ),
+        }
+        
+        if stage in stage_messages:
+            message, status_type = stage_messages[stage]
+            self.set_status(message, status_type)
+    
+    def set_success(self, message, temp_duration=0):
+        """设置成功状态（快捷方法）"""
+        self.set_status(message, self.STATUS_SUCCESS, persistent=True, temp_duration=temp_duration)
+    
+    def set_info(self, message, temp_duration=0):
+        """设置信息状态（快捷方法）"""
+        self.set_status(message, self.STATUS_INFO, persistent=True, temp_duration=temp_duration)
+    
+    def set_warning(self, message, temp_duration=0):
+        """设置警告状态（快捷方法）"""
+        self.set_status(message, self.STATUS_WARNING, persistent=True, temp_duration=temp_duration)
+    
+    def set_error(self, message, temp_duration=0):
+        """设置错误状态（快捷方法）"""
+        self.set_status(message, self.STATUS_ERROR, persistent=True, temp_duration=temp_duration)
+    
+    def set_processing(self, message, temp_duration=0):
+        """设置处理中状态（快捷方法）"""
+        self.set_status(message, self.STATUS_PROCESSING, persistent=True, temp_duration=temp_duration)
+    
+    def get_current_stage(self):
+        """获取当前识别阶段"""
+        return self.current_stage
+
+
 # --- 转写时长管理类 ---
 class TranscribeTimeManager:
     """管理转写时长预估和等待时长计算。"""
@@ -1055,6 +1249,43 @@ class FunASRGUIClient(tk.Tk):
         # 设置高级选项框架最后一列可扩展，使语言按钮组能够右对齐
         options_frame.columnconfigure(4, weight=1)
 
+        # 第二行：热词文件选择
+        self.hotword_label = ttk.Label(
+            options_frame,
+            text=self.lang_manager.get("hotword_file"),
+        )
+        self.hotword_label.grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
+        
+        self.hotword_path_var = tk.StringVar(value="")
+        self.hotword_entry = ttk.Entry(
+            options_frame,
+            textvariable=self.hotword_path_var,
+            width=50,
+            state="readonly"
+        )
+        self.hotword_entry.grid(row=1, column=1, columnspan=2, padx=5, pady=5, sticky=tk.EW)
+        
+        # 创建Tooltip提示（使用标准的工具提示）
+        self.create_tooltip(
+            self.hotword_entry,
+            self.lang_manager.get("hotword_tooltip")
+        )
+        
+        self.hotword_button = ttk.Button(
+            options_frame,
+            text=self.lang_manager.get("select_hotword_file"),
+            command=self.select_hotword_file
+        )
+        self.hotword_button.grid(row=1, column=3, padx=5, pady=5, sticky=tk.W)
+        
+        # 清除热词按钮
+        self.clear_hotword_button = ttk.Button(
+            options_frame,
+            text=self.lang_manager.get("clear_hotword"),
+            command=self.clear_hotword_file
+        )
+        self.clear_hotword_button.grid(row=1, column=4, padx=5, pady=5, sticky=tk.W)
+
         # --- 速度测试区域 ---
         speed_test_frame = ttk.LabelFrame(
             self, text=self.lang_manager.get("speed_test_frame")
@@ -1163,6 +1394,9 @@ class FunASRGUIClient(tk.Tk):
             self, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W
         )
         self.status_bar.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        # 初始化状态管理器（在状态栏创建之后）
+        self.status_manager = StatusManager(self.status_var, self.status_bar, self.lang_manager)
 
         # 加载配置文件（在创建控件后调用，以便可以设置控件值）
         self.load_config()
@@ -1349,7 +1583,8 @@ class FunASRGUIClient(tk.Tk):
         # 更新状态栏
         current_status = self.status_var.get()
         if "准备就绪" in current_status or "Ready" in current_status:
-            self.status_var.set(self.lang_manager.get("ready"))
+            # 使用StatusManager设置就绪状态
+            self.status_manager.set_info(self.lang_manager.get("ready"))
 
     def migrate_legacy_files(self):
         """检查并迁移旧位置的配置文件和日志文件到新位置"""
@@ -1480,6 +1715,15 @@ class FunASRGUIClient(tk.Tk):
                     self.update_ui_language()
                 # 新增：连接测试超时（秒）
                 self.connection_test_timeout = int(config.get("connection_test_timeout", 10))
+                # 新增：加载热词文件路径
+                if "hotword_path" in config and config["hotword_path"]:
+                    hotword_path = config["hotword_path"]
+                    # 验证文件是否存在
+                    if os.path.exists(hotword_path):
+                        self.hotword_path_var.set(hotword_path)
+                        logging.info(f"已加载热词文件配置: {hotword_path}")
+                    else:
+                        logging.warning(f"配置中的热词文件不存在: {hotword_path}")
             else:
                 logging.warning(self.lang_manager.get("config_not_found"))
                 self.connection_test_timeout = 10
@@ -1498,16 +1742,19 @@ class FunASRGUIClient(tk.Tk):
                 "use_ssl": self.use_ssl_var.get(),
                 "language": self.lang_manager.current_lang,
                 "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
+                "hotword_path": self.hotword_path_var.get(),
             }
 
             with open(self.config_file, "w", encoding="utf-8") as f:
                 json.dump(config, f, ensure_ascii=False, indent=4)
 
-            self.status_var.set("已保存配置")
+            # 使用StatusManager显示成功状态，3秒后自动恢复
+            self.status_manager.set_success("已保存配置", temp_duration=3)
             logging.info(self.lang_manager.get("config_saved", self.config_file))
             logging.debug(f"调试信息: 保存的配置: {config}")
         except Exception as e:
-            self.status_var.set(f"保存配置失败: {e}")
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(f"保存配置失败: {e}")
             logging.error(f"系统错误: 保存配置失败: {e}", exc_info=True)
 
     def copy_result(self):
@@ -1517,14 +1764,17 @@ class FunASRGUIClient(tk.Tk):
             if result_content:
                 self.clipboard_clear()
                 self.clipboard_append(result_content)
-                self.status_var.set(self.lang_manager.get("result_copied"))
+                # 使用StatusManager显示成功状态，3秒后自动恢复
+                self.status_manager.set_success(self.lang_manager.get("result_copied"), temp_duration=3)
                 logging.info("用户操作: 识别结果已复制到剪贴板")
             else:
-                self.status_var.set(self.lang_manager.get("no_result_to_copy"))
+                # 使用StatusManager显示警告状态
+                self.status_manager.set_warning(self.lang_manager.get("no_result_to_copy"))
                 logging.warning("用户操作: 没有识别结果可复制")
         except Exception as e:
             logging.error(f"复制结果时出错: {e}", exc_info=True)
-            self.status_var.set(f"复制失败: {e}")
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(f"复制失败: {e}")
 
     def clear_result(self):
         """清空识别结果区域"""
@@ -1532,11 +1782,13 @@ class FunASRGUIClient(tk.Tk):
             self.result_text.configure(state="normal")
             self.result_text.delete("1.0", tk.END)
             self.result_text.configure(state="disabled")
-            self.status_var.set(self.lang_manager.get("result_cleared"))
+            # 使用StatusManager显示成功状态，3秒后自动恢复
+            self.status_manager.set_success(self.lang_manager.get("result_cleared"), temp_duration=3)
             logging.info("用户操作: 识别结果已清空")
         except Exception as e:
             logging.error(f"清空结果时出错: {e}", exc_info=True)
-            self.status_var.set(f"清空失败: {e}")
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(f"清空失败: {e}")
 
     def _display_recognition_result(self, result_text):
         """在结果选项卡中显示识别结果"""
@@ -1629,6 +1881,46 @@ class FunASRGUIClient(tk.Tk):
                 return False
         return True
 
+    def _terminate_process_safely(self, process, timeout=5, process_name="子进程"):
+        """安全终止进程：terminate → wait → kill
+        
+        Args:
+            process: subprocess.Popen对象
+            timeout: terminate后等待的超时时间（秒）
+            process_name: 进程名称，用于日志
+        
+        Returns:
+            bool: 是否成功终止
+        """
+        if not process or process.poll() is not None:
+            # 进程不存在或已经结束
+            return True
+        
+        try:
+            # 步骤1: 尝试优雅终止
+            logging.info(f"系统事件: 正在终止{process_name}...")
+            process.terminate()
+            
+            # 步骤2: 等待进程结束
+            try:
+                exit_code = process.wait(timeout=timeout)
+                logging.info(f"系统事件: {process_name}已终止，退出码: {exit_code}")
+                return True
+            except subprocess.TimeoutExpired:
+                # 步骤3: 如果terminate失败，强制kill
+                logging.warning(f"系统警告: {process_name}终止超时，正在强制杀死...")
+                process.kill()
+                try:
+                    exit_code = process.wait(timeout=2)
+                    logging.info(f"系统事件: {process_name}已被强制杀死，退出码: {exit_code}")
+                    return True
+                except subprocess.TimeoutExpired:
+                    logging.error(f"系统错误: 无法终止{process_name}，进程可能成为僵尸进程")
+                    return False
+        except Exception as e:
+            logging.error(f"系统错误: 终止{process_name}时发生异常: {e}", exc_info=True)
+            return False
+
     def connect_server(self):
         """实际尝试连接服务器并测试WebSocket可用性"""
         ip = self.ip_var.get()
@@ -1647,9 +1939,10 @@ class FunASRGUIClient(tk.Tk):
             if ssl_enabled
             else self.lang_manager.get("connect_disabled")
         )
-        self.status_var.set(
-            f"{self.lang_manager.get('connecting_server')}: "
-            f"{ip}:{port} (SSL: {ssl_status})..."
+        # 使用StatusManager显示连接中状态
+        self.status_manager.set_stage(
+            self.status_manager.STAGE_CONNECTING,
+            f"{ip}:{port} (SSL: {ssl_status})"
         )
         logging.info(self.lang_manager.get("connecting_server", ip, port, ssl_status))
         logging.debug(self.lang_manager.get("connection_params", ip, port, ssl_enabled))
@@ -1682,7 +1975,8 @@ class FunASRGUIClient(tk.Tk):
                 logging.info(self.lang_manager.get("auto_installing"))
                 if not self.install_dependencies(missing_packages):
                     logging.error(self.lang_manager.get("install_failed_cant_connect"))
-                    self.status_var.set(
+                    # 使用StatusManager显示错误状态
+                    self.status_manager.set_error(
                         self.lang_manager.get("error_msg", "依赖安装失败")
                     )
                     self.connect_button.config(state=tk.NORMAL)
@@ -1705,7 +1999,8 @@ class FunASRGUIClient(tk.Tk):
             logging.error(
                 self.lang_manager.get("connection_error", str(e)), exc_info=True
             )
-            self.status_var.set(self.lang_manager.get("error_msg", str(e)))
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(self.lang_manager.get("error_msg", str(e)))
             self.connection_status = False
         finally:
             # 恢复按钮状态
@@ -1739,7 +2034,8 @@ class FunASRGUIClient(tk.Tk):
 
     def select_file(self):
         """打开文件对话框选择文件"""
-        self.status_var.set(self.lang_manager.get("selecting_file"))
+        # 使用StatusManager显示选择文件状态
+        self.status_manager.set_info(self.lang_manager.get("selecting_file"))
         # 注意：此处需要根据 funasr_wss_client.py 支持的格式调整 filetypes
         filetypes = (
             (
@@ -1760,17 +2056,21 @@ class FunASRGUIClient(tk.Tk):
             duration = self.time_manager.get_audio_duration(filepath)
             if duration is not None:
                 duration_text = f"{int(duration//60)}分{int(duration % 60)}秒"
-                self.status_var.set(
+                # 使用StatusManager显示成功状态，3秒后自动恢复
+                self.status_manager.set_success(
                     f"{self.lang_manager.get('file_selected')}: "
-                    f"{os.path.basename(filepath)} (时长: {duration_text})"
+                    f"{os.path.basename(filepath)} (时长: {duration_text})",
+                    temp_duration=3
                 )
                 logging.info(
                     f"文件选择: {filepath}, 时长: {duration:.1f}秒 ({duration_text})"
                 )
             else:
-                self.status_var.set(
+                # 使用StatusManager显示成功状态，3秒后自动恢复
+                self.status_manager.set_success(
                     f"{self.lang_manager.get('file_selected')}: "
-                    f"{os.path.basename(filepath)}"
+                    f"{os.path.basename(filepath)}",
+                    temp_duration=3
                 )
                 logging.info(f"文件选择: {filepath}, 无法获取时长信息")
 
@@ -1778,8 +2078,70 @@ class FunASRGUIClient(tk.Tk):
             logging.debug(f"调试信息: 文件大小: {os.path.getsize(filepath)} 字节")
             logging.debug(f"调试信息: 文件类型: {os.path.splitext(filepath)[1]}")
         else:
-            self.status_var.set(self.lang_manager.get("no_file_selected"))
+            # 使用StatusManager显示警告状态
+            self.status_manager.set_warning(self.lang_manager.get("no_file_selected"))
             logging.info(self.lang_manager.get("no_file_selected"))
+
+    def select_hotword_file(self):
+        """打开文件对话框选择热词文件"""
+        filetypes = (
+            (self.lang_manager.get("text_files"), "*.txt"),
+            (self.lang_manager.get("all_files"), "*.*"),
+        )
+        filepath = filedialog.askopenfilename(
+            title=self.lang_manager.get("select_hotword_dialog_title"),
+            filetypes=filetypes
+        )
+        if filepath:
+            self.hotword_path_var.set(filepath)
+            # 使用StatusManager显示成功状态，3秒后自动恢复
+            self.status_manager.set_success(
+                f"{self.lang_manager.get('hotword_selected')}: {os.path.basename(filepath)}",
+                temp_duration=3
+            )
+            logging.info(f"热词文件选择: {filepath}")
+        else:
+            logging.info("用户取消选择热词文件")
+
+    def clear_hotword_file(self):
+        """清除热词文件选择"""
+        self.hotword_path_var.set("")
+        # 使用StatusManager显示成功状态，3秒后自动恢复
+        self.status_manager.set_success(self.lang_manager.get("hotword_cleared"), temp_duration=3)
+        logging.info("热词文件已清除")
+
+    def create_tooltip(self, widget, text):
+        """为控件创建工具提示"""
+        def on_enter(event):
+            # 创建提示窗口
+            tooltip = tk.Toplevel()
+            tooltip.wm_overrideredirect(True)  # 移除窗口边框
+            tooltip.wm_geometry(f"+{event.x_root+10}+{event.y_root+10}")
+            
+            label = tk.Label(
+                tooltip,
+                text=text,
+                background="lightyellow",
+                relief="solid",
+                borderwidth=1,
+                font=("Arial", 9),
+                padx=5,
+                pady=3
+            )
+            label.pack()
+            
+            # 将tooltip保存到widget，以便后续删除
+            widget._tooltip = tooltip
+        
+        def on_leave(event):
+            # 销毁提示窗口
+            if hasattr(widget, '_tooltip'):
+                widget._tooltip.destroy()
+                del widget._tooltip
+        
+        # 绑定鼠标事件
+        widget.bind("<Enter>", on_enter)
+        widget.bind("<Leave>", on_leave)
 
     def start_recognition(self):
         """启动识别过程"""
@@ -1793,7 +2155,8 @@ class FunASRGUIClient(tk.Tk):
                 self.lang_manager.get("please_select_file"),
             )
             logging.error("用户错误: 未选择音频/视频文件")
-            self.status_var.set(self.lang_manager.get("please_select_file"))
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(self.lang_manager.get("please_select_file"))
             return
 
         if not ip or not port:
@@ -1802,7 +2165,8 @@ class FunASRGUIClient(tk.Tk):
                 self.lang_manager.get("please_connect_server"),
             )
             logging.error("用户错误: 服务器IP或端口未设置")
-            self.status_var.set(self.lang_manager.get("please_connect_server"))
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(self.lang_manager.get("please_connect_server"))
             return
 
         # 如果未连接服务器，先尝试连接
@@ -1863,36 +2227,21 @@ class FunASRGUIClient(tk.Tk):
         self.start_button.config(state=tk.DISABLED)
         self.select_button.config(state=tk.DISABLED)
 
-        # 显示预估时长信息
+        # 显示预估时长信息 - 使用StatusManager设置准备阶段
         if estimate_time:
             estimate_text = (
                 f"{int(estimate_time//60)}分{int(estimate_time % 60)}秒"
                 if estimate_time >= 60
                 else f"{estimate_time}秒"
             )
-            # 如果没有测速结果，添加基础预估提示
-            if self.time_manager.last_transcribe_speed is None:
-                self.status_var.set(
-                    self.lang_manager.get(
-                        "transcribing_with_basic_estimate",
-                        os.path.basename(audio_in),
-                        estimate_text,
-                    )
-                )
-            else:
-                self.status_var.set(
-                    self.lang_manager.get(
-                        "transcribing_with_speed_estimate",
-                        os.path.basename(audio_in),
-                        estimate_text,
-                    )
-                )
-        else:
-            self.status_var.set(
-                self.lang_manager.get(
-                    "transcribing_inaccurate_estimate", os.path.basename(audio_in)
-                )
+            # 使用StatusManager显示准备阶段
+            self.status_manager.set_stage(
+                self.status_manager.STAGE_PREPARING,
+                f"预计{estimate_text}"
             )
+        else:
+            # 无预估时显示准备阶段
+            self.status_manager.set_stage(self.status_manager.STAGE_PREPARING)
 
         logging.info(self.lang_manager.get("starting_recognition", audio_in))
         logging.debug(
@@ -1916,7 +2265,8 @@ class FunASRGUIClient(tk.Tk):
         script_path = self._find_script_path()
         if not script_path:
             logging.error(self.lang_manager.get("script_not_found"))
-            self.status_var.set(self.lang_manager.get("script_not_found_status"))
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(self.lang_manager.get("script_not_found_status"))
             return
 
         # 设置输出目录到 dev/output 文件夹（遵循架构设计文档）
@@ -1942,6 +2292,12 @@ class FunASRGUIClient(tk.Tk):
             args.append("--no-itn")
         if self.use_ssl_var.get() == 0:
             args.append("--no-ssl")
+        
+        # 添加热词文件参数（如果已选择）
+        hotword_path = self.hotword_path_var.get()
+        if hotword_path and os.path.exists(hotword_path):
+            args.extend(["--hotword", hotword_path])
+            logging.info(f"使用热词文件: {hotword_path}")
 
         # 清空之前的识别结果区域（但保留系统日志）
         self.result_text.configure(state="normal")
@@ -1987,68 +2343,42 @@ class FunASRGUIClient(tk.Tk):
                         progress_percent = min(
                             100, int((elapsed / estimate_time) * 100)
                         )
-                        # 如果没有测速结果，在转写过程中添加速度测试提示
-                        if self.time_manager.last_transcribe_speed is None:
-                            self.status_var.set(
-                                self.lang_manager.get(
-                                    "transcribing_progress_basic_estimate",
-                                    os.path.basename(audio_in),
-                                    progress_percent,
-                                    remaining_text,
-                                )
-                            )
-                        else:
-                            self.status_var.set(
-                                self.lang_manager.get(
-                                    "transcribing_progress_with_speed",
-                                    os.path.basename(audio_in),
-                                    progress_percent,
-                                    remaining_text,
-                                )
-                            )
+                        # 使用StatusManager显示处理进度
+                        detail = f"{progress_percent}% 剩余{remaining_text}"
+                        self.status_manager.set_stage(
+                            self.status_manager.STAGE_PROCESSING,
+                            detail
+                        )
                     else:
-                        # 预估时间已过，显示超时状态
+                        # 预估时间已过，使用StatusManager显示处理中状态（警告）
                         elapsed_text = (
                             f"{int(elapsed//60)}分{int(elapsed % 60)}秒"
                             if elapsed >= 60
                             else f"{int(elapsed)}秒"
                         )
-                        if self.time_manager.last_transcribe_speed is None:
-                            self.status_var.set(
-                                self.lang_manager.get(
-                                    "transcribing_exceeded_basic_estimate",
-                                    os.path.basename(audio_in),
-                                    elapsed_text,
-                                )
-                            )
-                        else:
-                            self.status_var.set(
-                                self.lang_manager.get(
-                                    "transcribing_exceeded_speed_estimate",
-                                    os.path.basename(audio_in),
-                                    elapsed_text,
-                                )
-                            )
+                        self.status_manager.set_warning(
+                            f"⏱ 处理中... 已用时{elapsed_text}（超出预估）"
+                        )
                 else:
-                    # 无预估时长的情况
+                    # 无预估时长的情况，使用StatusManager显示处理中状态
                     elapsed_text = (
                         f"{int(elapsed//60)}分{int(elapsed % 60)}秒"
                         if elapsed >= 60
                         else f"{int(elapsed)}秒"
                     )
-                    self.status_var.set(
-                        self.lang_manager.get(
-                            "transcribing_inaccurate_progress",
-                            os.path.basename(audio_in),
-                            elapsed_text,
-                        )
+                    self.status_manager.set_stage(
+                        self.status_manager.STAGE_PROCESSING,
+                        f"已用时{elapsed_text}"
                     )
 
                 # 继续更新倒计时
                 self.after(1000, update_countdown)
             elif not upload_completed:
-                # 上传阶段，显示上传状态
-                self.status_var.set(f"上传中 {os.path.basename(audio_in)}...")
+                # 上传阶段，使用StatusManager显示上传状态
+                self.status_manager.set_stage(
+                    self.status_manager.STAGE_UPLOADING,
+                    os.path.basename(audio_in)
+                )
                 self.after(1000, update_countdown)
 
         def run_in_thread():
@@ -2063,6 +2393,8 @@ class FunASRGUIClient(tk.Tk):
 
             try:
                 logging.debug(f"调试信息: 正在执行命令: {' '.join(args)}")
+                # 记录进程启动时间，用于后续判断结果文件是否为本次运行生成
+                process_start_time = time.time()
                 # 使用 Popen 启动子进程，捕获 stdout 和 stderr
                 process = subprocess.Popen(
                     args,
@@ -2321,17 +2653,20 @@ class FunASRGUIClient(tk.Tk):
                 # 等待进程结束并获取返回码
                 return_code = process.wait()
 
-                # 严格化成功判定：仅当捕获到“识别结果:”文本，或明确写入了结果文件，
+                # 严格化成功判定：仅当捕获到"识别结果:"文本，或明确写入了结果文件，
                 # 或在输出目录检测到以当前文件名为前缀的json结果文件时，才判定成功。
+                # 注意：只接受本次运行生成的结果文件（修改时间晚于进程启动时间）
                 def _exists_result_file() -> bool:
                     try:
                         base_name = os.path.splitext(os.path.basename(audio_in))[0]
                         for fname in os.listdir(results_dir):
                             if fname.startswith(base_name + ".") and fname.endswith(".json"):
-                                # 文件存在且非空视为有效
                                 fpath = os.path.join(results_dir, fname)
+                                # 文件必须：1) 非空，2) 修改时间晚于进程启动时间
                                 if os.path.getsize(fpath) > 0:
-                                    return True
+                                    file_mtime = os.path.getmtime(fpath)
+                                    if file_mtime >= process_start_time:
+                                        return True
                         return False
                     except Exception:
                         return False
@@ -2344,7 +2679,11 @@ class FunASRGUIClient(tk.Tk):
                         )
                     )
                     task_completed = True
-                    self.after(0, self.status_var.set, self.lang_manager.get("recognition_completed"))
+                    # 使用StatusManager显示完成阶段
+                    self.after(
+                        0,
+                        lambda: self.status_manager.set_stage(self.status_manager.STAGE_COMPLETED)
+                    )
                 else:
                     logging.error(
                         self.lang_manager.get(
@@ -2352,10 +2691,12 @@ class FunASRGUIClient(tk.Tk):
                         )
                     )
                     task_completed = True  # 即使失败也标记任务完成，停止倒计时
+                    # 使用StatusManager显示错误状态
                     self.after(
                         0,
-                        self.status_var.set,
-                        self.lang_manager.get("recognition_failed", return_code),
+                        lambda: self.status_manager.set_error(
+                            self.lang_manager.get("recognition_failed", return_code)
+                        )
                     )
                     # Display error in a popup
                     self.after(
@@ -2371,10 +2712,12 @@ class FunASRGUIClient(tk.Tk):
                     f"{self.lang_manager.get('python_not_found', sys.executable, script_path)}"
                 )
                 task_completed = True  # 标记任务完成，停止倒计时
+                # 使用StatusManager显示错误状态
                 self.after(
                     0,
-                    self.status_var.set,
-                    self.lang_manager.get("script_not_found_error"),
+                    lambda: self.status_manager.set_error(
+                        self.lang_manager.get("script_not_found_error")
+                    )
                 )
                 self.after(
                     0,
@@ -2389,12 +2732,14 @@ class FunASRGUIClient(tk.Tk):
                     f"{self.lang_manager.get('system_error')}: {self.lang_manager.get('unexpected_error_msg', str(e), error_details)}"
                 )
                 task_completed = True  # 标记任务完成，停止倒计时
+                # 使用StatusManager显示错误状态
+                error_msg = str(e)
                 self.after(
                     0,
-                    self.status_var.set,
-                    self.lang_manager.get("running_unexpected_error", str(e)),
+                    lambda: self.status_manager.set_error(
+                        self.lang_manager.get("running_unexpected_error", error_msg)
+                    )
                 )
-                error_msg = str(e)
                 self.after(
                     0,
                     lambda: messagebox.showerror(
@@ -2410,13 +2755,7 @@ class FunASRGUIClient(tk.Tk):
                 )  # 恢复文件选择按钮
                 # 确保进程被终止（如果它仍在运行）
                 if process and process.poll() is None:
-                    logging.warning(self.lang_manager.get("terminating_process"))
-                    process.terminate()
-                    try:
-                        process.wait(timeout=5)  # Give it a moment to terminate
-                    except subprocess.TimeoutExpired:
-                        logging.warning(self.lang_manager.get("force_kill"))
-                        process.kill()  # Force kill if terminate doesn't work
+                    self._terminate_process_safely(process, timeout=5, process_name="识别进程")
 
         # 启动超时监控 - 使用动态计算的wait_timeout
         def check_timeout():
@@ -2437,14 +2776,11 @@ class FunASRGUIClient(tk.Tk):
                             "transcription_timeout_warning", wait_timeout
                         )
                     )
-                    process.terminate()
-                    try:
-                        process.wait(timeout=5)
-                    except subprocess.TimeoutExpired:
-                        logging.warning("系统警告: 终止进程超时，正在强制杀死。")
-                        process.kill()
+                    self._terminate_process_safely(process, timeout=5, process_name="识别进程(超时)")
+                    # 使用StatusManager显示错误状态
                     self.after(
-                        0, self.status_var.set, f"错误: 转写超时 (超过{wait_timeout}秒)"
+                        0,
+                        lambda: self.status_manager.set_error(f"转写超时 (超过{wait_timeout}秒)")
                     )
                     self.after(
                         0,
@@ -2458,25 +2794,22 @@ class FunASRGUIClient(tk.Tk):
                     self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
             # 检查通信超时（基于预估时间的动态超时，最小30秒）
             elif (current_time - last_message_time) > max(
-                30, estimate_time * 2
-            ):  # 动态设置通信超时时间，最小30秒
-                communication_timeout = max(30, estimate_time * 2)
+                30, (estimate_time or 60) * 2
+            ):  # 动态设置通信超时时间，最小30秒，如果estimate_time为None则使用60秒
+                communication_timeout = max(30, (estimate_time or 60) * 2)
                 if process and process.poll() is None:
                     logging.warning(
                         self.lang_manager.get(
                             "communication_timeout_warning", communication_timeout
                         )
                     )
-                    process.terminate()
-                    try:
-                        process.wait(timeout=5)
-                    except subprocess.TimeoutExpired:
-                        logging.warning("系统警告: 终止进程超时，正在强制杀死。")
-                        process.kill()
+                    self._terminate_process_safely(process, timeout=5, process_name="识别进程(通信超时)")
+                    # 使用StatusManager显示错误状态
                     self.after(
                         0,
-                        self.status_var.set,
-                        f"错误: {self.lang_manager.get('communication_timeout')}",
+                        lambda: self.status_manager.set_error(
+                            f"{self.lang_manager.get('communication_timeout')}"
+                        )
                     )
                     self.after(
                         0,
@@ -2566,9 +2899,12 @@ class FunASRGUIClient(tk.Tk):
                             response = await asyncio.wait_for(websocket.recv(), timeout=timeout)
                         except asyncio.TimeoutError:
                             logging.info(self.lang_manager.get("real_time_websocket_connect"))
-                            # 根据官方协议，部分服务在首包不回复，这里视为“基础连通成功但无响应”，点亮已连接，并提示
-                            self.status_var.set(self.lang_manager.get("real_time_websocket_connect"))
-                            self._update_connection_indicator(True)
+                            # 根据官方协议，部分服务在首包不回复，这里视为"基础连通成功但无响应"，点亮已连接，并提示
+                            # 使用StatusManager显示成功状态（主线程调度）
+                            self.status_bar.after(0, lambda: self.status_manager.set_success(
+                                self.lang_manager.get("real_time_websocket_connect")
+                            ))
+                            self.status_bar.after(0, lambda: self._update_connection_indicator(True))
                             return
                         logging.info(
                             self.lang_manager.get(
@@ -2579,17 +2915,19 @@ class FunASRGUIClient(tk.Tk):
                         logging.info(
                             self.lang_manager.get("websocket_connection_test_success")
                         )
-                        self.status_var.set(
+                        # 使用StatusManager显示成功状态（主线程调度）
+                        self.status_bar.after(0, lambda: self.status_manager.set_success(
                             self.lang_manager.get("connection_success", f"{ip}:{port}")
-                        )
+                        ))
                         # 更新连接状态为已连接
-                        self._update_connection_indicator(True)
+                        self.status_bar.after(0, lambda: self._update_connection_indicator(True))
 
                     except websockets.exceptions.ConnectionClosedOK:
                         # 服务器主动关闭连接，不再直接记为成功（缺少有效响应）
                         logging.warning("系统警告: 连接建立后被服务器关闭，未收到有效响应")
-                        self.status_var.set("连接建立但无响应")
-                        self._update_connection_indicator(False)
+                        # 使用StatusManager显示警告状态（主线程调度）
+                        self.status_bar.after(0, lambda: self.status_manager.set_warning("连接建立但无响应"))
+                        self.status_bar.after(0, lambda: self._update_connection_indicator(False))
 
                     except websockets.exceptions.ConnectionClosedError as e:
                         logging.warning(f"系统警告: WebSocket连接被中断: {e}")
@@ -2600,23 +2938,25 @@ class FunASRGUIClient(tk.Tk):
                         logging.info(
                             "用户提示: WebSocket连接基本成功，但服务器可能期望不同的消息格式"
                         )
-                        self.status_var.set(f"连接部分成功: {ip}:{port}")
+                        # 使用StatusManager显示警告状态（主线程调度）
+                        self.status_bar.after(0, lambda ip=ip, port=port: self.status_manager.set_warning(f"连接部分成功: {ip}:{port}"))
                         # 更新连接状态为已连接，但用户应该注意可能有问题
-                        self._update_connection_indicator(True)
+                        self.status_bar.after(0, lambda: self._update_connection_indicator(True))
 
                     except Exception as e:
                         logging.error(
                             f"系统错误: WebSocket消息发送/接收错误: {e}", exc_info=True
                         )
-                        # 通信有问题，视为失败
-                        self.status_var.set(f"连接失败: 通信异常 {ip}:{port}")
-                        self._update_connection_indicator(False)
+                        # 通信有问题，视为失败 - 使用StatusManager显示错误状态（主线程调度）
+                        self.status_bar.after(0, lambda ip=ip, port=port: self.status_manager.set_error(f"连接失败: 通信异常 {ip}:{port}"))
+                        self.status_bar.after(0, lambda: self._update_connection_indicator(False))
 
             except asyncio.TimeoutError:
                 logging.error(f"系统错误: 连接 {uri} 超时，服务器无响应")
-                self.status_var.set(f"连接超时: {ip}:{port}")
+                # 使用StatusManager显示错误状态（主线程调度）
+                self.status_bar.after(0, lambda ip=ip, port=port: self.status_manager.set_error(f"连接超时: {ip}:{port}"))
                 # 更新连接状态为未连接
-                self._update_connection_indicator(False)
+                self.status_bar.after(0, lambda: self._update_connection_indicator(False))
 
             except websockets.exceptions.WebSocketException as e:
                 logging.error(f"系统错误: WebSocket错误: {e}", exc_info=True)
@@ -2637,17 +2977,19 @@ class FunASRGUIClient(tk.Tk):
                     if ssl_enabled == 0:
                         logging.warning("用户提示: 建议尝试启用SSL选项后重新连接")
 
-                self.status_var.set("连接失败: WebSocket错误")
+                # 使用StatusManager显示错误状态（主线程调度）
+                self.status_bar.after(0, lambda: self.status_manager.set_error("连接失败: WebSocket错误"))
                 # 更新连接状态为未连接
-                self._update_connection_indicator(False)
+                self.status_bar.after(0, lambda: self._update_connection_indicator(False))
 
         except ConnectionRefusedError:
             logging.error(
                 f"系统错误: 连接到 {ip}:{port} 被拒绝。服务器可能未启动或端口错误。"
             )
-            self.status_var.set(f"连接被拒绝: {ip}:{port}")
+            # 使用StatusManager显示错误状态（主线程调度）
+            self.status_bar.after(0, lambda ip=ip, port=port: self.status_manager.set_error(f"连接被拒绝: {ip}:{port}"))
             # 更新连接状态为未连接
-            self._update_connection_indicator(False)
+            self.status_bar.after(0, lambda: self._update_connection_indicator(False))
 
         except Exception as e:
             logging.error(f"系统错误: 测试连接时发生未捕获的异常: {e}", exc_info=True)
@@ -2664,9 +3006,11 @@ class FunASRGUIClient(tk.Tk):
                     "用户提示: 可尝试的端口: 离线识别(10095)，实时识别(10096)，标点(10097)"
                 )
 
-            self.status_var.set(f"连接错误: {type(e).__name__}")
+            # 使用StatusManager显示错误状态（主线程调度）
+            error_type = type(e).__name__
+            self.status_bar.after(0, lambda error_type=error_type: self.status_manager.set_error(f"连接错误: {error_type}"))
             # 更新连接状态为未连接
-            self._update_connection_indicator(False)
+            self.status_bar.after(0, lambda: self._update_connection_indicator(False))
 
     def _update_connection_indicator(self, connected=False):
         """更新连接状态指示器"""
@@ -2789,7 +3133,8 @@ class FunASRGUIClient(tk.Tk):
         """启动速度测试过程"""
         if self.speed_test_running:
             logging.warning(self.lang_manager.get("user_warn_speed_test_running"))
-            self.status_var.set(self.lang_manager.get("user_warn_speed_test_running"))
+            # 使用StatusManager显示警告状态
+            self.status_manager.set_warning(self.lang_manager.get("user_warn_speed_test_running"))
             return
 
         # 检查服务器连接
@@ -2800,7 +3145,8 @@ class FunASRGUIClient(tk.Tk):
             logging.error(
                 "用户错误: 服务器IP或端口未设置"
             )  # 这个日志用户一般看不到，但保留
-            self.status_var.set(
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(
                 self.lang_manager.get(
                     "error_msg", self.lang_manager.get("please_connect_server")
                 )
@@ -2829,7 +3175,8 @@ class FunASRGUIClient(tk.Tk):
                 logging.warning(
                     "系统警告: 服务器连接测试未成功，无法进行速度测试"
                 )  # 日志保留
-                self.status_var.set(
+                # 使用StatusManager显示错误状态
+                self.status_manager.set_error(
                     self.lang_manager.get(
                         "error_msg", self.lang_manager.get("please_connect_server")
                     )
@@ -2853,7 +3200,11 @@ class FunASRGUIClient(tk.Tk):
         self.speed_test_status_var.set(
             self.lang_manager.get(*self.current_speed_test_status_key_and_args)
         )
-        self.status_var.set(self.lang_manager.get("status_preparing_speed_test"))
+        # 使用StatusManager显示准备状态
+        self.status_manager.set_stage(
+            self.status_manager.STAGE_PREPARING,
+            "速度测试"
+        )
         self.speed_test_button.config(state=tk.DISABLED)
 
         # 查找测试文件 - 使用根目录下的resources/demo目录
@@ -2865,7 +3216,8 @@ class FunASRGUIClient(tk.Tk):
             logging.error(
                 f"系统错误: 测试文件不存在，请确保 {demo_dir} 目录下有 tv-report-1.mp4 和 tv-report-1.wav 文件"
             )  # 日志保留
-            self.status_var.set(
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(
                 self.lang_manager.get(
                     "error_msg", self.lang_manager.get("test_file_not_found_error")
                 )
@@ -2920,7 +3272,10 @@ class FunASRGUIClient(tk.Tk):
         self.speed_test_status_var.set(
             self.lang_manager.get(*self.current_speed_test_status_key_and_args)
         )
-        self.status_var.set(self.lang_manager.get("status_testing_file", file_name))
+        # 使用StatusManager显示处理状态
+        self.status_manager.set_processing(
+            self.lang_manager.get("status_testing_file", file_name)
+        )
         logging.info(
             self.lang_manager.get(
                 "speed_test_event_testing_file", self.test_file_index + 1, current_file
@@ -3076,8 +3431,14 @@ class FunASRGUIClient(tk.Tk):
                             f"速度测试警告: 文件{self.test_file_index + 1}未检测到转写开始时间，无法计算转写耗时"
                         )
 
-            # 确保进程结束
-            process.wait()
+            # 确保进程结束（设置超时避免无限等待）
+            try:
+                process.wait(timeout=600)  # 最多等待10分钟
+            except subprocess.TimeoutExpired:
+                logging.warning("速度测试警告: 子进程执行超时，正在终止进程")
+                self._terminate_process_safely(process, timeout=5, process_name="速度测试进程")
+                self.after(0, self._handle_test_error, "速度测试超时")
+                return
 
             # 检查是否成功获取了所有时间点
             if (
@@ -3135,6 +3496,9 @@ class FunASRGUIClient(tk.Tk):
                     "speed_test_error_general", f"{e}\n{error_details}"
                 )
             )
+            # 确保进程被终止
+            if process and process.poll() is None:
+                self._terminate_process_safely(process, timeout=5, process_name="速度测试进程(异常)")
             self.after(0, self._handle_test_error, str(e))
 
     def _handle_test_error(self, error_msg):
@@ -3143,7 +3507,8 @@ class FunASRGUIClient(tk.Tk):
         self.speed_test_status_var.set(
             self.lang_manager.get(*self.current_speed_test_status_key_and_args)
         )
-        self.status_var.set(
+        # 使用StatusManager显示错误状态
+        self.status_manager.set_error(
             self.lang_manager.get("status_speed_test_failed_with_msg", error_msg)
         )
         self.speed_test_button.config(state=tk.NORMAL)
@@ -3180,7 +3545,8 @@ class FunASRGUIClient(tk.Tk):
             self.speed_test_status_var.set(
                 self.lang_manager.get(*self.current_speed_test_status_key_and_args)
             )
-            self.status_var.set(
+            # 使用StatusManager显示成功状态
+            self.status_manager.set_success(
                 self.lang_manager.get("test_completed")
             )  # 使用通用的 test_completed
             self.speed_test_button.config(state=tk.NORMAL)
@@ -3226,7 +3592,8 @@ class FunASRGUIClient(tk.Tk):
             self.speed_test_status_var.set(
                 self.lang_manager.get(*self.current_speed_test_status_key_and_args)
             )
-            self.status_var.set(
+            # 使用StatusManager显示错误状态
+            self.status_manager.set_error(
                 self.lang_manager.get("status_speed_test_calc_failed", str(e))
             )
             self.speed_test_button.config(state=tk.NORMAL)

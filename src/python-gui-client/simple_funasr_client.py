@@ -15,7 +15,8 @@ import time
 import traceback
 from multiprocessing import Process
 
-import websockets
+# websockets库改为延迟导入，避免无依赖环境下导入失败
+# import websockets 移到main()函数内
 
 # 解决中文显示乱码问题
 if sys.platform == "win32":
@@ -468,6 +469,14 @@ async def ws_client(id, chunk_begin, chunk_size):
 
 def one_thread(id, chunk_begin, chunk_size):
     """每个线程要执行的主函数"""
+    # 子进程中也需要导入websockets（跨平台兼容性考虑）
+    try:
+        global websockets
+        import websockets
+    except ImportError as e:
+        print(f"子进程导入错误: {e}", file=sys.stderr)
+        sys.exit(1)
+    
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     success = loop.run_until_complete(ws_client(id, chunk_begin, chunk_size))
@@ -477,6 +486,25 @@ def one_thread(id, chunk_begin, chunk_size):
 
 def main():
     """主函数，解析参数并启动处理线程"""
+    # 延迟导入websockets，并提供友好的错误提示
+    try:
+        global websockets
+        import websockets
+    except ImportError as e:
+        print("=" * 60, file=sys.stderr)
+        print("错误: 缺少必需的依赖库 'websockets'", file=sys.stderr)
+        print("=" * 60, file=sys.stderr)
+        print("", file=sys.stderr)
+        print("请运行以下命令安装依赖:", file=sys.stderr)
+        print("  pip install websockets>=10.0", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("或者使用pipenv安装:", file=sys.stderr)
+        print("  pipenv install websockets>=10.0", file=sys.stderr)
+        print("", file=sys.stderr)
+        print(f"详细错误信息: {e}", file=sys.stderr)
+        print("=" * 60, file=sys.stderr)
+        sys.exit(1)
+    
     # 不再需要重复初始化args和转换chunk_size
     # args = parser.parse_args()
     # args.chunk_size = [int(x) for x in args.chunk_size.split(",")]
