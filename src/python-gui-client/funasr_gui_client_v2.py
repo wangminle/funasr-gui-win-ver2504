@@ -1051,8 +1051,8 @@ class FunASRGUIClient(tk.Tk):
 
         self.title(self.lang_manager.get("app_title"))
         # 根据平台设置默认窗口高度，确保状态栏在macOS下也可见
-        default_width = 800
-        default_height = 700 if sys.platform == "darwin" else 650
+        default_width = 840
+        default_height = 720
         self.geometry(f"{default_width}x{default_height}")
         self.connection_status = False  # 连接状态标志
 
