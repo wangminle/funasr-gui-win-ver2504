@@ -270,6 +270,14 @@ async def message(id):
     else:
         ibest_writer = None
         json_writer = None
+        json_file_path = None
+    
+    # 统计变量
+    first_result_time = None
+    total_bytes_received = 0
+    total_text_length = 0
+    message_count = 0
+    start_recv_time = time.time()
 
     try:
         while True:
@@ -277,7 +285,12 @@ async def message(id):
             try:
                 log("等待接收消息...")
                 meg = await asyncio.wait_for(websocket.recv(), timeout=600)
-                log(f"已接收消息，大小: {len(meg)/1024/1024:.2f}MB")
+                
+                # 统计接收字节数和消息数
+                message_count += 1
+                msg_size = len(meg) if isinstance(meg, (str, bytes)) else 0
+                total_bytes_received += msg_size
+                log(f"已接收消息 #{message_count}，大小: {msg_size/1024/1024:.2f}MB，累计: {total_bytes_received/1024/1024:.2f}MB")
 
                 try:
                     # 尝试解析JSON，设置更大的递归限制
@@ -292,15 +305,33 @@ async def message(id):
                     wav_name = meg.get("wav_name", "demo")
                     text = meg.get("text", "")
                     timestamp = ""
-
-                    # 在离线模式下，不依赖is_final字段，而是根据收到非空text字段来判断识别完成
-                    if args.mode == "offline" and text.strip():
-                        log("离线模式收到非空文本，识别完成")
+                    
+                    # 处理 stamp_sents 格式（分段时间戳结果）
+                    if "stamp_sents" in meg and not text:
+                        # 从 stamp_sents 中提取并拼接所有文本片段
+                        stamp_sents = meg.get("stamp_sents", [])
+                        text_segments = []
+                        for sent in stamp_sents:
+                            if isinstance(sent, dict) and "text_seg" in sent:
+                                text_segments.append(sent["text_seg"])
+                        text = "".join(text_segments)
+                        log(f"从 stamp_sents 提取文本，共 {len(stamp_sents)} 个片段，总长度 {len(text)} 字符")
+                    
+                    # 记录首次收到结果的时间
+                    if text and first_result_time is None:
+                        first_result_time = time.time()
+                        log(f"收到首个识别结果，消息序号: {message_count}")
+                    
+                    # 累计文本长度
+                    if text:
+                        total_text_length += len(text)
+                    
+                    # 统一使用 is_final 字段判断是否完成（修复原有逻辑错误）
+                    is_final = meg.get("is_final", False)
+                    if is_final:
+                        log(f"收到最终结果标志 (is_final=True)，文本长度: {len(text)}")
                         offline_msg_done = True
-                    else:
-                        # 非离线模式仍然使用is_final字段
-                        offline_msg_done = meg.get("is_final", False)
-
+                    
                     if "timestamp" in meg:
                         timestamp = meg["timestamp"]
 
@@ -319,23 +350,29 @@ async def message(id):
                             ibest_writer.write(wav_name + "\t" + text + "\n")
                         ibest_writer.flush()  # 确保立即写入
 
-                    # 存储JSON结果
-                    if json_writer is not None:
-                        # 只存储包含文本或时间戳的有效消息
-                        if text or timestamp:
-                            # 过滤掉可能导致JSON文件过大的字段
-                            if len(meg) > 1000000:  # 如果消息太大
-                                log("消息太大，只保留关键字段")
-                                filtered_meg = {
-                                    "wav_name": wav_name,
-                                    "text": text,
-                                    "is_final": meg.get("is_final", False),
-                                }
-                                if "timestamp" in meg:
-                                    filtered_meg["timestamp"] = timestamp
-                                all_results_for_json.append(filtered_meg)
-                            else:
-                                all_results_for_json.append(meg)
+                    # 增量写入JSON结果（改进：立即写入而不是累积）
+                    if json_writer_path is not None and (text or timestamp):
+                        # 过滤掉可能导致JSON文件过大的字段
+                        if len(meg) > 1000000:  # 如果消息太大
+                            log("消息太大，只保留关键字段")
+                            filtered_meg = {
+                                "wav_name": wav_name,
+                                "text": text,
+                                "is_final": meg.get("is_final", False),
+                            }
+                            if "timestamp" in meg:
+                                filtered_meg["timestamp"] = timestamp
+                            all_results_for_json.append(filtered_meg)
+                        else:
+                            all_results_for_json.append(meg)
+                        
+                        # 增量写入：立即写入JSON文件
+                        try:
+                            with open(json_writer_path, "w", encoding="utf-8") as f:
+                                json.dump(all_results_for_json, f, ensure_ascii=False, indent=2)
+                            log(f"增量写入JSON结果，当前累计 {len(all_results_for_json)} 条消息")
+                        except Exception as e:
+                            log(f"增量写入JSON失败: {e}")
 
                     # -- 修改：直接打印当前收到的文本 --
                     current_output = ""
@@ -379,6 +416,19 @@ async def message(id):
                 offline_msg_done = True
                 break
     finally:
+        # 输出统计信息
+        total_time = time.time() - start_recv_time
+        log("=" * 60)
+        log("识别结果统计:")
+        log(f"  总接收消息数: {message_count}")
+        log(f"  总接收字节数: {total_bytes_received:,} bytes ({total_bytes_received/1024/1024:.2f} MB)")
+        log(f"  总文本长度: {total_text_length:,} 字符")
+        log(f"  接收总耗时: {total_time:.2f} 秒")
+        if first_result_time:
+            time_to_first_result = first_result_time - start_recv_time
+            log(f"  首个结果耗时: {time_to_first_result:.2f} 秒")
+        log("=" * 60)
+        
         if ibest_writer is not None:
             ibest_writer.close()
             log("文本结果文件已关闭")

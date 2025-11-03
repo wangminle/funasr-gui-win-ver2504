@@ -232,6 +232,9 @@ dev/config/config.json.bak
 *.ogg
 *.flac
 
+# 测试用难度较大的音频文件目录
+/resources/difficult/
+
 
 # 打包输出文件
 /dist/

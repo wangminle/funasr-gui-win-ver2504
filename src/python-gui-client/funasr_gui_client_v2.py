@@ -1005,23 +1005,35 @@ class TranscribeTimeManager:
         # 如果没有测速结果，使用基础公式
         if self.last_transcribe_speed is None:
             # (1) 没有测速结果的情况
-            self.transcribe_wait_timeout = math.ceil(
-                self.current_file_duration / 5
-            )  # 音频时长/5，向上取整
+            # 基础超时公式：音频时长/5，但至少30分钟
+            self.transcribe_wait_timeout = max(
+                1800,  # 最少30分钟
+                math.ceil(self.current_file_duration / 5)
+            )
+            # 预估时长：音频时长/10
             self.transcribe_estimate_time = math.ceil(
                 self.current_file_duration / 10
-            )  # 音频时长/10，向上取整
+            )
         else:
             # (2) 有测速结果的情况
             # 转写预估时长：(音频时长 / 转写倍速) × 120%，向上取整
             base_estimate = self.current_file_duration / self.last_transcribe_speed
             self.transcribe_estimate_time = math.ceil(base_estimate * 1.2)
 
-            # 转写等待时长：如果倍速>5用音频时长/5，否则用音频时长
-            if self.last_transcribe_speed > 5:
-                self.transcribe_wait_timeout = math.ceil(self.current_file_duration / 5)
-            else:
-                self.transcribe_wait_timeout = math.ceil(self.current_file_duration)
+            # 转写等待时长：根据音频长度动态调整倍速假设
+            # 短音频(<10分钟): 倍速可能较高，使用 音频时长/5
+            # 长音频(>60分钟): 倍速会下降，使用 音频时长/2，最少30分钟
+            if self.current_file_duration < 600:  # <10分钟
+                base_timeout = self.current_file_duration / 5
+            elif self.current_file_duration < 3600:  # 10-60分钟
+                base_timeout = self.current_file_duration / 3
+            else:  # >60分钟，长音频
+                base_timeout = self.current_file_duration / 2
+            
+            self.transcribe_wait_timeout = max(
+                1800,  # 最少30分钟
+                math.ceil(base_timeout)
+            )
 
         return self.transcribe_wait_timeout, self.transcribe_estimate_time
 
@@ -2653,26 +2665,36 @@ class FunASRGUIClient(tk.Tk):
                 # 等待进程结束并获取返回码
                 return_code = process.wait()
 
-                # 严格化成功判定：仅当捕获到"识别结果:"文本，或明确写入了结果文件，
-                # 或在输出目录检测到以当前文件名为前缀的json结果文件时，才判定成功。
-                # 注意：只接受本次运行生成的结果文件（修改时间晚于进程启动时间）
-                def _exists_result_file() -> bool:
+                # 严格化成功判定：必须同时满足以下条件
+                # 1. 退出码为0（进程正常退出）
+                # 2. 有有效的识别结果（收到识别文本 或 有有效的结果文件）
+                def _exists_valid_result_file() -> bool:
+                    """检查是否存在有效的结果文件（非空且有实际内容）"""
                     try:
                         base_name = os.path.splitext(os.path.basename(audio_in))[0]
                         for fname in os.listdir(results_dir):
                             if fname.startswith(base_name + ".") and fname.endswith(".json"):
                                 fpath = os.path.join(results_dir, fname)
-                                # 文件必须：1) 非空，2) 修改时间晚于进程启动时间
-                                if os.path.getsize(fpath) > 0:
-                                    file_mtime = os.path.getmtime(fpath)
-                                    if file_mtime >= process_start_time:
-                                        return True
+                                file_size = os.path.getsize(fpath)
+                                file_mtime = os.path.getmtime(fpath)
+                                
+                                # 文件必须：1) 大于100字节（排除空文件/占位文件）
+                                #           2) 修改时间晚于进程启动时间
+                                if file_size > 100 and file_mtime >= process_start_time:
+                                    logging.info(f"检测到有效结果文件: {fname} ({file_size} 字节)")
+                                    return True
+                                elif file_mtime >= process_start_time:
+                                    logging.warning(f"结果文件过小: {fname} ({file_size} 字节)，可能不完整")
                         return False
-                    except Exception:
+                    except Exception as e:
+                        logging.error(f"检查结果文件时出错: {e}")
                         return False
 
-                success_by_artifact = result_file_written or _exists_result_file()
-                if received_valid_result or success_by_artifact:
+                # 成功判定条件：退出码=0 且 (有识别结果 或 有有效结果文件)
+                success_by_artifact = result_file_written or _exists_valid_result_file()
+                has_valid_result = received_valid_result or success_by_artifact
+                
+                if return_code == 0 and has_valid_result:
                     logging.info(
                         self.lang_manager.get(
                             "task_success", os.path.basename(audio_in)
@@ -2685,17 +2707,23 @@ class FunASRGUIClient(tk.Tk):
                         lambda: self.status_manager.set_stage(self.status_manager.STAGE_COMPLETED)
                     )
                 else:
+                    # 失败原因分析
+                    if return_code != 0:
+                        reason = f"进程异常退出(退出码:{return_code})"
+                    elif not has_valid_result:
+                        reason = "未收到有效识别结果"
+                    else:
+                        reason = "未知原因"
+                    
                     logging.error(
-                        self.lang_manager.get(
-                            "task_failed", os.path.basename(audio_in), return_code
-                        )
+                        f"任务失败: 文件 {os.path.basename(audio_in)} 识别失败 - {reason}"
                     )
                     task_completed = True  # 即使失败也标记任务完成，停止倒计时
                     # 使用StatusManager显示错误状态
                     self.after(
                         0,
-                        lambda: self.status_manager.set_error(
-                            self.lang_manager.get("recognition_failed", return_code)
+                        lambda r=reason: self.status_manager.set_error(
+                            f"识别失败: {r}"
                         )
                     )
                     # Display error in a popup
@@ -2757,51 +2785,48 @@ class FunASRGUIClient(tk.Tk):
                 if process and process.poll() is None:
                     self._terminate_process_safely(process, timeout=5, process_name="识别进程")
 
-        # 启动超时监控 - 使用动态计算的wait_timeout
+        # 启动超时监控 - 使用动态计算的wait_timeout（修复：使用绝对时间判断）
         def check_timeout():
-            current_time = time.time()
-
             # 如果任务已完成，停止超时检查
             if task_completed:
                 return
+            
+            current_time = time.time()
 
-            # 检查是否超过系统等待超时时间
-            if (
-                transcribe_start_time
-                and (current_time - transcribe_start_time) > wait_timeout
-            ):
-                if process and process.poll() is None:
-                    logging.warning(
-                        self.lang_manager.get(
-                            "transcription_timeout_warning", wait_timeout
+            # 检查是否超过系统等待超时时间（使用绝对时间判断）
+            if transcribe_start_time:
+                elapsed = current_time - transcribe_start_time
+                
+                if elapsed > wait_timeout:
+                    if process and process.poll() is None:
+                        logging.warning(
+                            f"转写超时: 已用时{elapsed:.0f}秒，超过设定{wait_timeout}秒"
                         )
-                    )
-                    self._terminate_process_safely(process, timeout=5, process_name="识别进程(超时)")
-                    # 使用StatusManager显示错误状态
-                    self.after(
-                        0,
-                        lambda: self.status_manager.set_error(f"转写超时 (超过{wait_timeout}秒)")
-                    )
-                    self.after(
-                        0,
-                        lambda: messagebox.showerror(
-                            self.lang_manager.get("transcription_timeout"),
-                            self.lang_manager.get(
-                                "transcription_timeout_msg", wait_timeout
+                        self._terminate_process_safely(process, timeout=5, process_name="识别进程(超时)")
+                        # 使用StatusManager显示错误状态
+                        self.after(
+                            0,
+                            lambda: self.status_manager.set_error(f"转写超时 (超过{wait_timeout}秒)")
+                        )
+                        self.after(
+                            0,
+                            lambda: messagebox.showerror(
+                                self.lang_manager.get("transcription_timeout"),
+                                self.lang_manager.get(
+                                    "transcription_timeout_msg", wait_timeout
+                                ),
                             ),
-                        ),
-                    )
-                    self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
-            # 检查通信超时（基于预估时间的动态超时，最小30秒）
-            elif (current_time - last_message_time) > max(
-                30, (estimate_time or 60) * 2
-            ):  # 动态设置通信超时时间，最小30秒，如果estimate_time为None则使用60秒
-                communication_timeout = max(30, (estimate_time or 60) * 2)
-                if process and process.poll() is None:
-                    logging.warning(
-                        self.lang_manager.get(
-                            "communication_timeout_warning", communication_timeout
                         )
+                        self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
+                        return  # 超时后停止调度
+            
+            # 检查通信超时（基于最后消息时间）
+            comm_timeout = max(600, wait_timeout // 2)  # 通信超时=max(10分钟, 系统超时的一半)
+            if (current_time - last_message_time) > comm_timeout:
+                if process and process.poll() is None:
+                    elapsed_comm = current_time - last_message_time
+                    logging.warning(
+                        f"通信超时: 距上次消息已{elapsed_comm:.0f}秒，超过设定{comm_timeout}秒"
                     )
                     self._terminate_process_safely(process, timeout=5, process_name="识别进程(通信超时)")
                     # 使用StatusManager显示错误状态
@@ -2816,15 +2841,15 @@ class FunASRGUIClient(tk.Tk):
                         lambda: messagebox.showerror(
                             self.lang_manager.get("communication_timeout"),
                             self.lang_manager.get(
-                                "communication_timeout_msg", communication_timeout
+                                "communication_timeout_msg", comm_timeout
                             ),
                         ),
                     )
                     self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
-            elif process and process.poll() is None:
-                # 如果进程仍在运行，继续监控
-                self.after(1000, check_timeout)
-            # 如果进程已结束，则停止监控
+                    return  # 超时后停止调度
+            
+            # 继续监控（无论进程状态如何，都继续调度，由task_completed控制停止）
+            self.after(1000, check_timeout)
 
         # 在新线程中运行脚本
         thread = threading.Thread(target=run_in_thread)
