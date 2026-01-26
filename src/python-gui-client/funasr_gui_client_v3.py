@@ -711,6 +711,117 @@ class LanguageManager:
                 "zh": "等待接收消息...",
                 "en": "Waiting for messages...",
             },
+            # === Phase 3: V3 GUI 集成 - 新增翻译 ===
+            # 服务端配置区域
+            "server_config_section": {
+                "zh": "服务端配置",
+                "en": "Server Configuration",
+            },
+            "server_type_label": {"zh": "服务端类型:", "en": "Server Type:"},
+            "server_type_auto": {
+                "zh": "自动探测（推荐）",
+                "en": "Auto Detect (Recommended)",
+            },
+            "server_type_legacy": {
+                "zh": "旧版服务端 (Legacy)",
+                "en": "Legacy Server",
+            },
+            "server_type_funasr_main": {
+                "zh": "新版服务端 (FunASR-main)",
+                "en": "New Server (FunASR-main)",
+            },
+            "server_type_public_cloud": {
+                "zh": "公网测试服务",
+                "en": "Public Cloud Test",
+            },
+            "recognition_mode_label": {"zh": "识别模式:", "en": "Recognition Mode:"},
+            "mode_offline": {"zh": "离线转写", "en": "Offline Transcription"},
+            "mode_2pass": {
+                "zh": "实时识别 (2pass)",
+                "en": "Real-time Recognition (2pass)",
+            },
+            # 探测控制区域
+            "auto_probe_on_start": {
+                "zh": "启动时自动探测",
+                "en": "Auto Probe on Start",
+            },
+            "auto_probe_on_switch": {
+                "zh": "切换时自动探测",
+                "en": "Auto Probe on Switch",
+            },
+            "probe_now": {"zh": "🔄 立即探测", "en": "🔄 Probe Now"},
+            "probe_status_waiting": {"zh": "等待探测...", "en": "Waiting to probe..."},
+            "probe_status_probing": {"zh": "🔄 正在探测...", "en": "🔄 Probing..."},
+            "probe_status_success": {
+                "zh": "✅ 服务可用",
+                "en": "✅ Service Available",
+            },
+            "probe_status_connected": {
+                "zh": "✅ 已连接（未响应）",
+                "en": "✅ Connected (No Response)",
+            },
+            "probe_status_failed": {"zh": "❌ 不可连接", "en": "❌ Connection Failed"},
+            "probe_status_modes": {"zh": "模式: {}", "en": "Modes: {}"},
+            "probe_status_capabilities": {"zh": "能力: {}", "en": "Capabilities: {}"},
+            "probe_status_type_maybe_new": {
+                "zh": "类型: 可能新版（仅供参考）",
+                "en": "Type: Possibly New (Reference Only)",
+            },
+            "probe_status_type_maybe_old": {
+                "zh": "类型: 可能旧版（仅供参考）",
+                "en": "Type: Possibly Legacy (Reference Only)",
+            },
+            "probe_status_mode_undetermined": {
+                "zh": "模式: 未判定（可直接开始识别验证）",
+                "en": "Modes: Undetermined (Can Start Recognition to Verify)",
+            },
+            "probe_error_check_ip_port_ssl": {
+                "zh": "请检查IP/端口/SSL",
+                "en": "Please check IP/Port/SSL",
+            },
+            # SenseVoice 设置区域
+            "sensevoice_settings": {
+                "zh": "SenseVoice 设置（新版服务可用）",
+                "en": "SenseVoice Settings (For New Server)",
+            },
+            "svs_lang_label": {"zh": "语种:", "en": "Language:"},
+            "svs_itn_enable": {"zh": "启用 SVS ITN", "en": "Enable SVS ITN"},
+            "svs_note": {
+                "zh": "⚠️ 需要服务端加载SenseVoice模型",
+                "en": "⚠️ Requires SenseVoice Model on Server",
+            },
+            # 探测结果框架标题
+            "probe_result_frame_title": {"zh": "探测结果", "en": "Probe Result"},
+            # 探测模式短名称（用于探测结果展示，避免硬替换）
+            "probe_mode_offline_short": {"zh": "离线", "en": "Offline"},
+            "probe_mode_2pass_short": {"zh": "2pass", "en": "2pass"},
+            "probe_mode_realtime_short": {"zh": "实时", "en": "Real-time"},
+            "probe_capability_timestamp": {"zh": "时间戳", "en": "Timestamp"},
+            # 探测相关日志消息
+            "probe_started": {
+                "zh": "系统事件: 开始探测服务器 {}:{}",
+                "en": "System Event: Starting probe for server {}:{}",
+            },
+            "probe_completed": {
+                "zh": "系统事件: 探测完成 - {}",
+                "en": "System Event: Probe completed - {}",
+            },
+            "probe_failed_log": {
+                "zh": "系统警告: 探测失败 - {}",
+                "en": "System Warning: Probe failed - {}",
+            },
+            "server_type_changed": {
+                "zh": "用户操作: 服务端类型切换为 {}",
+                "en": "User Action: Server type changed to {}",
+            },
+            "recognition_mode_changed": {
+                "zh": "用户操作: 识别模式切换为 {}",
+                "en": "User Action: Recognition mode changed to {}",
+            },
+            "auto_probe_startup": {
+                "zh": "系统事件: 启动时自动检测服务器状态...",
+                "en": "System Event: Auto-detecting server status on startup...",
+            },
         }
 
     def get(self, key, *args):
@@ -1066,7 +1177,8 @@ class FunASRGUIClient(tk.Tk):
         default_width = 840
         default_height = 720
         self.geometry(f"{default_width}x{default_height}")
-        self.connection_status = False  # 连接状态标志
+        self.connection_status = False  # 连接测试通过状态（用于判断是否可以开始识别）
+        self.probe_reachable = False  # 探测可达状态（仅用于 UI 提示，独立于 connection_status）
 
         # 不再创建顶部语言切换按钮
         # self.create_language_button()
@@ -1154,6 +1266,105 @@ class FunASRGUIClient(tk.Tk):
 
         # Make the frame expandable for the button
         server_frame.columnconfigure(4, weight=1)
+
+        # --- 服务端配置区域（Phase 3 新增）---
+        server_config_subframe = ttk.LabelFrame(
+            server_frame, text=self.lang_manager.get("server_config_section")
+        )
+        server_config_subframe.grid(
+            row=1, column=0, columnspan=6, padx=5, pady=5, sticky=tk.EW
+        )
+
+        # 服务端类型下拉框（显示值 ↔ 内部值映射）
+        # 映射表定义在类属性中便于复用
+        self.server_type_label = ttk.Label(
+            server_config_subframe, text=self.lang_manager.get("server_type_label")
+        )
+        self.server_type_label.grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)
+
+        self.server_type_value_var = tk.StringVar(value="auto")  # 内部值
+        self.server_type_combo = ttk.Combobox(
+            server_config_subframe,
+            state="readonly",
+            width=20,
+        )
+        self._update_server_type_combo_values()
+        self.server_type_combo.current(0)
+        self.server_type_combo.grid(row=0, column=1, padx=5, pady=5, sticky=tk.W)
+        self.server_type_combo.bind(
+            "<<ComboboxSelected>>", self._on_server_type_changed
+        )
+
+        # 识别模式下拉框
+        self.recognition_mode_label = ttk.Label(
+            server_config_subframe, text=self.lang_manager.get("recognition_mode_label")
+        )
+        self.recognition_mode_label.grid(row=0, column=2, padx=(20, 5), pady=5, sticky=tk.W)
+
+        self.recognition_mode_value_var = tk.StringVar(value="offline")  # 内部值
+        self.recognition_mode_combo = ttk.Combobox(
+            server_config_subframe,
+            state="readonly",
+            width=18,
+        )
+        self._update_recognition_mode_combo_values()
+        self.recognition_mode_combo.current(0)
+        self.recognition_mode_combo.grid(row=0, column=3, padx=5, pady=5, sticky=tk.W)
+        self.recognition_mode_combo.bind(
+            "<<ComboboxSelected>>", self._on_recognition_mode_changed
+        )
+
+        # --- 探测控制区域（第二行）---
+        # 启动时自动探测复选框
+        self.auto_probe_start_var = tk.IntVar(value=1)
+        self.auto_probe_start_check = ttk.Checkbutton(
+            server_config_subframe,
+            text=self.lang_manager.get("auto_probe_on_start"),
+            variable=self.auto_probe_start_var,
+        )
+        self.auto_probe_start_check.grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
+
+        # 切换时自动探测复选框
+        self.auto_probe_switch_var = tk.IntVar(value=1)
+        self.auto_probe_switch_check = ttk.Checkbutton(
+            server_config_subframe,
+            text=self.lang_manager.get("auto_probe_on_switch"),
+            variable=self.auto_probe_switch_var,
+        )
+        self.auto_probe_switch_check.grid(row=1, column=1, padx=5, pady=5, sticky=tk.W)
+
+        # 立即探测按钮
+        self.probe_button = ttk.Button(
+            server_config_subframe,
+            text=self.lang_manager.get("probe_now"),
+            command=self._schedule_probe,
+        )
+        self.probe_button.grid(row=1, column=2, padx=(20, 5), pady=5, sticky=tk.W)
+
+        # --- 探测结果展示（第三行，跨列）---
+        probe_result_frame = ttk.LabelFrame(
+            server_config_subframe, text=self.lang_manager.get("probe_result_frame_title")
+        )
+        probe_result_frame.grid(
+            row=2, column=0, columnspan=4, padx=5, pady=5, sticky=tk.EW
+        )
+
+        self.probe_result_var = tk.StringVar(
+            value=self.lang_manager.get("probe_status_waiting")
+        )
+        self.probe_result_label = ttk.Label(
+            probe_result_frame,
+            textvariable=self.probe_result_var,
+            foreground="gray",
+            wraplength=600,
+        )
+        self.probe_result_label.pack(padx=10, pady=5, fill=tk.X)
+
+        # 保存探测结果框架引用
+        self.probe_result_frame = probe_result_frame
+
+        # 保存子框架引用以便后续添加更多控件
+        self.server_config_subframe = server_config_subframe
 
         # --- 文件选择与执行区 ---
         file_frame = ttk.LabelFrame(
@@ -1298,6 +1509,48 @@ class FunASRGUIClient(tk.Tk):
         )
         self.clear_hotword_button.grid(row=1, column=4, padx=5, pady=5, sticky=tk.W)
 
+        # --- SenseVoice 设置区域（Phase 3 新增）---
+        self.sensevoice_frame = ttk.LabelFrame(
+            options_frame, text=self.lang_manager.get("sensevoice_settings")
+        )
+        self.sensevoice_frame.grid(
+            row=2, column=0, columnspan=5, padx=5, pady=5, sticky=tk.EW
+        )
+
+        # 语种选择标签
+        self.svs_lang_label = ttk.Label(
+            self.sensevoice_frame, text=self.lang_manager.get("svs_lang_label")
+        )
+        self.svs_lang_label.grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)
+
+        # 语种选择下拉框
+        self.svs_lang_var = tk.StringVar(value="auto")
+        self.svs_lang_combo = ttk.Combobox(
+            self.sensevoice_frame,
+            textvariable=self.svs_lang_var,
+            values=["auto", "zh", "en", "ja", "ko", "yue"],
+            state="readonly",
+            width=8,
+        )
+        self.svs_lang_combo.grid(row=0, column=1, padx=5, pady=5, sticky=tk.W)
+
+        # SVS ITN 开关
+        self.svs_itn_var = tk.IntVar(value=1)
+        self.svs_itn_check = ttk.Checkbutton(
+            self.sensevoice_frame,
+            text=self.lang_manager.get("svs_itn_enable"),
+            variable=self.svs_itn_var,
+        )
+        self.svs_itn_check.grid(row=0, column=2, padx=(20, 5), pady=5, sticky=tk.W)
+
+        # 提示标签
+        self.svs_note_label = ttk.Label(
+            self.sensevoice_frame,
+            text=self.lang_manager.get("svs_note"),
+            foreground="gray",
+        )
+        self.svs_note_label.grid(row=0, column=3, padx=(20, 5), pady=5, sticky=tk.W)
+
         # --- 速度测试区域 ---
         speed_test_frame = ttk.LabelFrame(
             self, text=self.lang_manager.get("speed_test_frame")
@@ -1422,6 +1675,11 @@ class FunASRGUIClient(tk.Tk):
             logging.error("程序启动失败：依赖检查未通过")
             self.destroy()
             return
+
+        # === Phase 3: 启动时自动探测 ===
+        # 使用 after() 延迟执行，确保 UI 完全初始化后再探测
+        if self.auto_probe_start_var.get():
+            self.after(1000, self._auto_probe_on_startup)
 
     def create_language_button(self):
         """创建语言切换按钮"""
@@ -1598,6 +1856,483 @@ class FunASRGUIClient(tk.Tk):
             # 使用StatusManager设置就绪状态
             self.status_manager.set_info(self.lang_manager.get("ready"))
 
+        # === Phase 3: 更新服务端配置区域的语言 ===
+        # 更新服务端配置子框架标题
+        if hasattr(self, "server_config_subframe"):
+            self.server_config_subframe.config(
+                text=self.lang_manager.get("server_config_section")
+            )
+        # 更新服务端类型标签
+        if hasattr(self, "server_type_label"):
+            self.server_type_label.config(
+                text=self.lang_manager.get("server_type_label")
+            )
+        # 更新识别模式标签
+        if hasattr(self, "recognition_mode_label"):
+            self.recognition_mode_label.config(
+                text=self.lang_manager.get("recognition_mode_label")
+            )
+        # 更新下拉框选项（保持当前选择）
+        if hasattr(self, "server_type_combo"):
+            self._update_server_type_combo_values()
+        if hasattr(self, "recognition_mode_combo"):
+            self._update_recognition_mode_combo_values()
+        # 更新探测相关控件
+        if hasattr(self, "auto_probe_start_check"):
+            self.auto_probe_start_check.config(
+                text=self.lang_manager.get("auto_probe_on_start")
+            )
+        if hasattr(self, "auto_probe_switch_check"):
+            self.auto_probe_switch_check.config(
+                text=self.lang_manager.get("auto_probe_on_switch")
+            )
+        if hasattr(self, "probe_button"):
+            self.probe_button.config(text=self.lang_manager.get("probe_now"))
+        # 更新探测结果框架标题
+        if hasattr(self, "probe_result_frame"):
+            self.probe_result_frame.config(
+                text=self.lang_manager.get("probe_result_frame_title")
+            )
+        # 更新探测结果文本（如果有缓存的探测结果）
+        if hasattr(self, "_last_capabilities") and self._last_capabilities:
+            display_text = self._format_probe_result_text(self._last_capabilities)
+            self.probe_result_var.set(display_text)
+        # 更新 SenseVoice 区域
+        if hasattr(self, "sensevoice_frame"):
+            self.sensevoice_frame.config(
+                text=self.lang_manager.get("sensevoice_settings")
+            )
+        if hasattr(self, "svs_lang_label"):
+            self.svs_lang_label.config(text=self.lang_manager.get("svs_lang_label"))
+        if hasattr(self, "svs_itn_check"):
+            self.svs_itn_check.config(text=self.lang_manager.get("svs_itn_enable"))
+        if hasattr(self, "svs_note_label"):
+            self.svs_note_label.config(text=self.lang_manager.get("svs_note"))
+
+    # === Phase 3: 服务端配置辅助方法 ===
+
+    def _get_server_type_options(self):
+        """获取服务端类型选项列表（显示文本, 内部值）"""
+        return [
+            (self.lang_manager.get("server_type_auto"), "auto"),
+            (self.lang_manager.get("server_type_legacy"), "legacy"),
+            (self.lang_manager.get("server_type_funasr_main"), "funasr_main"),
+            (self.lang_manager.get("server_type_public_cloud"), "public_cloud"),
+        ]
+
+    def _get_recognition_mode_options(self):
+        """获取识别模式选项列表（显示文本, 内部值）"""
+        return [
+            (self.lang_manager.get("mode_offline"), "offline"),
+            (self.lang_manager.get("mode_2pass"), "2pass"),
+        ]
+
+    def _update_server_type_combo_values(self):
+        """更新服务端类型下拉框的选项值"""
+        options = self._get_server_type_options()
+        display_values = [opt[0] for opt in options]
+        self.server_type_combo["values"] = display_values
+        
+        # 根据当前内部值设置显示值
+        current_value = self.server_type_value_var.get()
+        for i, (display, value) in enumerate(options):
+            if value == current_value:
+                self.server_type_combo.current(i)
+                break
+
+    def _update_recognition_mode_combo_values(self):
+        """更新识别模式下拉框的选项值"""
+        options = self._get_recognition_mode_options()
+        display_values = [opt[0] for opt in options]
+        self.recognition_mode_combo["values"] = display_values
+        
+        # 根据当前内部值设置显示值
+        current_value = self.recognition_mode_value_var.get()
+        for i, (display, value) in enumerate(options):
+            if value == current_value:
+                self.recognition_mode_combo.current(i)
+                break
+
+    def _on_server_type_changed(self, event=None):
+        """服务端类型切换事件处理"""
+        # 获取选中的显示值并转换为内部值
+        selected_display = self.server_type_combo.get()
+        options = self._get_server_type_options()
+        
+        for display, value in options:
+            if display == selected_display:
+                self.server_type_value_var.set(value)
+                break
+        
+        server_type_value = self.server_type_value_var.get()
+        logging.info(self.lang_manager.get("server_type_changed", selected_display))
+        
+        # 处理公网测试服务预设
+        if server_type_value == "public_cloud":
+            self.ip_var.set("www.funasr.com")
+            self.port_var.set("10096")
+            self.use_ssl_var.set(1)
+            self.ip_entry.config(state="readonly")
+            self.port_entry.config(state="readonly")
+        else:
+            # 恢复可编辑状态（但不改变当前值）
+            self.ip_entry.config(state="normal")
+            self.port_entry.config(state="normal")
+        
+        # 更新 SenseVoice 控件状态
+        self._update_sensevoice_controls_state()
+        
+        # 如果启用了"切换时自动探测"，触发探测
+        if hasattr(self, "auto_probe_switch_var") and self.auto_probe_switch_var.get():
+            self._schedule_probe()
+        
+        # 保存配置
+        self.save_config()
+
+    def _on_recognition_mode_changed(self, event=None):
+        """识别模式切换事件处理"""
+        # 获取选中的显示值并转换为内部值
+        selected_display = self.recognition_mode_combo.get()
+        options = self._get_recognition_mode_options()
+        
+        for display, value in options:
+            if display == selected_display:
+                self.recognition_mode_value_var.set(value)
+                break
+        
+        logging.info(self.lang_manager.get("recognition_mode_changed", selected_display))
+        
+        # 保存配置
+        self.save_config()
+
+    def _update_sensevoice_controls_state(self):
+        """根据服务端类型更新 SenseVoice 控件状态"""
+        if not hasattr(self, "svs_lang_combo"):
+            return
+        
+        server_type = self.server_type_value_var.get()
+        # SenseVoice 选项仅在"新版服务端"或"自动探测"模式下可用
+        enable = server_type in ("funasr_main", "auto")
+        
+        state = "readonly" if enable else "disabled"
+        check_state = "normal" if enable else "disabled"
+        
+        self.svs_lang_combo.config(state=state)
+        self.svs_itn_check.config(state=check_state)
+
+    # === Phase 3: 探测功能方法 ===
+
+    def _schedule_probe(self):
+        """调度探测（带防抖）
+        
+        多次快速调用只执行最后一次，防抖时间 500ms。
+        使用 token 机制防止并发探测导致的结果乱序覆盖。
+        """
+        # 取消之前的定时器
+        if hasattr(self, "_probe_timer") and self._probe_timer:
+            try:
+                self.after_cancel(self._probe_timer)
+            except Exception:
+                pass
+        
+        # 生成新的探测 token（自增序列号）
+        if not hasattr(self, "_probe_token"):
+            self._probe_token = 0
+        self._probe_token += 1
+        
+        # 更新UI状态为"正在探测"
+        self.probe_result_var.set(self.lang_manager.get("probe_status_probing"))
+        self.probe_result_label.config(foreground="blue")
+        
+        # 设置防抖定时器（500ms后执行）
+        self._probe_timer = self.after(500, self._run_probe_async)
+
+    def _run_probe_async(self):
+        """在后台线程执行探测"""
+        self._probe_timer = None
+        
+        # 捕获当前 token，用于回调时校验
+        current_token = getattr(self, "_probe_token", 0)
+        
+        # 获取当前配置
+        host = self.ip_var.get()
+        port = self.port_var.get()
+        use_ssl = bool(self.use_ssl_var.get())
+        
+        if not host or not port:
+            self.probe_result_var.set(
+                self.lang_manager.get("probe_status_failed") + 
+                " | " + self.lang_manager.get("probe_error_check_ip_port_ssl")
+            )
+            self.probe_result_label.config(foreground="red")
+            return
+        
+        logging.info(self.lang_manager.get("probe_started", host, port))
+        
+        def probe_thread():
+            """后台线程执行探测"""
+            try:
+                from server_probe import ServerProbe, ProbeLevel
+                
+                probe = ServerProbe(host, port, use_ssl)
+                result = asyncio.run(probe.probe(ProbeLevel.OFFLINE_LIGHT, timeout=5.0))
+                
+                # 回到主线程更新UI（带 token 校验）
+                self.after(0, lambda: self._update_probe_result_with_token(result, current_token))
+                
+            except ImportError as e:
+                error_msg = f"导入 server_probe 模块失败: {e}"
+                logging.error(error_msg)
+                self.after(
+                    0,
+                    lambda msg=error_msg, tok=current_token: self._update_probe_result_error_with_token(msg, tok)
+                )
+            except Exception as e:
+                error_msg = str(e)
+                logging.error(f"探测异常: {error_msg}")
+                self.after(
+                    0,
+                    lambda msg=error_msg, tok=current_token: self._update_probe_result_error_with_token(msg, tok)
+                )
+        
+        # 启动后台线程
+        thread = threading.Thread(target=probe_thread, daemon=True)
+        thread.start()
+
+    def _update_probe_result_with_token(self, caps, token):
+        """更新探测结果到UI（带 token 校验）
+        
+        Args:
+            caps: ServerCapabilities 对象
+            token: 探测 token，用于校验结果是否过期
+        """
+        # 校验 token，丢弃过期结果
+        current_token = getattr(self, "_probe_token", 0)
+        if token != current_token:
+            logging.debug(f"丢弃过期探测结果: token={token}, current={current_token}")
+            return
+        
+        # 调用实际更新方法
+        self._update_probe_result(caps)
+
+    def _update_probe_result_error_with_token(self, error_msg, token):
+        """更新探测错误结果到UI（带 token 校验）
+        
+        Args:
+            error_msg: 错误信息
+            token: 探测 token
+        """
+        # 校验 token，丢弃过期结果
+        current_token = getattr(self, "_probe_token", 0)
+        if token != current_token:
+            logging.debug(f"丢弃过期探测错误: token={token}, current={current_token}")
+            return
+        
+        # 调用实际更新方法
+        self._update_probe_result_error(error_msg)
+
+    def _update_probe_result(self, caps):
+        """更新探测结果到UI
+        
+        Args:
+            caps: ServerCapabilities 对象
+            
+        注意：探测可达 (probe_reachable) 与连接测试通过 (connection_status) 是两个独立状态。
+        - probe_reachable: 仅表示探测时服务器可达，用于 UI 提示
+        - connection_status: 表示正式连接测试通过，用于判断是否可以开始识别
+        探测成功不会设置 connection_status=True，避免跳过识别前的连接测试逻辑。
+        """
+        # 使用翻译键生成符合当前语言的展示文本
+        display_text = self._format_probe_result_text(caps)
+        self.probe_result_var.set(display_text)
+        
+        # 保存探测可达状态（独立于 connection_status）
+        self.probe_reachable = caps.reachable
+        
+        # 更新颜色和指示器（仅更新 UI，不设置 connection_status）
+        if caps.reachable:
+            if caps.responsive:
+                self.probe_result_label.config(foreground="green")
+            else:
+                self.probe_result_label.config(foreground="orange")
+            # 更新连接指示器 UI（给用户正向反馈），但不设置 connection_status
+            self._update_probe_indicator(True)
+        else:
+            self.probe_result_label.config(foreground="red")
+            self._update_probe_indicator(False)
+        
+        # 保存探测结果供后续使用
+        self._last_capabilities = caps
+        
+        # 缓存探测结果到配置
+        self._cache_probe_result(caps)
+        
+        # 根据探测结果更新 SenseVoice 选项可用性
+        self._update_sensevoice_from_probe(caps)
+        
+        logging.info(self.lang_manager.get("probe_completed", display_text))
+
+    def _format_probe_result_text(self, caps):
+        """根据 ServerCapabilities 生成符合当前语言的展示文本
+        
+        Args:
+            caps: ServerCapabilities 对象
+            
+        Returns:
+            str: 用于UI展示的文本
+        """
+        if not caps.reachable:
+            error_info = caps.error or self.lang_manager.get("probe_error_check_ip_port_ssl")
+            return f"{self.lang_manager.get('probe_status_failed')} | {error_info}"
+        
+        parts = []
+        
+        # 基础状态
+        if caps.responsive:
+            parts.append(self.lang_manager.get("probe_status_success"))
+        else:
+            parts.append(self.lang_manager.get("probe_status_connected"))
+        
+        # 模式支持（使用专用翻译键，避免硬替换）
+        modes = []
+        if caps.supports_offline is True:
+            modes.append(self.lang_manager.get("probe_mode_offline_short"))
+        if caps.supports_2pass is True:
+            modes.append(self.lang_manager.get("probe_mode_2pass_short"))
+        if caps.supports_online is True:
+            modes.append(self.lang_manager.get("probe_mode_realtime_short"))
+        
+        if modes:
+            parts.append(self.lang_manager.get("probe_status_modes", "/".join(modes)))
+        elif not caps.responsive:
+            parts.append(self.lang_manager.get("probe_status_mode_undetermined"))
+        
+        # 能力（使用翻译键）
+        if caps.has_timestamp or caps.has_stamp_sents:
+            parts.append(
+                self.lang_manager.get(
+                    "probe_status_capabilities",
+                    self.lang_manager.get("probe_capability_timestamp")
+                )
+            )
+        
+        # 服务端类型
+        if caps.inferred_server_type == "funasr_main":
+            parts.append(self.lang_manager.get("probe_status_type_maybe_new"))
+        elif caps.inferred_server_type == "legacy":
+            parts.append(self.lang_manager.get("probe_status_type_maybe_old"))
+        
+        return " | ".join(parts)
+
+    def _update_probe_result_error(self, error_msg):
+        """更新探测错误结果到UI"""
+        display_text = f"{self.lang_manager.get('probe_status_failed')} | {error_msg}"
+        self.probe_result_var.set(display_text)
+        self.probe_result_label.config(foreground="red")
+        logging.warning(self.lang_manager.get("probe_failed_log", error_msg))
+
+    def _update_connection_indicator(self, connected):
+        """更新连接状态指示器（同时设置 connection_status）
+        
+        此方法用于正式连接测试结果，会同时更新 UI 和 connection_status。
+        
+        Args:
+            connected: 是否已连接
+        """
+        if connected:
+            self.connection_indicator.config(
+                text=self.lang_manager.get("connected"),
+                foreground="green"
+            )
+            self.connection_status = True
+        else:
+            self.connection_indicator.config(
+                text=self.lang_manager.get("not_connected"),
+                foreground="red"
+            )
+            self.connection_status = False
+
+    def _update_probe_indicator(self, reachable):
+        """更新探测指示器（仅更新 UI，不覆盖已成功的连接状态）
+        
+        此方法仅用于探测结果的 UI 反馈，不影响 connection_status。
+        关键：如果连接测试已通过（connection_status=True），探测失败不会把指示灯改成红色，
+        避免"连接已成功但探测失败"时的 UI 误导。
+        
+        Args:
+            reachable: 探测是否可达
+        """
+        if reachable:
+            # 探测可达，更新为绿色
+            self.connection_indicator.config(
+                text=self.lang_manager.get("connected"),
+                foreground="green"
+            )
+            # 注意：不设置 self.connection_status = True
+        else:
+            # 探测不可达，但需要检查连接测试状态
+            # 如果连接测试已通过，不覆盖指示灯状态，避免 UI 误导
+            if not self.connection_status:
+                # 连接测试未通过，可以显示红色
+                self.connection_indicator.config(
+                    text=self.lang_manager.get("not_connected"),
+                    foreground="red"
+                )
+            # else: 连接测试已通过，保持绿色，不覆盖
+            # 注意：不设置 self.connection_status = False
+
+    def _cache_probe_result(self, caps):
+        """缓存探测结果到配置文件
+        
+        Args:
+            caps: ServerCapabilities 对象
+        """
+        import datetime
+        
+        if not hasattr(self, "config"):
+            return
+        
+        self.config.setdefault("cache", {})
+        self.config["cache"]["last_probe_result"] = caps.to_dict()
+        self.config["cache"]["last_probe_time"] = datetime.datetime.now().isoformat()
+        
+        # 保存配置（静默保存，不记录日志）
+        try:
+            with open(self.config_file, "w", encoding="utf-8") as f:
+                json.dump(self.config, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            logging.warning(f"缓存探测结果失败: {e}")
+
+    def _update_sensevoice_from_probe(self, caps):
+        """根据探测结果更新 SenseVoice 选项
+        
+        注意：仅凭探测无法可靠判断"是否加载了SenseVoice模型"。
+        主要根据用户选择的服务端类型控制可用性，探测仅提供提示。
+        
+        Args:
+            caps: ServerCapabilities 对象
+        """
+        # 当前服务端类型设置已在 _update_sensevoice_controls_state 中处理
+        # 这里可以根据探测结果给出额外提示
+        if caps.inferred_server_type == "funasr_main":
+            # 探测推断为新版服务端，SenseVoice 可能可用
+            if hasattr(self, "svs_note_label"):
+                self.svs_note_label.config(foreground="green")
+        elif caps.inferred_server_type == "legacy":
+            # 探测推断为旧版服务端，SenseVoice 不可用
+            if hasattr(self, "svs_note_label"):
+                self.svs_note_label.config(foreground="orange")
+        else:
+            # 未知类型，保持默认
+            if hasattr(self, "svs_note_label"):
+                self.svs_note_label.config(foreground="gray")
+
+    def _auto_probe_on_startup(self):
+        """启动时自动探测"""
+        if self.ip_var.get() and self.port_var.get():
+            logging.info(self.lang_manager.get("auto_probe_startup"))
+            self._schedule_probe()
+
     def migrate_legacy_files(self):
         """检查并迁移旧位置的配置文件和日志文件到新位置"""
         import shutil
@@ -1704,58 +2439,201 @@ class FunASRGUIClient(tk.Tk):
         logging.debug("调试信息: GUI日志处理器已初始化并添加到根记录器")
 
     def load_config(self):
-        """加载上次保存的配置"""
+        """加载上次保存的配置（支持V3分组结构和V2扁平结构）"""
         try:
             if os.path.exists(self.config_file):
                 with open(self.config_file, "r", encoding="utf-8") as f:
                     config = json.load(f)
                 logging.info(self.lang_manager.get("config_loaded", self.config_file))
                 logging.debug(f"调试信息: 配置内容: {config}")
-                # 更新界面控件值
-                if "ip" in config and config["ip"]:
-                    self.ip_var.set(config["ip"])
-                if "port" in config and config["port"]:
-                    self.port_var.set(config["port"])
-                if "use_itn" in config:
-                    self.use_itn_var.set(config["use_itn"])
-                if "use_ssl" in config:
-                    self.use_ssl_var.set(config["use_ssl"])
-                if "language" in config:
-                    # 设置语言并更新UI
-                    self.lang_manager.current_lang = config["language"]
-                    self.language_var.set(config["language"])  # 更新单选按钮状态
-                    self.update_ui_language()
-                # 新增：连接测试超时（秒）
-                self.connection_test_timeout = int(config.get("connection_test_timeout", 10))
-                # 新增：加载热词文件路径
-                if "hotword_path" in config and config["hotword_path"]:
-                    hotword_path = config["hotword_path"]
-                    # 验证文件是否存在
-                    if os.path.exists(hotword_path):
-                        self.hotword_path_var.set(hotword_path)
-                        logging.info(f"已加载热词文件配置: {hotword_path}")
-                    else:
-                        logging.warning(f"配置中的热词文件不存在: {hotword_path}")
+                
+                # 保存配置对象供后续使用
+                self.config = config
+                
+                # 检查配置版本
+                config_version = config.get("config_version", 1)
+                
+                if config_version >= 3:
+                    # V3 分组结构
+                    self._load_config_v3(config)
+                else:
+                    # V2 扁平结构（向后兼容）
+                    self._load_config_v2(config)
+                    
             else:
                 logging.warning(self.lang_manager.get("config_not_found"))
+                self.config = {}
                 self.connection_test_timeout = 10
         except Exception as e:
             logging.error(f"系统错误: 加载配置文件失败: {e}", exc_info=True)
             logging.warning("系统警告: 使用默认配置")
+            self.config = {}
             self.connection_test_timeout = 10
 
+    def _load_config_v3(self, config):
+        """加载 V3 分组结构配置"""
+        # 服务器配置
+        server = config.get("server", {})
+        if server.get("ip"):
+            self.ip_var.set(server["ip"])
+        if server.get("port"):
+            self.port_var.set(server["port"])
+        
+        # 选项配置
+        options = config.get("options", {})
+        if "use_itn" in options:
+            self.use_itn_var.set(options["use_itn"])
+        if "use_ssl" in options:
+            self.use_ssl_var.set(options["use_ssl"])
+        if options.get("hotword_path"):
+            hotword_path = options["hotword_path"]
+            if os.path.exists(hotword_path):
+                self.hotword_path_var.set(hotword_path)
+                logging.info(f"已加载热词文件配置: {hotword_path}")
+            else:
+                logging.warning(f"配置中的热词文件不存在: {hotword_path}")
+        
+        # UI 配置
+        ui = config.get("ui", {})
+        if ui.get("language"):
+            self.lang_manager.current_lang = ui["language"]
+            self.language_var.set(ui["language"])
+            self.update_ui_language()
+        
+        # 协议配置（Phase 3 新增）
+        protocol = config.get("protocol", {})
+        self.connection_test_timeout = int(protocol.get("connection_test_timeout", 10))
+        
+        if hasattr(self, "server_type_value_var"):
+            server_type = protocol.get("server_type", "auto")
+            self.server_type_value_var.set(server_type)
+            self._update_server_type_combo_values()
+            
+            # 公网测试服务预设处理
+            if server_type == "public_cloud":
+                self.ip_var.set("www.funasr.com")
+                self.port_var.set("10096")
+                self.use_ssl_var.set(1)
+                self.ip_entry.config(state="readonly")
+                self.port_entry.config(state="readonly")
+        
+        if hasattr(self, "recognition_mode_value_var"):
+            self.recognition_mode_value_var.set(protocol.get("preferred_mode", "offline"))
+            self._update_recognition_mode_combo_values()
+        
+        if hasattr(self, "auto_probe_start_var"):
+            self.auto_probe_start_var.set(
+                1 if protocol.get("auto_probe_on_start", True) else 0
+            )
+        
+        if hasattr(self, "auto_probe_switch_var"):
+            self.auto_probe_switch_var.set(
+                1 if protocol.get("auto_probe_on_switch", True) else 0
+            )
+        
+        # SenseVoice 配置
+        sensevoice = config.get("sensevoice", {})
+        if hasattr(self, "svs_lang_var"):
+            self.svs_lang_var.set(sensevoice.get("svs_lang", "auto"))
+        if hasattr(self, "svs_itn_var"):
+            self.svs_itn_var.set(1 if sensevoice.get("svs_itn", True) else 0)
+        
+        # 更新 SenseVoice 控件状态
+        self._update_sensevoice_controls_state()
+
+    def _load_config_v2(self, config):
+        """加载 V2 扁平结构配置（向后兼容）"""
+        # 基础配置
+        if config.get("ip"):
+            self.ip_var.set(config["ip"])
+        if config.get("port"):
+            self.port_var.set(config["port"])
+        if "use_itn" in config:
+            self.use_itn_var.set(config["use_itn"])
+        if "use_ssl" in config:
+            self.use_ssl_var.set(config["use_ssl"])
+        if config.get("language"):
+            self.lang_manager.current_lang = config["language"]
+            self.language_var.set(config["language"])
+            self.update_ui_language()
+        
+        self.connection_test_timeout = int(config.get("connection_test_timeout", 10))
+        
+        if config.get("hotword_path"):
+            hotword_path = config["hotword_path"]
+            if os.path.exists(hotword_path):
+                self.hotword_path_var.set(hotword_path)
+                logging.info(f"已加载热词文件配置: {hotword_path}")
+            else:
+                logging.warning(f"配置中的热词文件不存在: {hotword_path}")
+        
+        # Phase 3 新增字段使用默认值
+        if hasattr(self, "server_type_value_var"):
+            self.server_type_value_var.set("auto")
+            self._update_server_type_combo_values()
+        if hasattr(self, "recognition_mode_value_var"):
+            self.recognition_mode_value_var.set("offline")
+            self._update_recognition_mode_combo_values()
+
     def save_config(self):
-        """保存当前配置"""
+        """保存当前配置（V3 分组结构 + 向后兼容扁平键）"""
         try:
+            # 构建 V3 分组结构
             config = {
+                "config_version": 3,
+                
+                # 向后兼容的扁平键
+                "_comment_compat": "以下扁平键为向后兼容保留，供旧测试脚本使用",
                 "ip": self.ip_var.get(),
                 "port": self.port_var.get(),
                 "use_itn": self.use_itn_var.get(),
                 "use_ssl": self.use_ssl_var.get(),
                 "language": self.lang_manager.current_lang,
-                "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
                 "hotword_path": self.hotword_path_var.get(),
+                "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
+                
+                # V3 分组结构
+                "_comment_v3": "以下为 V3 分组结构，新代码优先使用",
+                "server": {
+                    "ip": self.ip_var.get(),
+                    "port": self.port_var.get(),
+                },
+                "options": {
+                    "use_itn": self.use_itn_var.get(),
+                    "use_ssl": self.use_ssl_var.get(),
+                    "hotword_path": self.hotword_path_var.get(),
+                },
+                "ui": {
+                    "language": self.lang_manager.current_lang,
+                },
+                "protocol": {
+                    "server_type": getattr(self, "server_type_value_var", tk.StringVar(value="auto")).get(),
+                    "preferred_mode": getattr(self, "recognition_mode_value_var", tk.StringVar(value="offline")).get(),
+                    "auto_probe_on_start": bool(getattr(self, "auto_probe_start_var", tk.IntVar(value=1)).get()),
+                    "auto_probe_on_switch": bool(getattr(self, "auto_probe_switch_var", tk.IntVar(value=1)).get()),
+                    "probe_level": "offline_light",
+                    "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
+                },
+                "sensevoice": {
+                    "svs_lang": getattr(self, "svs_lang_var", tk.StringVar(value="auto")).get(),
+                    "svs_itn": bool(getattr(self, "svs_itn_var", tk.IntVar(value=1)).get()),
+                },
+                "cache": getattr(self, "config", {}).get("cache", {
+                    "last_probe_result": None,
+                    "last_probe_time": None,
+                }),
+                "presets": {
+                    "public_cloud": {
+                        "ip": "www.funasr.com",
+                        "port": "10096",
+                        "use_ssl": True,
+                        "description": "FunASR公网测试服务",
+                    }
+                },
             }
+            
+            # 更新内存中的配置对象
+            self.config = config
 
             with open(self.config_file, "w", encoding="utf-8") as f:
                 json.dump(config, f, ensure_ascii=False, indent=4)
@@ -1763,7 +2641,7 @@ class FunASRGUIClient(tk.Tk):
             # 使用StatusManager显示成功状态，3秒后自动恢复
             self.status_manager.set_success("已保存配置", temp_duration=3)
             logging.info(self.lang_manager.get("config_saved", self.config_file))
-            logging.debug(f"调试信息: 保存的配置: {config}")
+            logging.debug(f"调试信息: 保存的配置版本: V3")
         except Exception as e:
             # 使用StatusManager显示错误状态
             self.status_manager.set_error(f"保存配置失败: {e}")
@@ -2330,6 +3208,43 @@ class FunASRGUIClient(tk.Tk):
         if hotword_path and os.path.exists(hotword_path):
             args.extend(["--hotword", hotword_path])
             logging.info(f"使用热词文件: {hotword_path}")
+
+        # === Phase 3: 添加服务端类型和识别模式参数 ===
+        # 服务端类型
+        server_type = getattr(self, "server_type_value_var", None)
+        if server_type:
+            server_type_value = server_type.get()
+            if server_type_value and server_type_value != "public_cloud":
+                # public_cloud 不传递给脚本，由 IP/端口体现
+                args.extend(["--server_type", server_type_value])
+        
+        # 识别模式
+        recognition_mode = getattr(self, "recognition_mode_value_var", None)
+        if recognition_mode:
+            mode_value = recognition_mode.get()
+            if mode_value:
+                args.extend(["--mode", mode_value])
+        
+        # SenseVoice 参数（仅当服务端类型为 funasr_main 或 auto 时传递）
+        if server_type:
+            server_type_value = server_type.get()
+            if server_type_value in ("funasr_main", "auto"):
+                # 语种
+                svs_lang = getattr(self, "svs_lang_var", None)
+                if svs_lang:
+                    args.extend(["--svs_lang", svs_lang.get()])
+                
+                # SVS ITN
+                svs_itn = getattr(self, "svs_itn_var", None)
+                if svs_itn:
+                    args.extend(["--svs_itn", str(svs_itn.get())])
+                
+                # 启用 SenseVoice 参数（仅当明确选择 funasr_main 时）
+                if server_type_value == "funasr_main":
+                    args.extend(["--enable_svs_params", "1"])
+        
+        logging.debug(f"识别参数: server_type={server_type.get() if server_type else 'N/A'}, "
+                      f"mode={recognition_mode.get() if recognition_mode else 'N/A'}")
 
         # 清空之前的识别结果区域（但保留系统日志）
         self.result_text.configure(state="normal")
@@ -3056,17 +3971,8 @@ class FunASRGUIClient(tk.Tk):
             # 更新连接状态为未连接
             self.status_bar.after(0, lambda: self._update_connection_indicator(False))
 
-    def _update_connection_indicator(self, connected=False):
-        """更新连接状态指示器"""
-        self.connection_status = connected
-        if connected:
-            self.connection_indicator.config(
-                text=self.lang_manager.get("connected"), foreground="green"
-            )
-        else:
-            self.connection_indicator.config(
-                text=self.lang_manager.get("not_connected"), foreground="red"
-            )
+    # 注意: _update_connection_indicator 方法已移至 Phase 3 探测功能区域（约第 2182 行）
+    # 避免重复定义导致逻辑覆盖
 
     def open_log_file(self):
         """打开日志文件所在的目录或直接打开日志文件"""
@@ -3364,6 +4270,34 @@ class FunASRGUIClient(tk.Tk):
             args.append("--no-itn")
         if self.use_ssl_var.get() == 0:
             args.append("--no-ssl")
+
+        # === Phase 3: 添加服务端类型和识别模式参数（速度测试） ===
+        # 服务端类型
+        server_type = getattr(self, "server_type_value_var", None)
+        if server_type:
+            server_type_value = server_type.get()
+            if server_type_value and server_type_value != "public_cloud":
+                args.extend(["--server_type", server_type_value])
+        
+        # 识别模式（速度测试默认使用离线模式以保持一致性）
+        recognition_mode = getattr(self, "recognition_mode_value_var", None)
+        if recognition_mode:
+            mode_value = recognition_mode.get()
+            if mode_value:
+                args.extend(["--mode", mode_value])
+        
+        # SenseVoice 参数
+        if server_type:
+            server_type_value = server_type.get()
+            if server_type_value in ("funasr_main", "auto"):
+                svs_lang = getattr(self, "svs_lang_var", None)
+                if svs_lang:
+                    args.extend(["--svs_lang", svs_lang.get()])
+                svs_itn = getattr(self, "svs_itn_var", None)
+                if svs_itn:
+                    args.extend(["--svs_itn", str(svs_itn.get())])
+                if server_type_value == "funasr_main":
+                    args.extend(["--enable_svs_params", "1"])
 
         upload_start_time = None
         upload_end_time = None

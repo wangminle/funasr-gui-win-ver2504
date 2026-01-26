@@ -1156,7 +1156,7 @@ def _should_complete(self, data: Dict) -> bool:
 | 文件路径 | 修改内容 |
 |----------|----------|
 | `src/python-gui-client/simple_funasr_client.py` | 集成适配层，修改结束判定逻辑 |
-| `src/python-gui-client/funasr_gui_client_v2.py` | GUI集成探测器，新增控件 |
+| `src/python-gui-client/funasr_gui_client_v3.py` | GUI集成探测器，新增控件 |
 | `dev/config/config.json` | 新增protocol/sensevoice/cache配置节 |
 
 ### 9.3 文档更新
@@ -1191,6 +1191,16 @@ def _should_complete(self, data: Dict) -> bool:
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | V3.0-draft | 2026-01-26 | 初稿，方案评审 |
+| V3.0-impl | 2026-01-26 | Phase 1-3 实施完成，接口同步更新 |
+
+### 10.4 重要说明
+
+> **接口以代码为准**：本文档中的代码片段为设计阶段的伪代码/示例，实际接口形态以 `src/python-gui-client/` 目录下的源代码为准。
+> 
+> 主要差异点：
+> - `ProtocolAdapter.parse_result()` 返回 `ParsedResult` 数据类（而非示例中的 `dict`）
+> - `ServerCapabilities` 增加了 `from_dict()` 类方法用于缓存恢复
+> - GUI 客户端使用 `funasr_gui_client_v3.py`（而非文档早期提到的 v2）
 
 ---
 
