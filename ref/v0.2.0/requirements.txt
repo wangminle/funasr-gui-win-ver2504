@@ -1,2 +1,0 @@
-websockets>=10.0
-mutagen>=1.47.0

@@ -96,23 +96,23 @@ funasr-gui-win-ver2504/
 │   ├── python-gui-client/
 │   │   ├── funasr_gui_client_v2.py       # GUI client main program
 │   │   ├── simple_funasr_client.py       # WebSocket client script (lazy import)
+│   │   ├── connection_tester.py          # WebSocket connection tester module (2025-10-24)
 │   │   └── requirements.txt              # Python dependencies list
 │   └── tools/
 │       └── run_lints.py                  # Lint & type check runner
 ├── docs/                                 # Project documentation (markdown format)
-│   ├── funasr-python-gui-client-v2-架构设计.md
-│   ├── funasr-python-gui-client-v2-需求文档.md
-│   ├── funasr-python-gui-client-v2-UI定义.md
-│   ├── funasr-python-gui-client-v2-项目管理.md
-│   ├── funasr-python-gui-client-v2-CS协议解析.md
+│   ├── v2/                              # V2 version documents
+│   │   ├── funasr-python-gui-client-v2-架构设计.md
+│   │   ├── funasr-python-gui-client-v2-需求文档.md
+│   │   ├── funasr-python-gui-client-v2-UI定义.md
+│   │   ├── funasr-python-gui-client-v2-项目管理.md
+│   │   └── funasr-python-gui-client-v2-CS协议解析.md
 │   └── technical-review/                # Technical review documents
 ├── tests/                                # Test directory
 │   ├── scripts/                         # Test scripts (23 files)
 │   └── reports/                         # Test reports (29 files)
 ├── ref/                                  # Reference code and documents (read-only)
-│   ├── v0.2.0/                          # v0.2.0 reference implementation
-│   ├── ref_codes/                       # Reference code
-│   └── ref_docs/                        # Reference documents
+│   └── FunASR-main/                     # FunASR official repository reference
 ├── resources/                            # Resource files
 │   └── demo/                            # Demo audio/video files
 │       ├── tv-report-1.mp4
@@ -134,7 +134,7 @@ funasr-gui-win-ver2504/
 According to the project management document, the following features are planned (prioritized as P0/P1/P2):
 
 ### P0 - Stability Improvements
-*   **Connection Test Abstraction**: Encapsulate ConnectionTester class to unify connection establishment, first packet sending, and receiving logic
+*   ~~**Connection Test Abstraction**: Encapsulate ConnectionTester class to unify connection establishment, first packet sending, and receiving logic~~ ✅ Completed (2025-10-24)
 *   **Log Cleanup Strategy**: Add automatic cleanup mechanism with "keep N days/max M MB" configuration
 
 ### P1 - Feature Extensions
@@ -148,6 +148,14 @@ According to the project management document, the following features are planned
 *   **Performance Optimization**: Offline upload speed optimization, memory management improvements, startup speed optimization
 
 ## ✅ Recent Updates
+
+### V2.4.1 - ConnectionTester Module (2025-10-24)
+*   **ConnectionTester Class Implementation** (P0): Created independent connection testing module with:
+    - `ErrorType` enum for error classification (NETWORK/PROTOCOL/TIMEOUT/SSL/UNKNOWN)
+    - `ConnectionTestResult` dataclass for structured test results
+    - `ConnectionTester` class with unified connection testing logic
+    - Lazy import support for websockets dependency
+    - User-friendly error messages and technical details logging ✅
 
 ### V2.4 - P0/P1 Priority Improvements Edition (2025-10-23)
 *   **Dependency Import Refactoring** (P0-1): Moved websockets import to main() function, implemented lazy import to avoid import failure in environments without dependencies ✅

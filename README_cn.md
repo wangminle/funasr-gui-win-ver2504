@@ -93,23 +93,23 @@ funasr-gui-win-ver2504/
 │   ├── python-gui-client/
 │   │   ├── funasr_gui_client_v2.py       # GUI 客户端主程序
 │   │   ├── simple_funasr_client.py       # WebSocket 客户端脚本（延迟导入）
+│   │   ├── connection_tester.py          # WebSocket 连接测试模块 (2025-10-24)
 │   │   └── requirements.txt              # Python依赖列表
 │   └── tools/
 │       └── run_lints.py                  # Lint 与类型检查脚本
 ├── docs/                                 # 项目文档（markdown格式）
-│   ├── funasr-python-gui-client-v2-架构设计.md
-│   ├── funasr-python-gui-client-v2-需求文档.md
-│   ├── funasr-python-gui-client-v2-UI定义.md
-│   ├── funasr-python-gui-client-v2-项目管理.md
-│   ├── funasr-python-gui-client-v2-CS协议解析.md
+│   ├── v2/                              # V2版本文档
+│   │   ├── funasr-python-gui-client-v2-架构设计.md
+│   │   ├── funasr-python-gui-client-v2-需求文档.md
+│   │   ├── funasr-python-gui-client-v2-UI定义.md
+│   │   ├── funasr-python-gui-client-v2-项目管理.md
+│   │   └── funasr-python-gui-client-v2-CS协议解析.md
 │   └── technical-review/                # 技术评审文档
 ├── tests/                                # 测试目录
 │   ├── scripts/                         # 测试脚本（23个）
 │   └── reports/                         # 测试报告（29个）
 ├── ref/                                  # 参考代码和文档（只读）
-│   ├── v0.2.0/                          # v0.2.0参考实现
-│   ├── ref_codes/                       # 参考代码
-│   └── ref_docs/                        # 参考文档
+│   └── FunASR-main/                     # FunASR官方仓库参考
 ├── resources/                            # 资源文件
 │   └── demo/                            # Demo音视频文件
 │       ├── tv-report-1.mp4
@@ -131,7 +131,7 @@ funasr-gui-win-ver2504/
 根据项目管理文档，以下功能规划中（按P0/P1/P2优先级）：
 
 ### P0级 - 稳定性改进
-*   **连接测试抽象**: 封装ConnectionTester类，统一建链、发首包、接首包逻辑
+*   ~~**连接测试抽象**: 封装ConnectionTester类，统一建链、发首包、接首包逻辑~~ ✅ 已完成 (2025-10-24)
 *   **日志清理策略**: 增加"保留N天/最大M MB"的自动清理机制
 
 ### P1级 - 功能扩展
@@ -145,6 +145,14 @@ funasr-gui-win-ver2504/
 *   **性能优化**: Offline上传速度优化、内存管理改进、启动速度优化
 
 ## ✅ 最近更新
+
+### V2.4.1 - ConnectionTester模块 (2025-10-24)
+*   **ConnectionTester类实现** (P0): 创建独立的连接测试模块，包含：
+    - `ErrorType` 错误类型枚举（NETWORK/PROTOCOL/TIMEOUT/SSL/UNKNOWN）
+    - `ConnectionTestResult` 数据类，用于结构化测试结果
+    - `ConnectionTester` 类，统一连接测试逻辑
+    - websockets依赖延迟导入支持
+    - 用户友好的错误消息和技术详情日志记录 ✅
 
 ### V2.4 - P0/P1优先级改进版 (2025-10-23)
 *   **依赖导入重构** (P0-1): 将websockets导入移至main()函数，实现延迟导入，避免无依赖环境导入失败 ✅
