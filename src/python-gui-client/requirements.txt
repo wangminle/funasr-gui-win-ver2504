@@ -1,2 +1,16 @@
+# FunASR GUI Client V3 依赖
+# Python >= 3.12
+
+# 核心依赖
 websockets>=10.0
+
+# 音频处理
 mutagen>=1.47.0
+
+# 开发依赖（可选）
+# black>=24.3,<25
+# isort>=5.12,<6
+# flake8>=7,<8
+# mypy>=1.10,<2
+# pytest>=8.0,<9
+# pytest-asyncio>=0.23,<1

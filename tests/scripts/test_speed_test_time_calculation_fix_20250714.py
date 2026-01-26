@@ -19,14 +19,14 @@ import sys
 import time
 
 # 添加源代码路径
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'dev', 'src', 'python-gui-client'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src', 'python-gui-client'))
 
 def test_normal_time_calculation():
     """测试正常情况下的时间计算"""
     print("=== 测试1: 正常时间计算 ===")
     
     try:
-        from funasr_gui_client_v2 import FunASRGUIClient
+        from funasr_gui_client_v3 import FunASRGUIClient
 
         # 模拟GUI客户端
         app = FunASRGUIClient()

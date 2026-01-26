@@ -13,7 +13,7 @@ from pathlib import Path
 # 添加项目路径以便导入
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-sys.path.insert(0, os.path.join(project_root, 'dev', 'src', 'python-gui-client'))
+sys.path.insert(0, os.path.join(project_root, 'src', 'python-gui-client'))
 
 def test_directory_structure():
     """测试目录结构是否符合架构设计文档"""
@@ -29,7 +29,7 @@ def test_directory_structure():
         dev_dir / 'config',
         dev_dir / 'logs', 
         dev_dir / 'output',
-        dev_dir / 'src' / 'python-gui-client'
+        project_root / 'src' / 'python-gui-client'
     ]
     
     all_exist = True
@@ -55,7 +55,7 @@ def test_config_file_migration():
     
     try:
         # 导入GUI客户端
-        import funasr_gui_client_v2
+        import funasr_gui_client_v3
 
         # 创建一个临时的配置文件来测试迁移
         project_root = Path(__file__).parent.parent
@@ -74,7 +74,7 @@ def test_config_file_migration():
             print(f"✅ 找到release配置文件: {release_config_path}")
             
             # 创建GUI实例触发迁移
-            app = funasr_gui_client_v2.FunASRGUIClient()
+            app = funasr_gui_client_v3.FunASRGUIClient()
             
             # 检查是否成功迁移
             if dev_config_path.exists():
@@ -112,10 +112,10 @@ def test_ui_components():
     try:
         import tkinter as tk
 
-        import funasr_gui_client_v2
+        import funasr_gui_client_v3
 
         # 创建GUI实例
-        app = funasr_gui_client_v2.FunASRGUIClient()
+        app = funasr_gui_client_v3.FunASRGUIClient()
         
         # 检查是否存在选项卡控件
         if hasattr(app, 'notebook'):
@@ -193,10 +193,10 @@ def test_language_support():
     print("=" * 60)
     
     try:
-        import funasr_gui_client_v2
+        import funasr_gui_client_v3
 
         # 创建GUI实例
-        app = funasr_gui_client_v2.FunASRGUIClient()
+        app = funasr_gui_client_v3.FunASRGUIClient()
         
         # 测试中文
         app.lang_manager.current_lang = "zh"

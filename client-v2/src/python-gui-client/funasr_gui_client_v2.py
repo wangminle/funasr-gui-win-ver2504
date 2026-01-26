@@ -2020,29 +2020,42 @@ class FunASRGUIClient(tk.Tk):
 
     def _find_script_path(self):
         """查找simple_funasr_client.py脚本路径"""
-        # 获取当前工作目录
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        # 优先查找项目根目录下的samples文件夹 (这个逻辑可能不再需要，但保留以防万一)
-        project_root = os.path.abspath(os.path.join(current_dir, os.pardir, os.pardir))
-        samples_dir = os.path.join(project_root, "samples")
+        target_script_name = "simple_funasr_client.py"
 
-        target_script_name = "simple_funasr_client.py"  # 定义目标脚本名称
+        # V3 优先：优先使用仓库根目录的 V3 脚本（包含协议适配层与 is_final 修复）
+        # 兼容不同启动目录：向上最多探测 6 层父目录，寻找 src/python-gui-client/simple_funasr_client.py
+        for _ in range(6):
+            v3_candidate = os.path.join(
+                current_dir, "src", "python-gui-client", target_script_name
+            )
+            if os.path.exists(v3_candidate):
+                logging.info(f"使用 V3 识别脚本: {v3_candidate}")
+                return v3_candidate
+            current_dir = os.path.dirname(current_dir)
 
-        # 检查当前目录下是否存在
-        if os.path.exists(os.path.join(current_dir, target_script_name)):
-            return os.path.join(current_dir, target_script_name)
-        # 检查 samples 目录（作为后备）
-        elif os.path.exists(samples_dir) and os.path.exists(
-            os.path.join(samples_dir, target_script_name)
-        ):
+        # V2 兼容：回退到与 GUI 同目录的脚本
+        local_candidate = os.path.join(os.path.dirname(os.path.abspath(__file__)), target_script_name)
+        if os.path.exists(local_candidate):
+            logging.info(f"使用本地识别脚本: {local_candidate}")
+            return local_candidate
+
+        # 旧逻辑兼容：samples 目录（作为后备）
+        gui_dir = os.path.dirname(os.path.abspath(__file__))
+        legacy_project_root = os.path.abspath(
+            os.path.join(gui_dir, os.pardir, os.pardir)
+        )
+        samples_dir = os.path.join(legacy_project_root, "samples")
+        samples_candidate = os.path.join(samples_dir, target_script_name)
+        if os.path.exists(samples_candidate):
             logging.warning(
                 f"系统警告: 在当前目录未找到 {target_script_name}，"
                 f"但在 {samples_dir} 中找到。"
                 "建议将脚本放在主程序同目录下。"
             )
-            return os.path.join(samples_dir, target_script_name)
-        else:
-            return None
+            return samples_candidate
+
+        return None
 
     def select_file(self):
         """打开文件对话框选择文件"""

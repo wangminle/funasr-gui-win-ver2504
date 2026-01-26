@@ -12,8 +12,8 @@ import sys
 import time
 import unittest
 
-# 添加dev/src目录到Python路径
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'dev', 'src', 'python-gui-client'))
+# 添加src目录到Python路径
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src', 'python-gui-client'))
 
 def setup_test_logging():
     """设置测试日志"""
@@ -42,7 +42,7 @@ class TestSpeedTestFixV2(unittest.TestCase):
     def test_gui_client_import(self):
         """测试GUI客户端模块导入"""
         try:
-            import funasr_gui_client_v2
+            import funasr_gui_client_v3
             logging.info("✓ GUI客户端模块导入成功")
             self.assertTrue(True)
         except Exception as e:
@@ -52,7 +52,7 @@ class TestSpeedTestFixV2(unittest.TestCase):
     def test_simple_client_syntax(self):
         """测试simple_funasr_client语法正确性"""
         try:
-            client_path = os.path.join(os.path.dirname(__file__), '..', 'dev', 'src', 'python-gui-client', 'simple_funasr_client.py')
+            client_path = os.path.join(os.path.dirname(__file__), '..', '..', 'src', 'python-gui-client', 'simple_funasr_client.py')
             with open(client_path, 'r', encoding='utf-8') as f:
                 code = f.read()
             compile(code, client_path, 'exec')
@@ -68,8 +68,8 @@ class TestSpeedTestFixV2(unittest.TestCase):
     def test_language_manager_formatting(self):
         """测试语言管理器的格式化字符串"""
         try:
-            import funasr_gui_client_v2
-            lang_manager = funasr_gui_client_v2.LanguageManager()
+            import funasr_gui_client_v3
+            lang_manager = funasr_gui_client_v3.LanguageManager()
             
             # 测试关键的格式化字符串
             test_cases = [

@@ -208,6 +208,11 @@ Temporary Items
 /dev/release/logs/
 dev/logs/funasr_gui_client.log
 
+# client-v2 历史存档目录（避免大量运行产物污染仓库）
+/client-v2/dev/output/
+/client-v2/dev/server-logs/
+/client-v2/v2-reports/
+
 # 配置文件备份
 dev/config/*.bak
 dev/config/*.backup

@@ -63,7 +63,7 @@ class TestStatusManagerPersistentStateFix(unittest.TestCase):
         self.lang_manager.get = Mock(side_effect=lambda key, *args: f"[{key}]")
 
         # 延迟导入StatusManager类
-        from funasr_gui_client_v2 import StatusManager
+        from funasr_gui_client_v3 import StatusManager
 
         # 创建StatusManager实例
         self.status_manager = StatusManager(
@@ -252,7 +252,7 @@ class TestThreadSafetyFix(unittest.TestCase):
         print("=" * 70)
 
         # 读取源代码文件
-        source_file = src_path / "funasr_gui_client_v2.py"
+        source_file = src_path / "funasr_gui_client_v3.py"
         with open(source_file, "r", encoding="utf-8") as f:
             content = f.read()
 
@@ -348,7 +348,7 @@ class TestThreadSafetyFix(unittest.TestCase):
         print("=" * 70)
 
         # 读取源代码文件
-        source_file = src_path / "funasr_gui_client_v2.py"
+        source_file = src_path / "funasr_gui_client_v3.py"
         with open(source_file, "r", encoding="utf-8") as f:
             content = f.read()
 
@@ -428,4 +428,3 @@ def run_tests():
 if __name__ == "__main__":
     exit_code = run_tests()
     sys.exit(exit_code)
-

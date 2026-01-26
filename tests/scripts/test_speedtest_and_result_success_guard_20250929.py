@@ -7,17 +7,24 @@
 """
 
 import importlib
+import os
+import sys
+
+
+def _add_src_to_syspath():
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    sys.path.insert(0, os.path.join(repo_root, "src", "python-gui-client"))
 
 
 def test_import_modules():
+    _add_src_to_syspath()
     # 确保两个主模块可被导入
-    importlib.import_module("python-gui-client.funasr_gui_client_v2")
-    importlib.import_module("python-gui-client.simple_funasr_client")
+    importlib.import_module("funasr_gui_client_v3")
+    importlib.import_module("simple_funasr_client")
 
 
 if __name__ == "__main__":
     test_import_modules()
     print("basic import ok")
-
 
 

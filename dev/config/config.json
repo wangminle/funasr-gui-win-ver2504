@@ -1,9 +1,50 @@
 {
-    "ip": "100.116.250.20",
+    "config_version": 3,
+    
+    "_comment_compat": "以下扁平键为向后兼容保留，供旧测试脚本使用",
+    "ip": "127.0.0.1",
     "port": "10095",
     "use_itn": 1,
     "use_ssl": 1,
     "language": "zh",
+    "hotword_path": "",
     "connection_test_timeout": 5,
-    "hotword_path": ""
+    
+    "_comment_v3": "以下为 V3 分组结构，新代码优先使用",
+    "server": {
+        "ip": "127.0.0.1",
+        "port": "10095"
+    },
+    "options": {
+        "use_itn": 1,
+        "use_ssl": 1,
+        "hotword_path": ""
+    },
+    "ui": {
+        "language": "zh"
+    },
+    "protocol": {
+        "server_type": "auto",
+        "preferred_mode": "offline",
+        "auto_probe_on_start": true,
+        "auto_probe_on_switch": true,
+        "probe_level": "offline_light",
+        "connection_test_timeout": 5
+    },
+    "sensevoice": {
+        "svs_lang": "auto",
+        "svs_itn": true
+    },
+    "cache": {
+        "last_probe_result": null,
+        "last_probe_time": null
+    },
+    "presets": {
+        "public_cloud": {
+            "ip": "www.funasr.com",
+            "port": "10096",
+            "use_ssl": true,
+            "description": "FunASR公网测试服务"
+        }
+    }
 }

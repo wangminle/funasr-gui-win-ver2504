@@ -13,7 +13,7 @@ from pathlib import Path
 # 添加项目路径以便导入
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-sys.path.insert(0, os.path.join(project_root, 'dev', 'src', 'python-gui-client'))
+sys.path.insert(0, os.path.join(project_root, 'src', 'python-gui-client'))
 
 def test_directory_structure_compliance():
     """测试1: 目录结构完全符合cursorrules规范"""
@@ -52,8 +52,13 @@ def test_directory_structure_compliance():
     
     # 检查代码位置
     print("\n🔍 检查代码文件位置:")
-    src_dir = dev_dir / 'src' / 'python-gui-client'
-    code_files = ['funasr_gui_client_v2.py', 'simple_funasr_client.py', 'requirements.txt']
+    src_dir = project_root / 'src' / 'python-gui-client'
+    code_files = [
+        'funasr_gui_client_v3.py',
+        'simple_funasr_client.py',
+        'protocol_adapter.py',
+        'requirements.txt'
+    ]
     code_files_exist = True
     
     for file_name in code_files:
@@ -90,14 +95,14 @@ def test_code_comments_compliance():
     print("=" * 60)
     
     try:
-        import funasr_gui_client_v2
+        import funasr_gui_client_v3
 
         # 检查主要类的注释
         classes_to_check = [
-            funasr_gui_client_v2.LanguageManager,
-            funasr_gui_client_v2.TranscribeTimeManager,
-            funasr_gui_client_v2.GuiLogHandler,
-            funasr_gui_client_v2.FunASRGUIClient
+            funasr_gui_client_v3.LanguageManager,
+            funasr_gui_client_v3.TranscribeTimeManager,
+            funasr_gui_client_v3.GuiLogHandler,
+            funasr_gui_client_v3.FunASRGUIClient
         ]
         
         print("🔍 检查类的中文注释:")
@@ -122,7 +127,7 @@ def test_code_comments_compliance():
         
         for class_name, method_name in methods_to_check:
             try:
-                cls = getattr(funasr_gui_client_v2, class_name)
+                cls = getattr(funasr_gui_client_v3, class_name)
                 method = getattr(cls, method_name)
                 if method.__doc__ and any('\u4e00' <= char <= '\u9fff' for char in method.__doc__):
                     print(f"  ✅ {class_name}.{method_name} 方法有中文注释")
@@ -149,10 +154,10 @@ def test_file_path_compliance():
     print("=" * 60)
     
     try:
-        import funasr_gui_client_v2
+        import funasr_gui_client_v3
 
         # 创建GUI实例检查路径配置
-        app = funasr_gui_client_v2.FunASRGUIClient()
+        app = funasr_gui_client_v3.FunASRGUIClient()
         
         print("🔍 检查输出文件路径配置:")
         
@@ -265,16 +270,16 @@ def test_code_style_compliance():
     print("=" * 60)
     
     try:
-        import funasr_gui_client_v2
+        import funasr_gui_client_v3
         
         print("🔍 检查类名命名规范:")
         
         # 检查类名是否使用驼峰命名
         classes = [
-            funasr_gui_client_v2.LanguageManager,
-            funasr_gui_client_v2.TranscribeTimeManager,
-            funasr_gui_client_v2.GuiLogHandler,
-            funasr_gui_client_v2.FunASRGUIClient
+            funasr_gui_client_v3.LanguageManager,
+            funasr_gui_client_v3.TranscribeTimeManager,
+            funasr_gui_client_v3.GuiLogHandler,
+            funasr_gui_client_v3.FunASRGUIClient
         ]
         
         camel_case_valid = True

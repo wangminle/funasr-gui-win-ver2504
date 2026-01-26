@@ -31,8 +31,8 @@ def setup_test_environment():
 def test_gui_client_import():
     """测试GUI客户端是否能正常导入"""
     try:
-        sys.path.insert(0, 'dev/src/python-gui-client')
-        import funasr_gui_client_v2
+        sys.path.insert(0, 'src/python-gui-client')
+        import funasr_gui_client_v3
         logging.info("✓ GUI客户端模块导入成功")
         return True
     except Exception as e:
@@ -44,7 +44,7 @@ def test_simple_client_syntax():
     try:
         result = subprocess.run([
             sys.executable, '-m', 'py_compile', 
-            'dev/src/python-gui-client/simple_funasr_client.py'
+            'src/python-gui-client/simple_funasr_client.py'
         ], capture_output=True, text=True)
         
         if result.returncode == 0:
@@ -60,8 +60,8 @@ def test_simple_client_syntax():
 def test_log_format_strings():
     """测试日志格式化字符串是否正确"""
     try:
-        sys.path.insert(0, 'dev/src/python-gui-client')
-        from funasr_gui_client_v2 import LanguageManager
+        sys.path.insert(0, 'src/python-gui-client')
+        from funasr_gui_client_v3 import LanguageManager
         
         lang_manager = LanguageManager()
         

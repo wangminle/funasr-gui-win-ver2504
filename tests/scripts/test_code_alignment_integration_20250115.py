@@ -13,7 +13,7 @@ import time
 
 # 测试配置
 TEST_CONFIG = {
-    "gui_client_path": "src/python-gui-client/funasr_gui_client_v2.py",
+    "gui_client_path": "src/python-gui-client/funasr_gui_client_v3.py",
     "simple_client_path": "src/python-gui-client/simple_funasr_client.py",
     "test_audio_file": "resources/demo/tv-report-1.wav",
     "config_file": "dev/config/config.json",
@@ -77,12 +77,12 @@ class CodeAlignmentTester:
             sys.path.insert(0, "src/python-gui-client")
 
             try:
-                import funasr_gui_client_v2
+                import funasr_gui_client_v3
 
                 self.log("GUI客户端导入成功")
 
                 # 测试关键类是否存在
-                if hasattr(funasr_gui_client_v2, "FunASRGUIClient"):
+                if hasattr(funasr_gui_client_v3, "FunASRGUIClient"):
                     self.log("FunASRGUIClient类存在")
                 else:
                     self.log("FunASRGUIClient类不存在", "ERROR")
@@ -110,8 +110,8 @@ class CodeAlignmentTester:
                 self.test_results["gui_client_import"] = False
             finally:
                 # 清理导入的模块
-                if "funasr_gui_client_v2" in sys.modules:
-                    del sys.modules["funasr_gui_client_v2"]
+                if "funasr_gui_client_v3" in sys.modules:
+                    del sys.modules["funasr_gui_client_v3"]
                 if "src/python-gui-client" in sys.path:
                     sys.path.remove("src/python-gui-client")
 

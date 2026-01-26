@@ -186,7 +186,7 @@ def test_5_gui_dependency_check():
     print("=" * 60)
 
     gui_script = os.path.join(
-        project_root, "src", "python-gui-client", "funasr_gui_client_v2.py"
+        project_root, "src", "python-gui-client", "funasr_gui_client_v3.py"
     )
 
     try:
@@ -287,4 +287,3 @@ def main():
 if __name__ == "__main__":
     success = main()
     sys.exit(0 if success else 1)
-

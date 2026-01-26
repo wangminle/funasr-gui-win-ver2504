@@ -42,7 +42,7 @@ FunASR 开源项目持续更新，新版 `FunASR-main` 在协议实现上与旧�
 
 **协议层面（WebSocket）：**
 - 新旧协议**向后兼容**，核心字段一致
-- 新版增加了可选参数（`svs_lang`/`svs_itn`），旧服务端会忽略未知字段
+- 新版增加了可选参数（`svs_lang`/`svs_itn`），多数旧服务端会忽略未知字段；为保险起见需支持“发送失败→降级重试”
 - **关键差异**：离线模式 `is_final` 字段语义变化
 
 **能力查询限制：**
@@ -207,6 +207,7 @@ class MessageProfile:
     use_ssl: bool = True
     hotwords: str = ""
     # 新版参数
+    enable_svs_params: bool = False  # 是否启用并下发 SenseVoice 相关参数（AUTO 默认关闭）
     svs_lang: str = "auto"
     svs_itn: bool = True
     # 2pass参数
@@ -250,8 +251,8 @@ class ProtocolAdapter:
             msg["encoder_chunk_look_back"] = 4
             msg["decoder_chunk_look_back"] = 1
         
-        # 新版参数（旧服务端会忽略未知字段）
-        if self.server_type in [ServerType.AUTO, ServerType.FUNASR_MAIN]:
+        # 新版参数（多数旧服务端会忽略未知字段；为避免严格服务端拒绝，AUTO 默认不下发，除非显式启用）
+        if profile.enable_svs_params or self.server_type == ServerType.FUNASR_MAIN:
             msg["svs_lang"] = profile.svs_lang
             msg["svs_itn"] = profile.svs_itn
         
@@ -313,27 +314,28 @@ class ProtocolAdapter:
         
         这是解决新旧版本差异的核心逻辑！
         
-        旧版行为：offline模式 is_final=True 表示完成
-        新版行为：offline模式 is_final 可能永远是 False，
-                  但收到第一条完整结果就应该结束
+        设计原则（必须兼容“静音/空文本”场景）：
+        - offline：服务端通常只回一条结果（可能 text 为空、is_final=False），收到回包就应结束等待
+        - 2pass：收到 2pass-offline 即认为“最终纠错结果”已到达（即便 text 为空也应结束，避免静音卡死）
+        - 其他：优先遵循 is_final=True 的明确结束标志
         """
         mode = data.get("mode", "")
-        is_final = data.get("is_final", False)
-        text = data.get("text", "")
+        is_final = bool(data.get("is_final", False))
         
-        # 情况1：明确标记完成
+        # 情况1：服务端明确标记完成
         if is_final:
             return True
         
-        # 情况2：offline模式收到非空结果即视为完成（兼容新版）
-        if mode == "offline" and text:
+        # 情况2：离线模式（新版 runtime 可能永远 is_final=False）
+        # 收到任何 offline 回包即可结束（不依赖 text 是否为空）
+        if mode == "offline":
             return True
         
-        # 情况3：2pass-offline结果（最终修正结果）
-        if mode == "2pass-offline" and text:
+        # 情况3：2pass 最终纠错结果（不依赖 text 是否为空）
+        if mode == "2pass-offline":
             return True
         
-        # 情况4：检查是否有stamp_sents（时间戳结果通常表示完成）
+        # 情况4：兜底 - 出现句子级时间戳通常代表本轮已结束/可结束等待
         if data.get("stamp_sents") and len(data.get("stamp_sents", [])) > 0:
             return True
         
@@ -349,8 +351,9 @@ class ProtocolAdapter:
 
 from protocol_adapter import ProtocolAdapter, ServerType
 
-# 初始化适配器
-adapter = ProtocolAdapter(server_type=ServerType.AUTO)
+# 初始化适配器（建议由GUI在启动子进程时传入 --server_type）
+# server_type_str: "auto" | "legacy" | "funasr_main"
+adapter = ProtocolAdapter(server_type=ServerType(server_type_str))
 
 async def message(id):
     """接收服务器返回的消息并处理"""
@@ -428,9 +431,10 @@ class ServerCapabilities:
     error: Optional[str] = None
     
     # 支持的模式
-    supports_offline: bool = False
-    supports_online: bool = False
-    supports_2pass: bool = False
+    # 说明：这里使用三态（None/True/False），避免“未判定”被误解为“不支持”
+    supports_offline: Optional[bool] = None
+    supports_online: Optional[bool] = None
+    supports_2pass: Optional[bool] = None
     
     # 能力特征
     has_timestamp: bool = False
@@ -439,7 +443,7 @@ class ServerCapabilities:
     # 协议语义（用于适配层参考）
     is_final_semantics: str = "unknown"  # legacy_true / always_false / unknown
     
-    # 推断的服务端类型
+    # 推断的服务端类型（最佳努力，仅用于UI提示，不作为协议决策依据）
     inferred_server_type: str = "unknown"  # legacy / funasr_main / unknown
     
     # 探测详情
@@ -451,18 +455,20 @@ class ServerCapabilities:
         if not self.reachable:
             return f"❌ 不可连接 | {self.error or '请检查IP/端口/SSL'}"
         
-        parts = ["✅ 服务可用"]
+        parts = ["✅ 服务可用" if self.responsive else "✅ 已连接（未响应）"]
         
         # 模式支持
         modes = []
-        if self.supports_offline:
+        if self.supports_offline is True:
             modes.append("离线")
-        if self.supports_2pass:
+        if self.supports_2pass is True:
             modes.append("2pass")
-        if self.supports_online:
+        if self.supports_online is True:
             modes.append("实时")
         if modes:
             parts.append(f"模式: {'/'.join(modes)}")
+        elif not self.responsive:
+            parts.append("模式: 未判定（可直接开始识别验证）")
         
         # 能力
         caps = []
@@ -473,8 +479,8 @@ class ServerCapabilities:
         
         # 服务端类型
         if self.inferred_server_type != "unknown":
-            type_name = "新版" if self.inferred_server_type == "funasr_main" else "旧版"
-            parts.append(f"类型: {type_name}")
+            type_name = "可能新版" if self.inferred_server_type == "funasr_main" else "可能旧版"
+            parts.append(f"类型: {type_name}（仅供参考）")
         
         return " | ".join(parts)
     
@@ -538,7 +544,8 @@ class ServerProbe:
                     uri,
                     subprotocols=["binary"],
                     ping_interval=None,
-                    ssl=ssl_context
+                    ssl=ssl_context,
+                    proxy=None,  # 显式禁用代理，避免环境代理导致连接异常
                 ) as ws:
                     caps.reachable = True
                     caps.probe_notes.append("WebSocket连接成功")
@@ -546,12 +553,12 @@ class ServerProbe:
                     if level == ProbeLevel.CONNECT_ONLY:
                         return caps
                     
-                    # 阶段1：离线轻量探测
-                    if level >= ProbeLevel.OFFLINE_LIGHT:
+                    # 阶段1：离线轻量探测（默认推荐）
+                    if level == ProbeLevel.OFFLINE_LIGHT:
                         await self._probe_offline(ws, caps)
                     
-                    # 阶段2：2pass探测（可选）
-                    if level >= ProbeLevel.TWOPASS_FULL:
+                    # 阶段2：2pass探测（可选，避免与离线探测混跑导致状态干扰）
+                    if level == ProbeLevel.TWOPASS_FULL:
                         await self._probe_2pass(ws, caps)
         
         except asyncio.TimeoutError:
@@ -579,6 +586,10 @@ class ServerProbe:
                 "itn": True
             })
             await ws.send(probe_msg)
+
+            # 发送极短静音PCM，提升“空输入不回包”场景下的探测成功率
+            # 16000Hz * 2bytes * 0.25s ≈ 8000 bytes
+            await ws.send(bytes(8000))
             
             # 立即发送结束
             await ws.send(json.dumps({"is_speaking": False}))
@@ -601,7 +612,8 @@ class ServerProbe:
                 is_final = data.get("is_final", None)
                 if is_final is True:
                     caps.is_final_semantics = "legacy_true"
-                elif is_final is False and data.get("text"):
+                elif is_final is False:
+                    # 注意：该特征无法 100% 区分新旧服务端，仅作“可能”提示
                     caps.is_final_semantics = "always_false"
                 
                 caps.probe_notes.append("离线模式探测成功")
@@ -609,8 +621,8 @@ class ServerProbe:
             except asyncio.TimeoutError:
                 # 无响应但连接成功
                 caps.responsive = False
-                caps.supports_offline = True  # 假设支持
-                caps.probe_notes.append("离线探测无响应（空输入可能不返回）")
+                caps.supports_offline = None  # 未判定
+                caps.probe_notes.append("离线探测无响应（部分服务对短/静音输入可能不回包）")
                 
         except Exception as e:
             caps.probe_notes.append(f"离线探测异常: {e}")
@@ -646,6 +658,7 @@ class ServerProbe:
                 if mode in ["2pass", "2pass-online", "2pass-offline"]:
                     caps.supports_2pass = True
                     caps.supports_online = True
+                    caps.responsive = True
                     caps.probe_notes.append("2pass模式探测成功")
                     
             except asyncio.TimeoutError:
@@ -666,47 +679,19 @@ class ServerProbe:
 
 ### 4.2 探测时机与防抖
 
-```python
-class ProbeManager:
-    """探测管理器 - 处理触发时机和防抖"""
-    
-    def __init__(self, gui_callback):
-        self.gui_callback = gui_callback
-        self._pending_probe = None
-        self._debounce_ms = 500
-    
-    def schedule_probe(self, host: str, port: str, use_ssl: bool, 
-                       level: ProbeLevel = ProbeLevel.OFFLINE_LIGHT):
-        """调度探测（带防抖）
-        
-        多次快速调用只会执行最后一次
-        """
-        # 取消之前的待执行探测
-        if self._pending_probe:
-            self._pending_probe.cancel()
-        
-        # 创建新的延迟探测
-        async def delayed_probe():
-            await asyncio.sleep(self._debounce_ms / 1000)
-            probe = ServerProbe(host, port, use_ssl)
-            result = await probe.probe(level)
-            self.gui_callback(result)
-        
-        self._pending_probe = asyncio.create_task(delayed_probe())
-    
-    def cancel_pending(self):
-        """取消待执行的探测"""
-        if self._pending_probe:
-            self._pending_probe.cancel()
-            self._pending_probe = None
-```
+**实现建议（与 Tkinter 线程模型一致，避免“无事件循环”问题）：**
+- **防抖**：统一使用 Tkinter 的 `after(…, …)` + `after_cancel(...)` 实现 300–800ms 防抖（多次快速切换只执行最后一次）
+- **执行**：在后台线程中运行 `asyncio.run(ServerProbe(...).probe(...))`
+- **回写UI**：探测完成后使用 `self.after(0, ...)` 回到主线程更新控件状态
+
+> 说明：不建议在 Tk 主线程直接 `asyncio.create_task(...)`，因为 Tk 应用默认没有长期运行的 asyncio event loop。
 
 ### 4.3 探测级别说明
 
 | 级别 | 说明 | 耗时 | 使用场景 |
 |------|------|------|----------|
 | `CONNECT_ONLY` | 仅WebSocket握手 | <1s | 快速检查连通性 |
-| `OFFLINE_LIGHT` | 发送空离线请求 | 1-3s | **默认推荐** |
+| `OFFLINE_LIGHT` | 发送短静音离线请求（最佳努力） | 1-3s | **默认推荐** |
 | `TWOPASS_FULL` | 发送静音音频 | 3-5s | 需要2pass能力检测时 |
 
 ---
@@ -719,6 +704,7 @@ class ProbeManager:
 
 ```json
 {
+    "config_version": 3,
     "server": {
         "ip": "127.0.0.1",
         "port": "10095"
@@ -726,7 +712,7 @@ class ProbeManager:
     "options": {
         "use_itn": 1,
         "use_ssl": 1,
-        "hotword_file": ""
+        "hotword_path": ""
     },
     "ui": {
         "language": "zh"
@@ -736,7 +722,8 @@ class ProbeManager:
         "preferred_mode": "offline",
         "auto_probe_on_start": true,
         "auto_probe_on_switch": true,
-        "probe_level": "offline_light"
+        "probe_level": "offline_light",
+        "connection_test_timeout": 5
     },
     "sensevoice": {
         "svs_lang": "auto",
@@ -761,15 +748,27 @@ class ProbeManager:
 
 | 字段路径 | 类型 | 默认值 | 说明 |
 |----------|------|--------|------|
+| `config_version` | int | 3 | 配置版本号（用于自动迁移与兼容判断） |
+| `options.hotword_path` | string | "" | 热词文件路径（与现有 V2 字段名保持一致） |
 | `protocol.server_type` | string | "auto" | 服务端类型：auto/legacy/funasr_main |
 | `protocol.preferred_mode` | string | "offline" | 首选识别模式：offline/2pass |
 | `protocol.auto_probe_on_start` | bool | true | 启动时自动探测 |
 | `protocol.auto_probe_on_switch` | bool | true | 切换配置时自动探测 |
 | `protocol.probe_level` | string | "offline_light" | 探测级别 |
+| `protocol.connection_test_timeout` | int | 5 | 连接/探测超时时间（秒） |
 | `sensevoice.svs_lang` | string | "auto" | SenseVoice语种 |
 | `sensevoice.svs_itn` | bool | true | SenseVoice ITN开关 |
 | `cache.last_probe_result` | object | null | 上次探测结果缓存 |
 | `cache.last_probe_time` | string | null | 上次探测时间 |
+
+### 5.3 配置迁移策略（必须实现，保证向后兼容）
+
+当前 V2 配置为“扁平结构”（例如包含 `ip/port/use_itn/use_ssl/language/hotword_path/connection_test_timeout`）。V3 改为分组结构后，需要提供自动迁移：
+
+- **加载时**：
+  - 若存在 `config_version == 3`：按 V3 结构读取
+  - 否则：按 V2 结构读取 → 生成 V3 结构（填充默认值）→ 写回保存一次（升级完成）
+- **保存时**：统一写 V3 结构；必要时保留兼容字段（可选，视是否需要与旧版本共用同一配置文件）
 
 ---
 
@@ -816,28 +815,49 @@ class ProbeManager:
 ```python
 # === 服务端配置区域 ===
 
-# 服务端类型下拉框
-self.server_type_var = tk.StringVar(value="auto")
+# 服务端类型下拉框（显示值 ↔ 内部值映射，避免UI文案影响逻辑判断）
+SERVER_TYPE_OPTIONS = [
+    ("自动探测（推荐）", "auto"),
+    ("旧版服务端 (Legacy)", "legacy"),
+    ("新版服务端 (FunASR-main)", "funasr_main"),
+    ("公网测试服务", "public_cloud"),
+]
+SERVER_TYPE_DISPLAY_TO_VALUE = {d: v for d, v in SERVER_TYPE_OPTIONS}
+SERVER_TYPE_VALUE_TO_DISPLAY = {v: d for d, v in SERVER_TYPE_OPTIONS}
+
+self.server_type_display_var = tk.StringVar(
+    value=SERVER_TYPE_VALUE_TO_DISPLAY.get(
+        self.config.get("protocol", {}).get("server_type", "auto"),
+        "自动探测（推荐）",
+    )
+)
 self.server_type_combo = ttk.Combobox(
     server_config_frame,
-    textvariable=self.server_type_var,
-    values=[
-        "自动探测（推荐）",
-        "旧版服务端 (Legacy)",
-        "新版服务端 (FunASR-main)",
-        "公网测试服务"
-    ],
+    textvariable=self.server_type_display_var,
+    values=[d for d, _ in SERVER_TYPE_OPTIONS],
     state="readonly",
     width=18
 )
 self.server_type_combo.bind("<<ComboboxSelected>>", self._on_server_type_changed)
 
 # 识别模式下拉框
-self.mode_var = tk.StringVar(value="offline")
+MODE_OPTIONS = [
+    ("离线转写", "offline"),
+    ("实时识别 (2pass)", "2pass"),
+]
+MODE_DISPLAY_TO_VALUE = {d: v for d, v in MODE_OPTIONS}
+MODE_VALUE_TO_DISPLAY = {v: d for d, v in MODE_OPTIONS}
+
+self.mode_display_var = tk.StringVar(
+    value=MODE_VALUE_TO_DISPLAY.get(
+        self.config.get("protocol", {}).get("preferred_mode", "offline"),
+        "离线转写",
+    )
+)
 self.mode_combo = ttk.Combobox(
     server_config_frame,
-    textvariable=self.mode_var,
-    values=["离线转写", "实时识别 (2pass)"],
+    textvariable=self.mode_display_var,
+    values=[d for d, _ in MODE_OPTIONS],
     state="readonly",
     width=15
 )
@@ -861,7 +881,7 @@ self.auto_probe_switch_check = ttk.Checkbutton(
 self.probe_button = ttk.Button(
     server_config_frame,
     text="🔄 立即探测",
-    command=self.run_probe
+    command=self._schedule_probe
 )
 
 # 探测结果展示标签
@@ -873,6 +893,9 @@ self.probe_result_label = ttk.Label(
 )
 
 # === SenseVoice 设置区域 ===
+
+# 说明：仅当用户选择“新版服务端(FunASR-main)”或显式启用 SenseVoice 参数时，
+# 才在 MessageProfile 中设置 enable_svs_params=True 并下发 svs_lang/svs_itn。
 
 # 语种选择
 self.svs_lang_var = tk.StringVar(value="auto")
@@ -915,10 +938,13 @@ def _auto_probe_on_startup(self):
 
 def _on_server_type_changed(self, event=None):
     """服务端类型切换"""
-    server_type = self.server_type_var.get()
+    # 注意：Combobox 显示值需要映射到内部值
+    server_type_value = SERVER_TYPE_DISPLAY_TO_VALUE.get(
+        self.server_type_display_var.get(), "auto"
+    )
     
     # 公网测试服务预设
-    if server_type == "公网测试服务":
+    if server_type_value == "public_cloud":
         self.ip_var.set("www.funasr.com")
         self.port_var.set("10096")
         self.use_ssl_var.set(1)
@@ -927,6 +953,10 @@ def _on_server_type_changed(self, event=None):
     else:
         self.ip_entry.config(state="normal")
         self.port_entry.config(state="normal")
+
+    # 写入配置（使用内部值，避免依赖UI显示文案）
+    self.config.setdefault("protocol", {})
+    self.config["protocol"]["server_type"] = server_type_value
     
     # 自动探测
     if self.auto_probe_switch_var.get():
@@ -988,14 +1018,14 @@ def _update_probe_result(self, caps):
 
 def _update_sensevoice_options(self, caps):
     """根据探测结果更新SenseVoice选项"""
-    if caps.inferred_server_type == "funasr_main":
-        # 启用SenseVoice选项
-        self.svs_lang_combo.config(state="readonly")
-        self.svs_itn_check.config(state="normal")
-    else:
-        # 禁用并提示
-        self.svs_lang_combo.config(state="disabled")
-        self.svs_itn_check.config(state="disabled")
+    # 注意：仅凭探测无法可靠判断“是否加载了SenseVoice模型”。
+    # 建议按“用户选择的服务端类型/是否启用SenseVoice参数”控制控件可用性，探测仅提供提示。
+    server_type_value = SERVER_TYPE_DISPLAY_TO_VALUE.get(
+        self.server_type_display_var.get(), "auto"
+    )
+    enable = server_type_value in ("funasr_main", "auto")
+    self.svs_lang_combo.config(state="readonly" if enable else "disabled")
+    self.svs_itn_check.config(state="normal" if enable else "disabled")
 
 def _cache_probe_result(self, caps):
     """缓存探测结果到配置文件"""
@@ -1071,9 +1101,9 @@ def _cache_probe_result(self, caps):
 
 | 风险 | 可能性 | 影响 | 缓解措施 |
 |------|--------|------|----------|
-| 探测无响应（部分服务不回空输入） | 中 | 能力判断不准 | 标记为"已连接但能力未判定"，允许继续使用 |
+| 探测无响应（部分服务对短/静音输入可能不回包） | 中 | 能力判断不准 | 标记为"已连接但能力未判定"，允许继续使用 |
 | 探测超时 | 低 | 启动变慢 | 后台执行不阻塞UI，5秒超时 |
-| 新服务端参数被旧服务端拒绝 | 低 | 识别失败 | 旧服务端应忽略未知字段（协议设计如此） |
+| 新服务端参数被旧服务端拒绝 | 低-中 | 识别失败 | 不假设一定忽略未知字段；若出现“服务器关闭/协议错误”，自动降级重试（不带新字段） |
 | 用户选错服务端类型 | 中 | 功能异常 | 默认"自动探测"模式，减少手动配置 |
 | 适配层bug导致结果解析错误 | 低 | 识别结果丢失 | 保留raw原始数据，增加单元测试 |
 

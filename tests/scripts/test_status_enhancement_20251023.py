@@ -30,8 +30,8 @@ def test_status_manager_class_exists():
         # 尝试导入StatusManager
         import importlib.util
         spec = importlib.util.spec_from_file_location(
-            "funasr_gui_client_v2",
-            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v2.py")
+            "funasr_gui_client_v3",
+            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v3.py")
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -73,8 +73,8 @@ def test_status_colors():
     try:
         import importlib.util
         spec = importlib.util.spec_from_file_location(
-            "funasr_gui_client_v2",
-            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v2.py")
+            "funasr_gui_client_v3",
+            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v3.py")
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -120,8 +120,8 @@ def test_stage_definitions():
     try:
         import importlib.util
         spec = importlib.util.spec_from_file_location(
-            "funasr_gui_client_v2",
-            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v2.py")
+            "funasr_gui_client_v3",
+            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v3.py")
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -188,8 +188,8 @@ def test_methods_exist():
     try:
         import importlib.util
         spec = importlib.util.spec_from_file_location(
-            "funasr_gui_client_v2",
-            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v2.py")
+            "funasr_gui_client_v3",
+            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v3.py")
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -226,8 +226,8 @@ def test_language_translations():
     try:
         import importlib.util
         spec = importlib.util.spec_from_file_location(
-            "funasr_gui_client_v2",
-            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v2.py")
+            "funasr_gui_client_v3",
+            os.path.join(os.path.dirname(__file__), "..", "..", "src", "python-gui-client", "funasr_gui_client_v3.py")
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -306,4 +306,3 @@ def run_all_tests():
 if __name__ == "__main__":
     success = run_all_tests()
     sys.exit(0 if success else 1)
-
