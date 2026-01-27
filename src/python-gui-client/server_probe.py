@@ -224,7 +224,8 @@ class ServerProbe:
 
         Args:
             level: 探测级别
-            timeout: 总超时时间（秒）
+            timeout: 基础超时时间（秒）。
+                     对于 TWOPASS_FULL 级别，实际超时会自动延长以适应更长的探测流程。
 
         Returns:
             ServerCapabilities: 探测结果
@@ -234,11 +235,20 @@ class ServerProbe:
         start_time = time.time()
         caps = ServerCapabilities(probe_level=level)
 
+        # 根据探测级别调整超时时间
+        # TWOPASS_FULL 需要：连接 + 离线探测(2s) + 2pass探测(3s) + 连接开销
+        # 所以至少需要 10 秒以上
+        if level == ProbeLevel.TWOPASS_FULL:
+            effective_timeout = max(timeout, 12.0)  # 完整探测至少 12 秒
+            logger.debug(f"完整探测模式，超时时间调整为 {effective_timeout}s")
+        else:
+            effective_timeout = timeout
+
         # 构建URI
         protocol = "wss" if self.use_ssl else "ws"
         uri = f"{protocol}://{self.host}:{self.port}"
 
-        logger.info(f"开始探测服务器: {uri}, 级别: {level.name}")
+        logger.info(f"开始探测服务器: {uri}, 级别: {level.name}, 超时: {effective_timeout}s")
 
         try:
             # 动态导入 websockets
@@ -256,8 +266,10 @@ class ServerProbe:
                 ssl_context.check_hostname = False
                 ssl_context.verify_mode = ssl.CERT_NONE
 
-            # 阶段0：连接测试
-            async with asyncio.timeout(timeout):
+            # 阶段0+1：连接测试 + 离线探测（共用超时）
+            # 为离线探测预留足够时间（连接通常 1-2s，离线等待 2s）
+            offline_timeout = min(effective_timeout, 6.0)
+            async with asyncio.timeout(offline_timeout):
                 async with connect_websocket(
                     uri,
                     subprotocols=["binary"],
@@ -278,16 +290,22 @@ class ServerProbe:
 
             # 阶段2：2pass探测（仅在 TWOPASS_FULL 级别时执行）
             # 注意：需要新建连接避免状态干扰
+            # P0修复：即使离线无响应也尝试 2pass（因为存在"离线不回包但 2pass 回包"的服务端）
             if level == ProbeLevel.TWOPASS_FULL and caps.reachable:
-                # 如果离线探测已经表明不响应，跳过2pass探测
-                if caps.responsive:
-                    await self._probe_2pass_with_new_connection(
-                        uri, ssl_context, caps, timeout
-                    )
-                else:
+                # 计算剩余超时时间（至少保留 5 秒给 2pass）
+                elapsed = time.time() - start_time
+                remaining_timeout = max(effective_timeout - elapsed, 5.0)
+
+                if not caps.responsive:
+                    # 离线无响应但仍尝试 2pass（可能服务端对短静音不回包）
                     caps.probe_notes.append(
-                        "2pass探测跳过（离线探测无响应）"
+                        "离线探测无响应，仍尝试2pass探测"
                     )
+                    logger.debug("离线探测无响应，仍尝试2pass探测")
+
+                await self._probe_2pass_with_new_connection(
+                    uri, ssl_context, caps, remaining_timeout
+                )
 
         except asyncio.TimeoutError:
             caps.error = "连接超时"
