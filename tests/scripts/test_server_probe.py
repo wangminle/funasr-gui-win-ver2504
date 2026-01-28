@@ -529,5 +529,424 @@ class TestEdgeCases(unittest.TestCase):
         asyncio.run(run_test())
 
 
+# =============================================================================
+# C2 补充用例：Phase6 新增测试
+# =============================================================================
+
+
+class TestTwoPassFullProbe(unittest.TestCase):
+    """测试 TWOPASS_FULL 探测级别的特殊行为"""
+
+    def test_twopass_full_offline_no_response_still_tries_2pass(self):
+        """测试 TWOPASS_FULL 下离线无响应仍会尝试 2pass（避免假阴性）"""
+
+        async def run_test():
+            # 第一次连接：离线探测无响应（超时）
+            ws_offline = AsyncMock()
+            ws_offline.recv.side_effect = asyncio.TimeoutError()
+
+            # 第二次连接：2pass 探测有响应
+            ws_2pass = AsyncMock()
+            ws_2pass.recv.return_value = json.dumps(
+                {"mode": "2pass-online", "text": "", "is_final": False}
+            )
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.side_effect = [ws_offline, ws_2pass]
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.TWOPASS_FULL, timeout=12.0)
+
+                self.assertTrue(caps.reachable)
+                # 离线探测无响应（不影响继续尝试2pass）
+                notes_str = " ".join(caps.probe_notes)
+                self.assertIn("离线探测无响应", notes_str)
+                self.assertIn("仍尝试2pass", notes_str)
+                # 2pass 成功则应判定支持
+                self.assertTrue(caps.supports_2pass)
+                # connect_websocket 需要被调用两次（离线一次 + 2pass 新连接一次）
+                self.assertEqual(mock_websockets.connect.call_count, 2)
+
+        asyncio.run(run_test())
+
+    def test_twopass_full_offline_responsive_then_2pass(self):
+        """测试 TWOPASS_FULL 下离线有响应后继续 2pass 探测"""
+
+        async def run_test():
+            call_count = 0
+
+            async def mock_recv():
+                nonlocal call_count
+                call_count += 1
+                if call_count == 1:
+                    # 离线探测：有响应
+                    return json.dumps({
+                        "mode": "offline",
+                        "text": "test",
+                        "is_final": True
+                    })
+                else:
+                    # 2pass 探测：有响应
+                    return json.dumps({
+                        "mode": "2pass-online",
+                        "text": "",
+                        "is_final": False
+                    })
+
+            mock_ws_instance = AsyncMock()
+            mock_ws_instance.recv.side_effect = mock_recv
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.return_value = mock_ws_instance
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.TWOPASS_FULL, timeout=12.0)
+
+                self.assertTrue(caps.reachable)
+                self.assertTrue(caps.responsive)
+                self.assertTrue(caps.supports_offline)
+
+        asyncio.run(run_test())
+
+
+class TestProbeDurationTracking(unittest.TestCase):
+    """测试探测时长追踪"""
+
+    def test_probe_duration_ms_recorded(self):
+        """测试 probe_duration_ms 被正确记录"""
+
+        async def run_test():
+            mock_ws_instance = AsyncMock()
+            mock_ws_instance.recv.return_value = json.dumps({
+                "mode": "offline",
+                "text": "",
+                "is_final": False
+            })
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.return_value = mock_ws_instance
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.OFFLINE_LIGHT, timeout=5.0)
+
+                # probe_duration_ms 应该大于 0
+                self.assertGreater(caps.probe_duration_ms, 0)
+                # 不应该超过超时时间（5秒 = 5000ms）
+                self.assertLess(caps.probe_duration_ms, 5000)
+
+        asyncio.run(run_test())
+
+    def test_probe_duration_ms_on_timeout(self):
+        """测试超时时 probe_duration_ms 也被记录"""
+
+        async def run_test():
+            mock_websockets = MagicMock()
+            mock_websockets.connect = AsyncMock(side_effect=asyncio.TimeoutError())
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.CONNECT_ONLY, timeout=1.0)
+
+                # 即使超时，也应该记录时长
+                self.assertGreater(caps.probe_duration_ms, 0)
+                self.assertFalse(caps.reachable)
+                self.assertEqual(caps.error, "连接超时")
+
+        asyncio.run(run_test())
+
+    def test_probe_duration_ms_on_connection_refused(self):
+        """测试连接被拒绝时 probe_duration_ms 也被记录"""
+
+        async def run_test():
+            mock_websockets = MagicMock()
+            mock_websockets.connect = AsyncMock(side_effect=ConnectionRefusedError())
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.CONNECT_ONLY, timeout=5.0)
+
+                self.assertGreater(caps.probe_duration_ms, 0)
+                self.assertFalse(caps.reachable)
+                self.assertEqual(caps.error, "连接被拒绝")
+
+        asyncio.run(run_test())
+
+
+class TestIsFinalStringParsing(unittest.TestCase):
+    """测试 is_final 字符串宽容解析"""
+
+    def test_coerce_bool_string_true_variants(self):
+        """测试字符串 'true' 各种变体"""
+        test_cases = [
+            ("true", True),
+            ("True", True),
+            ("TRUE", True),
+            ("  true  ", True),
+            ("1", True),
+            ("yes", True),
+            ("Yes", True),
+            ("YES", True),
+            ("on", True),
+            ("y", True),
+        ]
+
+        for input_val, expected in test_cases:
+            with self.subTest(input_val=input_val):
+                result = ServerProbe._coerce_bool(input_val)
+                self.assertEqual(result, expected, f"输入 '{input_val}' 应返回 {expected}")
+
+    def test_coerce_bool_string_false_variants(self):
+        """测试字符串 'false' 各种变体"""
+        test_cases = [
+            ("false", False),
+            ("False", False),
+            ("FALSE", False),
+            ("  false  ", False),
+            ("0", False),
+            ("no", False),
+            ("No", False),
+            ("NO", False),
+            ("off", False),
+            ("n", False),
+            ("", False),
+        ]
+
+        for input_val, expected in test_cases:
+            with self.subTest(input_val=input_val):
+                result = ServerProbe._coerce_bool(input_val)
+                self.assertEqual(result, expected, f"输入 '{input_val}' 应返回 {expected}")
+
+    def test_coerce_bool_with_numeric_types(self):
+        """测试数字类型的宽容解析"""
+        # 整数
+        self.assertTrue(ServerProbe._coerce_bool(1))
+        self.assertTrue(ServerProbe._coerce_bool(42))
+        self.assertTrue(ServerProbe._coerce_bool(-1))
+        self.assertFalse(ServerProbe._coerce_bool(0))
+
+        # 浮点数
+        self.assertTrue(ServerProbe._coerce_bool(1.0))
+        self.assertTrue(ServerProbe._coerce_bool(0.1))
+        self.assertFalse(ServerProbe._coerce_bool(0.0))
+
+    def test_coerce_bool_with_none(self):
+        """测试 None 输入"""
+        self.assertIsNone(ServerProbe._coerce_bool(None))
+
+    def test_coerce_bool_with_bool(self):
+        """测试布尔输入"""
+        self.assertTrue(ServerProbe._coerce_bool(True))
+        self.assertFalse(ServerProbe._coerce_bool(False))
+
+    def test_is_final_string_in_probe_response(self):
+        """测试探测响应中 is_final 为字符串时的解析"""
+
+        async def run_test():
+            # 模拟服务端返回 is_final 为字符串 "true"
+            mock_response = json.dumps({
+                "mode": "offline",
+                "text": "测试",
+                "is_final": "true"  # 字符串而非布尔值
+            })
+
+            mock_ws_instance = AsyncMock()
+            mock_ws_instance.recv.return_value = mock_response
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.return_value = mock_ws_instance
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.OFFLINE_LIGHT, timeout=5.0)
+
+                self.assertTrue(caps.responsive)
+                # is_final="true" 应被解析为 True，语义为 legacy_true
+                self.assertEqual(caps.is_final_semantics, "legacy_true")
+                self.assertEqual(caps.inferred_server_type, "legacy")
+
+        asyncio.run(run_test())
+
+    def test_is_final_string_false_in_probe_response(self):
+        """测试探测响应中 is_final 为字符串 'false' 时的解析"""
+
+        async def run_test():
+            # 模拟服务端返回 is_final 为字符串 "false"
+            mock_response = json.dumps({
+                "mode": "offline",
+                "text": "",
+                "is_final": "false"  # 字符串而非布尔值
+            })
+
+            mock_ws_instance = AsyncMock()
+            mock_ws_instance.recv.return_value = mock_response
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.return_value = mock_ws_instance
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.OFFLINE_LIGHT, timeout=5.0)
+
+                self.assertTrue(caps.responsive)
+                # is_final="false" 应被解析为 False，语义为 always_false
+                self.assertEqual(caps.is_final_semantics, "always_false")
+                self.assertEqual(caps.inferred_server_type, "funasr_main")
+
+        asyncio.run(run_test())
+
+
+class TestProbeTimeoutStrategies(unittest.TestCase):
+    """测试探测超时策略"""
+
+    def test_connect_only_uses_provided_timeout(self):
+        """测试 CONNECT_ONLY 级别使用提供的超时时间"""
+
+        async def run_test():
+            mock_ws_instance = AsyncMock()
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.return_value = mock_ws_instance
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.CONNECT_ONLY, timeout=3.0)
+
+                self.assertTrue(caps.reachable)
+                # 应该很快完成，远小于超时时间
+                self.assertLess(caps.probe_duration_ms, 3000)
+
+        asyncio.run(run_test())
+
+    def test_twopass_full_recommended_longer_timeout(self):
+        """测试 TWOPASS_FULL 级别建议使用较长超时"""
+        # 文档建议 TWOPASS_FULL 使用至少 12 秒超时
+        # 这里验证探测可以在较长超时下正常工作
+
+        async def run_test():
+            mock_ws_instance = AsyncMock()
+            mock_ws_instance.recv.return_value = json.dumps({
+                "mode": "offline",
+                "text": "",
+                "is_final": False
+            })
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.return_value = mock_ws_instance
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                # 使用建议的 12 秒超时
+                caps = await probe.probe(level=ProbeLevel.TWOPASS_FULL, timeout=12.0)
+
+                self.assertTrue(caps.reachable)
+                # 探测应该成功完成
+                self.assertGreater(caps.probe_duration_ms, 0)
+
+        asyncio.run(run_test())
+
+
+class TestProbeNotesAccumulation(unittest.TestCase):
+    """测试探测笔记累积"""
+
+    def test_notes_include_connection_success(self):
+        """测试笔记包含连接成功信息"""
+
+        async def run_test():
+            mock_ws_instance = AsyncMock()
+            mock_ws_instance.recv.return_value = json.dumps({
+                "mode": "offline",
+                "text": "",
+                "is_final": False
+            })
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.return_value = mock_ws_instance
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.OFFLINE_LIGHT, timeout=5.0)
+
+                notes_str = " ".join(caps.probe_notes)
+                self.assertIn("WebSocket连接成功", notes_str)
+                self.assertIn("离线模式探测成功", notes_str)
+
+        asyncio.run(run_test())
+
+    def test_notes_include_offline_no_response(self):
+        """测试笔记包含离线无响应信息"""
+
+        async def run_test():
+            mock_ws_instance = AsyncMock()
+            mock_ws_instance.recv.side_effect = asyncio.TimeoutError()
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.return_value = mock_ws_instance
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.OFFLINE_LIGHT, timeout=5.0)
+
+                notes_str = " ".join(caps.probe_notes)
+                self.assertIn("离线探测无响应", notes_str)
+
+        asyncio.run(run_test())
+
+    def test_notes_include_2pass_try_reason(self):
+        """测试笔记包含“离线无响应仍尝试2pass”的原因说明"""
+
+        async def run_test():
+            ws_offline = AsyncMock()
+            ws_offline.recv.side_effect = asyncio.TimeoutError()
+
+            ws_2pass = AsyncMock()
+            ws_2pass.recv.side_effect = asyncio.TimeoutError()
+
+            mock_websockets = MagicMock()
+            mock_connect = AsyncMock()
+            mock_connect.__aenter__.side_effect = [ws_offline, ws_2pass]
+            mock_connect.__aexit__.return_value = None
+            mock_websockets.connect.return_value = mock_connect
+
+            with patch.dict("sys.modules", {"websockets": mock_websockets}):
+                probe = ServerProbe("localhost", "10095")
+                caps = await probe.probe(level=ProbeLevel.TWOPASS_FULL, timeout=12.0)
+
+                notes_str = " ".join(caps.probe_notes)
+                self.assertIn("离线探测无响应", notes_str)
+                self.assertIn("仍尝试2pass", notes_str)
+
+        asyncio.run(run_test())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

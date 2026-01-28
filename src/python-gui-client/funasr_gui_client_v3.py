@@ -5,6 +5,7 @@
 """
 
 import asyncio
+import copy
 import importlib
 import json
 import logging
@@ -20,6 +21,15 @@ import tkinter as tk
 import traceback
 from queue import Queue  # For thread-safe GUI updates from logging handler
 from tkinter import filedialog, messagebox, scrolledtext, ttk
+
+# 配置工具函数（避免配置写回丢数据）
+from config_utils import (
+    ensure_backup_file,
+    is_cache_time_valid,
+    merge_config_preserving_unknown,
+    read_json_file,
+    write_json_file_atomic,
+)
 
 # 抑制 macOS 上的 NSOpenPanel 警告
 if sys.platform == "darwin":  # macOS
@@ -750,12 +760,8 @@ class LanguageManager:
                 "en": "Auto Probe on Switch",
             },
             "probe_now": {"zh": "🔄 立即探测", "en": "🔄 Probe Now"},
-            "probe_level_label": {"zh": "探测级别:", "en": "Probe Level:"},
-            "probe_level_light": {"zh": "轻量探测", "en": "Light Probe"},
-            "probe_level_full": {"zh": "完整探测", "en": "Full Probe"},
             "probe_status_waiting": {"zh": "等待探测...", "en": "Waiting to probe..."},
             "probe_status_probing": {"zh": "🔄 正在探测...", "en": "🔄 Probing..."},
-            "probe_status_refreshing": {"zh": "🔄 刷新中...", "en": "🔄 Refreshing..."},
             "probe_status_success": {
                 "zh": "✅ 服务可用",
                 "en": "✅ Service Available",
@@ -800,18 +806,7 @@ class LanguageManager:
             "probe_mode_offline_short": {"zh": "离线", "en": "Offline"},
             "probe_mode_2pass_short": {"zh": "2pass", "en": "2pass"},
             "probe_mode_realtime_short": {"zh": "实时", "en": "Real-time"},
-            "probe_mode_2pass_unknown": {"zh": "2pass未判定", "en": "2pass Unknown"},
             "probe_capability_timestamp": {"zh": "时间戳", "en": "Timestamp"},
-            "probe_2pass_warning": {
-                "zh": "⚠️ 2pass能力未判定，建议使用完整探测",
-                "en": "⚠️ 2pass capability unknown, suggest full probe",
-            },
-            # 缓存相关
-            "probe_cached_prefix": {"zh": "[缓存]", "en": "[Cached]"},
-            "probe_cached_hours_ago": {
-                "zh": "系统事件: 恢复缓存的探测结果（{:.1f}小时前）",
-                "en": "System Event: Restored cached probe result ({:.1f} hours ago)",
-            },
             # 探测相关日志消息
             "probe_started": {
                 "zh": "系统事件: 开始探测服务器 {}:{}",
@@ -1194,6 +1189,10 @@ class FunASRGUIClient(tk.Tk):
         self.geometry(f"{default_width}x{default_height}")
         self.connection_status = False  # 连接测试通过状态（用于判断是否可以开始识别）
         self.probe_reachable = False  # 探测可达状态（仅用于 UI 提示，独立于 connection_status）
+        # 探测级别（字符串形式，持久化到配置 protocol.probe_level）
+        self.probe_level_str = "offline_light"
+        # 记录加载到内存的配置版本，用于兼容与备份策略
+        self._loaded_config_version = None
 
         # 不再创建顶部语言切换按钮
         # self.create_language_button()
@@ -1356,42 +1355,12 @@ class FunASRGUIClient(tk.Tk):
         )
         self.probe_button.grid(row=1, column=2, padx=(20, 5), pady=5, sticky=tk.W)
 
-        # 探测级别选择
-        self.probe_level_label = ttk.Label(
-            server_config_subframe, text=self.lang_manager.get("probe_level_label")
-        )
-        self.probe_level_label.grid(row=1, column=3, padx=(15, 2), pady=5, sticky=tk.E)
-
-        # 探测级别选项定义（显示文本 -> 配置值映射）
-        self.PROBE_LEVEL_OPTIONS = [
-            (self.lang_manager.get("probe_level_light"), "offline_light"),
-            (self.lang_manager.get("probe_level_full"), "twopass_full"),
-        ]
-        self.PROBE_LEVEL_DISPLAY_TO_VALUE = {d: v for d, v in self.PROBE_LEVEL_OPTIONS}
-        self.PROBE_LEVEL_VALUE_TO_DISPLAY = {v: d for d, v in self.PROBE_LEVEL_OPTIONS}
-
-        # 探测级别下拉框
-        self.probe_level_var = tk.StringVar(value="offline_light")
-        self.probe_level_display_var = tk.StringVar(
-            value=self.PROBE_LEVEL_VALUE_TO_DISPLAY.get("offline_light", self.lang_manager.get("probe_level_light"))
-        )
-        self.probe_level_combo = ttk.Combobox(
-            server_config_subframe,
-            textvariable=self.probe_level_display_var,
-            values=[d for d, _ in self.PROBE_LEVEL_OPTIONS],
-            state="readonly",
-            width=10,
-        )
-        self.probe_level_combo.grid(row=1, column=4, padx=(2, 5), pady=5, sticky=tk.W)
-        self.probe_level_combo.bind("<<ComboboxSelected>>", self._on_probe_level_changed)
-
         # --- 探测结果展示（第三行，跨列）---
-        # P3修复：新增探测级别下拉框占用第4列后，columnspan 需要从 4 改为 5
         probe_result_frame = ttk.LabelFrame(
             server_config_subframe, text=self.lang_manager.get("probe_result_frame_title")
         )
         probe_result_frame.grid(
-            row=2, column=0, columnspan=5, padx=5, pady=5, sticky=tk.EW
+            row=2, column=0, columnspan=4, padx=5, pady=5, sticky=tk.EW
         )
 
         self.probe_result_var = tk.StringVar(
@@ -1933,27 +1902,6 @@ class FunASRGUIClient(tk.Tk):
             )
         if hasattr(self, "probe_button"):
             self.probe_button.config(text=self.lang_manager.get("probe_now"))
-        # 更新探测级别控件
-        if hasattr(self, "probe_level_label"):
-            self.probe_level_label.config(text=self.lang_manager.get("probe_level_label"))
-        if hasattr(self, "probe_level_combo"):
-            # 重新构建选项映射（语言已变更）
-            self.PROBE_LEVEL_OPTIONS = [
-                (self.lang_manager.get("probe_level_light"), "offline_light"),
-                (self.lang_manager.get("probe_level_full"), "twopass_full"),
-            ]
-            self.PROBE_LEVEL_DISPLAY_TO_VALUE = {d: v for d, v in self.PROBE_LEVEL_OPTIONS}
-            self.PROBE_LEVEL_VALUE_TO_DISPLAY = {v: d for d, v in self.PROBE_LEVEL_OPTIONS}
-            
-            # 更新下拉框选项
-            self.probe_level_combo["values"] = [d for d, _ in self.PROBE_LEVEL_OPTIONS]
-            
-            # 更新当前显示（保持选择值不变）
-            current_value = self.probe_level_var.get()
-            display_text = self.PROBE_LEVEL_VALUE_TO_DISPLAY.get(
-                current_value, self.lang_manager.get("probe_level_light")
-            )
-            self.probe_level_display_var.set(display_text)
         # 更新探测结果框架标题
         if hasattr(self, "probe_result_frame"):
             self.probe_result_frame.config(
@@ -2056,10 +2004,7 @@ class FunASRGUIClient(tk.Tk):
         self.save_config()
 
     def _on_recognition_mode_changed(self, event=None):
-        """识别模式切换事件处理
-        
-        当切换到 2pass 模式时，自动提升探测级别以探测 2pass 能力。
-        """
+        """识别模式切换事件处理"""
         # 获取选中的显示值并转换为内部值
         selected_display = self.recognition_mode_combo.get()
         options = self._get_recognition_mode_options()
@@ -2069,24 +2014,16 @@ class FunASRGUIClient(tk.Tk):
                 self.recognition_mode_value_var.set(value)
                 break
         
-        mode_value = self.recognition_mode_value_var.get()
         logging.info(self.lang_manager.get("recognition_mode_changed", selected_display))
         
-        # 当切换到 2pass 模式时，自动切换到完整探测
-        if mode_value == "2pass":
-            if hasattr(self, "probe_level_var") and self.probe_level_var.get() != "twopass_full":
-                logging.info("系统事件: 检测到 2pass 模式，自动切换到完整探测级别")
-                self.probe_level_var.set("twopass_full")
-                # 更新显示
-                if hasattr(self, "probe_level_display_var") and hasattr(self, "PROBE_LEVEL_VALUE_TO_DISPLAY"):
-                    display_text = self.PROBE_LEVEL_VALUE_TO_DISPLAY.get(
-                        "twopass_full", self.lang_manager.get("probe_level_full")
-                    )
-                    self.probe_level_display_var.set(display_text)
-        
-        # 如果启用了切换时自动探测，则触发探测
-        if hasattr(self, "auto_probe_switch_var") and self.auto_probe_switch_var.get():
-            self._schedule_probe()
+        # 关键策略：当选择 2pass 模式时，自动提升探测级别为 twopass_full（便于能力判定）
+        try:
+            if self.recognition_mode_value_var.get() == "2pass":
+                if self._get_probe_level_str() != "twopass_full":
+                    self.probe_level_str = "twopass_full"
+                    logging.info("系统事件: 识别模式为2pass，自动切换探测级别为 twopass_full")
+        except Exception:
+            pass
         
         # 保存配置
         self.save_config()
@@ -2106,6 +2043,51 @@ class FunASRGUIClient(tk.Tk):
         self.svs_lang_combo.config(state=state)
         self.svs_itn_check.config(state=check_state)
 
+    def _get_probe_level_str(self) -> str:
+        """获取当前探测级别（字符串）。
+
+        优先级：
+        1) self.probe_level_str（运行期/事件驱动更新）
+        2) self.config.protocol.probe_level（从配置加载）
+        3) 默认 offline_light
+        """
+        val = getattr(self, "probe_level_str", None)
+        if isinstance(val, str) and val.strip():
+            return val.strip()
+
+        if hasattr(self, "config") and isinstance(self.config, dict):
+            protocol = self.config.get("protocol", {})
+            if isinstance(protocol, dict):
+                pv = protocol.get("probe_level")
+                if isinstance(pv, str) and pv.strip():
+                    self.probe_level_str = pv.strip()
+                    return self.probe_level_str
+
+        self.probe_level_str = "offline_light"
+        return self.probe_level_str
+
+    def _get_probe_timeout_seconds(self, probe_level_str: str) -> float:
+        """根据探测级别获取建议超时（秒）。
+
+        说明：
+        - 若配置中提供 protocol.probe_timeout_seconds，则优先使用
+        - 否则按默认策略：connect_only=3s, offline_light=5s, twopass_full=12s
+        """
+        try:
+            if hasattr(self, "config") and isinstance(self.config, dict):
+                protocol = self.config.get("protocol", {})
+                if isinstance(protocol, dict) and "probe_timeout_seconds" in protocol:
+                    return float(protocol.get("probe_timeout_seconds"))
+        except Exception:
+            pass
+
+        level = (probe_level_str or "").lower().strip()
+        if level == "connect_only":
+            return 3.0
+        if level == "twopass_full":
+            return 12.0
+        return 5.0
+
     # === Phase 3: 探测功能方法 ===
 
     def _schedule_probe(self):
@@ -2113,8 +2095,6 @@ class FunASRGUIClient(tk.Tk):
         
         多次快速调用只执行最后一次，防抖时间 500ms。
         使用 token 机制防止并发探测导致的结果乱序覆盖。
-        
-        P1修复：当有缓存时，保留缓存信息并追加"刷新中…"，避免缓存结果被迅速覆盖。
         """
         # 取消之前的定时器
         if hasattr(self, "_probe_timer") and self._probe_timer:
@@ -2128,36 +2108,15 @@ class FunASRGUIClient(tk.Tk):
             self._probe_token = 0
         self._probe_token += 1
         
-        # P1修复：更新UI状态 - 如果有缓存则保留缓存信息并追加"刷新中…"
-        current_text = self.probe_result_var.get()
-        cached_prefix = self.lang_manager.get("probe_cached_prefix")
-        
-        if current_text.startswith(cached_prefix) and hasattr(self, "_last_capabilities"):
-            # 有缓存结果，保留缓存信息并追加"刷新中"
-            # 格式：[缓存] xxx | 🔄 刷新中...
-            refreshing_text = self.lang_manager.get("probe_status_refreshing")
-            # 从当前文本中提取缓存的能力信息（去掉前缀）
-            cached_info = current_text[len(cached_prefix):].strip()
-            if cached_info:
-                self.probe_result_var.set(f"{cached_prefix} {cached_info} | {refreshing_text}")
-            else:
-                self.probe_result_var.set(self.lang_manager.get("probe_status_probing"))
-        else:
-            # 没有缓存，直接显示"正在探测"
-            self.probe_result_var.set(self.lang_manager.get("probe_status_probing"))
-        
+        # 更新UI状态为"正在探测"
+        self.probe_result_var.set(self.lang_manager.get("probe_status_probing"))
         self.probe_result_label.config(foreground="blue")
         
         # 设置防抖定时器（500ms后执行）
         self._probe_timer = self.after(500, self._run_probe_async)
 
     def _run_probe_async(self):
-        """在后台线程执行探测
-        
-        根据配置的探测级别执行探测。探测级别可以是：
-        - offline_light: 仅离线模式轻量探测（默认，快速）
-        - twopass_full: 完整探测包括 2pass 模式（较慢但信息更全）
-        """
+        """在后台线程执行探测"""
         self._probe_timer = None
         
         # 捕获当前 token，用于回调时校验
@@ -2176,30 +2135,18 @@ class FunASRGUIClient(tk.Tk):
             self.probe_result_label.config(foreground="red")
             return
         
-        # 获取探测级别（从配置或变量）
-        probe_level_str = self._get_current_probe_level()
-        
         logging.info(self.lang_manager.get("probe_started", host, port))
-        logging.debug(f"调试信息: 探测级别: {probe_level_str}")
         
         def probe_thread():
             """后台线程执行探测"""
             try:
-                from server_probe import ServerProbe, ProbeLevel, create_probe_level
+                from server_probe import ServerProbe, create_probe_level
                 
                 probe = ServerProbe(host, port, use_ssl)
-                # 使用配置的探测级别
+                probe_level_str = self._get_probe_level_str()
+                timeout_seconds = self._get_probe_timeout_seconds(probe_level_str)
                 level = create_probe_level(probe_level_str)
-                
-                # P0修复：根据探测级别传递合适的超时时间
-                # - offline_light: 5秒足够（连接+离线探测）
-                # - twopass_full: 需要更长时间（连接+离线+2pass，至少12秒）
-                if level == ProbeLevel.TWOPASS_FULL:
-                    timeout = 15.0  # 完整探测给 15 秒
-                else:
-                    timeout = 5.0   # 轻量探测 5 秒
-                
-                result = asyncio.run(probe.probe(level, timeout=timeout))
+                result = asyncio.run(probe.probe(level=level, timeout=timeout_seconds))
                 
                 # 回到主线程更新UI（带 token 校验）
                 self.after(0, lambda: self._update_probe_result_with_token(result, current_token))
@@ -2222,46 +2169,6 @@ class FunASRGUIClient(tk.Tk):
         # 启动后台线程
         thread = threading.Thread(target=probe_thread, daemon=True)
         thread.start()
-    
-    def _get_current_probe_level(self) -> str:
-        """获取当前探测级别
-        
-        优先使用 UI 变量（如果存在），否则从配置读取。
-        
-        Returns:
-            str: 探测级别字符串（"offline_light" / "twopass_full"）
-        """
-        # 优先使用 UI 变量
-        if hasattr(self, "probe_level_var"):
-            return self.probe_level_var.get()
-        
-        # 从配置读取
-        protocol = self.config.get("protocol", {})
-        return protocol.get("probe_level", "offline_light")
-    
-    def _on_probe_level_changed(self, event=None):
-        """探测级别变更回调
-        
-        当用户通过下拉框选择不同的探测级别时触发。
-        更新内部变量并可选地触发新探测。
-        
-        P2修复：变更后立即保存配置，与其他配置项行为一致。
-        """
-        # 获取显示文本并映射到配置值
-        display_text = self.probe_level_display_var.get()
-        config_value = self.PROBE_LEVEL_DISPLAY_TO_VALUE.get(display_text, "offline_light")
-        
-        # 更新内部值变量
-        self.probe_level_var.set(config_value)
-        
-        logging.debug(f"调试信息: 探测级别变更为 {config_value} ({display_text})")
-        
-        # 如果启用了切换时自动探测，则触发新探测
-        if self.auto_probe_switch_var.get():
-            self._schedule_probe()
-        
-        # P2修复：立即保存配置（与其他配置项"变更即保存"行为一致）
-        self.save_config()
 
     def _update_probe_result_with_token(self, caps, token):
         """更新探测结果到UI（带 token 校验）
@@ -2358,20 +2265,11 @@ class FunASRGUIClient(tk.Tk):
             parts.append(self.lang_manager.get("probe_status_connected"))
         
         # 模式支持（使用专用翻译键，避免硬替换）
-        # P2修复：获取用户当前选择的识别模式，用于决定是否显示 2pass 相关提示
-        user_selected_2pass = False
-        if hasattr(self, "recognition_mode_value_var"):
-            user_selected_2pass = self.recognition_mode_value_var.get() == "2pass"
-        
         modes = []
         if caps.supports_offline is True:
             modes.append(self.lang_manager.get("probe_mode_offline_short"))
         if caps.supports_2pass is True:
             modes.append(self.lang_manager.get("probe_mode_2pass_short"))
-        elif caps.supports_2pass is None and caps.responsive and user_selected_2pass:
-            # P2修复：仅在用户选择 2pass 模式时才显示 "2pass未判定"
-            # 避免在 offline_light 探测下频繁打扰用户
-            modes.append(self.lang_manager.get("probe_mode_2pass_unknown"))
         if caps.supports_online is True:
             modes.append(self.lang_manager.get("probe_mode_realtime_short"))
         
@@ -2394,11 +2292,6 @@ class FunASRGUIClient(tk.Tk):
             parts.append(self.lang_manager.get("probe_status_type_maybe_new"))
         elif caps.inferred_server_type == "legacy":
             parts.append(self.lang_manager.get("probe_status_type_maybe_old"))
-        
-        # P2修复：仅在用户选择 2pass 模式且探测未判定 2pass 能力时，添加警告
-        # 与 modes 中的提示不重复（modes 中已有 "2pass未判定"，这里只补充建议）
-        if user_selected_2pass and caps.supports_2pass is None and caps.responsive:
-            parts.append(self.lang_manager.get("probe_2pass_warning"))
         
         return " | ".join(parts)
 
@@ -2462,42 +2355,61 @@ class FunASRGUIClient(tk.Tk):
     def _cache_probe_result(self, caps):
         """缓存探测结果到配置文件
         
-        P0修复：只更新 cache 节点，不用 self.config 整体覆盖。
-        这样可以避免覆盖用户刚修改但未保存的配置（如探测级别、IP/端口等）。
-        
         Args:
             caps: ServerCapabilities 对象
         """
         import datetime
         
+        if not hasattr(self, "config") or not isinstance(self.config, dict):
+            return
+        
+        self.config.setdefault("cache", {})
+        self.config["cache"]["last_probe_result"] = caps.to_dict()
+        self.config["cache"]["last_probe_time"] = datetime.datetime.now().isoformat()
+        
+        # 保存配置（静默保存，避免覆盖丢字段）
         try:
-            # P0修复：从文件读取最新配置，只更新 cache 节点，再写回
-            # 这样不会覆盖其他可能已在 UI 上修改但未同步到 self.config 的字段
-            file_config = {}
-            if os.path.exists(self.config_file):
-                try:
-                    with open(self.config_file, "r", encoding="utf-8") as f:
-                        file_config = json.load(f)
-                except (json.JSONDecodeError, IOError):
-                    file_config = {}
-            
-            # 只更新 cache 节点
-            file_config.setdefault("cache", {})
-            file_config["cache"]["last_probe_result"] = caps.to_dict()
-            file_config["cache"]["last_probe_time"] = datetime.datetime.now().isoformat()
-            
-            # 写回文件（只改了 cache 节点）
-            with open(self.config_file, "w", encoding="utf-8") as f:
-                json.dump(file_config, f, indent=4, ensure_ascii=False)
-            
-            # 同步更新内存中的 cache 节点
-            if hasattr(self, "config"):
-                self.config.setdefault("cache", {})
-                self.config["cache"]["last_probe_result"] = caps.to_dict()
-                self.config["cache"]["last_probe_time"] = file_config["cache"]["last_probe_time"]
-                
+            self._write_config_json_safely(self.config, silent=True)
         except Exception as e:
             logging.warning(f"缓存探测结果失败: {e}")
+
+    def _restore_cached_probe_result_on_startup(self) -> None:
+        """启动时尝试从配置缓存恢复探测结果（24h 有效）。"""
+        try:
+            if not hasattr(self, "config") or not isinstance(self.config, dict):
+                return
+            cache = self.config.get("cache", {})
+            if not isinstance(cache, dict):
+                return
+
+            last_time = cache.get("last_probe_time")
+            last_result = cache.get("last_probe_result")
+            if not last_time or not last_result:
+                return
+
+            if not is_cache_time_valid(last_time, ttl_hours=24):
+                return
+
+            # 缓存有效：恢复 UI 展示（不触发网络探测）
+            from server_probe import ServerCapabilities
+
+            caps = ServerCapabilities.from_dict(last_result)
+            display_text = caps.to_display_text() + "（缓存）"
+            self.probe_result_var.set(display_text)
+
+            # 颜色与指示灯：尽量复用真实更新逻辑（不写入 cache）
+            if caps.reachable:
+                if caps.responsive:
+                    self.probe_result_label.config(foreground="green")
+                else:
+                    self.probe_result_label.config(foreground="orange")
+            else:
+                self.probe_result_label.config(foreground="red")
+
+            self.probe_reachable = bool(caps.reachable)
+            self._update_probe_indicator(bool(caps.reachable))
+        except Exception as e:
+            logging.debug(f"缓存恢复探测结果失败（忽略）: {e}")
 
     def _update_sensevoice_from_probe(self, caps):
         """根据探测结果更新 SenseVoice 选项
@@ -2524,93 +2436,10 @@ class FunASRGUIClient(tk.Tk):
                 self.svs_note_label.config(foreground="gray")
 
     def _auto_probe_on_startup(self):
-        """启动时自动探测
-        
-        流程：
-        1. 尝试从缓存恢复上次探测结果（立即展示）
-        2. 启动新的探测以获取最新状态
-        """
+        """启动时自动探测"""
         if self.ip_var.get() and self.port_var.get():
-            # 先尝试从缓存恢复探测结果
-            self._restore_cached_probe_result()
-            
-            # 然后启动新的探测
             logging.info(self.lang_manager.get("auto_probe_startup"))
             self._schedule_probe()
-    
-    def _restore_cached_probe_result(self):
-        """从缓存恢复上次探测结果
-        
-        如果缓存存在且不太旧（24小时内），则先展示缓存结果给用户。
-        这样用户可以立即看到上次的状态，而不必等待新探测完成。
-        
-        P1修复：
-        - 使用翻译键替换硬编码的 "[缓存]" 前缀
-        - 更新 probe_reachable 和指示器以保持 UI 一致性
-        """
-        import datetime
-        
-        try:
-            cache = self.config.get("cache", {})
-            cached_result = cache.get("last_probe_result")
-            cached_time_str = cache.get("last_probe_time")
-            
-            if not cached_result:
-                logging.debug("调试信息: 没有缓存的探测结果")
-                return
-            
-            # 检查缓存时间（24小时内有效）
-            age_hours = None
-            if cached_time_str:
-                try:
-                    cached_time = datetime.datetime.fromisoformat(cached_time_str)
-                    now = datetime.datetime.now()
-                    age_hours = (now - cached_time).total_seconds() / 3600
-                    
-                    if age_hours > 24:
-                        logging.debug(f"调试信息: 缓存探测结果已过期（{age_hours:.1f}小时前）")
-                        return
-                    
-                    # 使用翻译键记录日志
-                    log_msg = self.lang_manager.get("probe_cached_hours_ago")
-                    if "{:.1f}" in log_msg:
-                        log_msg = log_msg.format(age_hours)
-                    logging.info(log_msg)
-                except (ValueError, TypeError) as e:
-                    logging.debug(f"调试信息: 无法解析缓存时间: {e}")
-            
-            # 从字典恢复 ServerCapabilities 对象
-            from server_probe import ServerCapabilities
-            caps = ServerCapabilities.from_dict(cached_result)
-            
-            # 更新 UI 展示（使用翻译键添加缓存标记）
-            display_text = self._format_probe_result_text(caps)
-            cached_prefix = self.lang_manager.get("probe_cached_prefix")
-            self.probe_result_var.set(f"{cached_prefix} {display_text}")
-            
-            # 设置颜色
-            if caps.reachable:
-                if caps.responsive:
-                    self.probe_result_label.config(foreground="blue")  # 用蓝色表示缓存
-                else:
-                    self.probe_result_label.config(foreground="orange")
-            else:
-                self.probe_result_label.config(foreground="gray")
-            
-            # P1修复：更新 probe_reachable 状态（与实时探测保持一致）
-            self.probe_reachable = caps.reachable
-            
-            # P1修复：更新探测指示器（给用户一致的视觉反馈）
-            # 注意：不设置 connection_status，缓存结果仅用于 UI 展示
-            self._update_probe_indicator(caps.reachable)
-            
-            # 保存缓存能力对象
-            self._last_capabilities = caps
-            
-            logging.debug(f"调试信息: 已恢复缓存探测结果: {display_text}")
-            
-        except Exception as e:
-            logging.debug(f"调试信息: 恢复缓存探测结果失败: {e}")
 
     def migrate_legacy_files(self):
         """检查并迁移旧位置的配置文件和日志文件到新位置"""
@@ -2718,156 +2547,148 @@ class FunASRGUIClient(tk.Tk):
         logging.debug("调试信息: GUI日志处理器已初始化并添加到根记录器")
 
     def load_config(self):
-        """加载上次保存的配置（支持V3分组结构和V2扁平结构）
-        
-        配置迁移策略：
-        - V3 配置：直接加载
-        - V2 配置：加载后自动升级保存为 V3 格式
-        """
+        """加载上次保存的配置（支持V3分组结构和V2扁平结构）"""
         try:
             if os.path.exists(self.config_file):
-                with open(self.config_file, "r", encoding="utf-8") as f:
-                    config = json.load(f)
+                config = read_json_file(self.config_file)
                 logging.info(self.lang_manager.get("config_loaded", self.config_file))
                 logging.debug(f"调试信息: 配置内容: {config}")
                 
-                # 保存配置对象供后续使用
-                self.config = config
-                
                 # 检查配置版本
                 config_version = config.get("config_version", 1)
+                self._loaded_config_version = config_version
+                
+                # 关键修复：一旦检测到 V2 配置，立即备份，避免后续任何写回导致静默丢数据
+                if config_version < 3:
+                    backup_path = ensure_backup_file(self.config_file, backup_suffix=".v2.bak")
+                    if backup_path:
+                        logging.info(f"系统事件: 已创建V2配置备份: {backup_path}")
                 
                 if config_version >= 3:
                     # V3 分组结构
                     self._load_config_v3(config)
                 else:
                     # V2 扁平结构（向后兼容）
-                    logging.info(f"系统事件: 检测到 V{config_version} 配置，将自动迁移到 V3")
                     self._load_config_v2(config)
-                    # 迁移完成后自动保存为 V3 格式
-                    self._migrate_config_to_v3()
+                
+                # 将内存中的配置升级为 V3 并合并未知字段（避免 save/cache 写回丢失用户自定义键）
+                base_v3 = self._build_config_v3_from_current_state(previous_config=config)
+                self.config = merge_config_preserving_unknown(base_v3, config)
+                
+                # 恢复 probe_level（避免被硬编码覆盖）
+                protocol = self.config.get("protocol", {})
+                if isinstance(protocol, dict):
+                    self.probe_level_str = protocol.get("probe_level", self.probe_level_str) or self.probe_level_str
+                
+                # 启动时尝试从缓存恢复探测结果（24h 有效）
+                self._restore_cached_probe_result_on_startup()
                     
             else:
                 logging.warning(self.lang_manager.get("config_not_found"))
-                self.config = {}
+                self.config = self._build_config_v3_from_current_state(previous_config={})
                 self.connection_test_timeout = 10
         except Exception as e:
             logging.error(f"系统错误: 加载配置文件失败: {e}", exc_info=True)
             logging.warning("系统警告: 使用默认配置")
-            self.config = {}
+            self.config = self._build_config_v3_from_current_state(previous_config={})
             self.connection_test_timeout = 10
-    
-    def _migrate_config_to_v3(self):
-        """将 V2 配置迁移到 V3 格式并保存
+
+    def _build_config_v3_from_current_state(self, previous_config=None):
+        """基于当前 UI 状态构建 V3 配置（不直接写盘）。
         
-        在加载 V2 配置后调用，自动将配置升级为 V3 结构并保存。
+        Args:
+            previous_config: 上一次加载/保存的配置，用于继承 cache/presets/protocol 未知字段等
         
-        P1修复：
-        - 备份原配置文件（防止不可逆覆盖）
-        - 保留原配置中的未知字段（merge 而不是完全覆盖）
+        Returns:
+            dict: V3 配置字典
         """
-        import shutil
-        
-        try:
-            logging.info("系统事件: 开始配置迁移 V2 -> V3")
-            
-            # P1修复：先备份原配置文件
-            if os.path.exists(self.config_file):
-                backup_file = self.config_file + ".v2.bak"
-                try:
-                    shutil.copy2(self.config_file, backup_file)
-                    logging.info(f"系统事件: 已备份原配置到 {backup_file}")
-                except Exception as e:
-                    logging.warning(f"系统警告: 备份配置文件失败: {e}")
-            
-            # 保留原配置中的未知字段
-            original_config = getattr(self, "config", {}) or {}
-            
-            # 构建 V3 配置结构
-            v3_config = {
-                "config_version": 3,
-                
-                # 向后兼容的扁平键
-                "_comment_compat": "以下扁平键为向后兼容保留，供旧测试脚本使用",
-                "ip": self.ip_var.get(),
-                "port": self.port_var.get(),
+        prev = previous_config if isinstance(previous_config, dict) else {}
+        prev_protocol = prev.get("protocol", {}) if isinstance(prev.get("protocol", {}), dict) else {}
+
+        # 允许从 prev_protocol 继承 probe_level（在 UI 没有对应控件时尤其重要）
+        probe_level = (getattr(self, "probe_level_str", None) or "").strip() or prev_protocol.get("probe_level") or "offline_light"
+
+        # cache 继承（保留 last_probe_* 等字段）
+        prev_cache = prev.get("cache", {}) if isinstance(prev.get("cache", {}), dict) else {}
+        cache = {
+            "last_probe_result": prev_cache.get("last_probe_result", None),
+            "last_probe_time": prev_cache.get("last_probe_time", None),
+        }
+
+        # presets 继承（保留用户自定义 presets）
+        presets = copy.deepcopy(prev.get("presets", {})) if isinstance(prev.get("presets", {}), dict) else {}
+        presets.setdefault(
+            "public_cloud",
+            {
+                "ip": "www.funasr.com",
+                "port": "10096",
+                "use_ssl": True,
+                "description": "FunASR公网测试服务",
+            },
+        )
+
+        # protocol：从旧 protocol 深拷贝继承未知字段，再覆盖当前确定字段
+        protocol = copy.deepcopy(prev_protocol) if isinstance(prev_protocol, dict) else {}
+        protocol.update(
+            {
+                "server_type": getattr(self, "server_type_value_var", tk.StringVar(value="auto")).get(),
+                "preferred_mode": getattr(self, "recognition_mode_value_var", tk.StringVar(value="offline")).get(),
+                "auto_probe_on_start": bool(getattr(self, "auto_probe_start_var", tk.IntVar(value=1)).get()),
+                "auto_probe_on_switch": bool(getattr(self, "auto_probe_switch_var", tk.IntVar(value=1)).get()),
+                "probe_level": probe_level,
+                "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
+            }
+        )
+
+        config = {
+            "config_version": 3,
+            # 向后兼容的扁平键
+            "_comment_compat": "以下扁平键为向后兼容保留，供旧测试脚本使用",
+            "ip": self.ip_var.get(),
+            "port": self.port_var.get(),
+            "use_itn": self.use_itn_var.get(),
+            "use_ssl": self.use_ssl_var.get(),
+            "language": self.lang_manager.current_lang,
+            "hotword_path": self.hotword_path_var.get(),
+            "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
+            # V3 分组结构
+            "_comment_v3": "以下为 V3 分组结构，新代码优先使用",
+            "server": {"ip": self.ip_var.get(), "port": self.port_var.get()},
+            "options": {
                 "use_itn": self.use_itn_var.get(),
                 "use_ssl": self.use_ssl_var.get(),
-                "language": self.lang_manager.current_lang,
                 "hotword_path": self.hotword_path_var.get(),
-                "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
-                
-                # V3 分组结构
-                "_comment_v3": "以下为 V3 分组结构，新代码优先使用",
-                "server": {
-                    "ip": self.ip_var.get(),
-                    "port": self.port_var.get(),
-                },
-                "options": {
-                    "use_itn": self.use_itn_var.get(),
-                    "use_ssl": self.use_ssl_var.get(),
-                    "hotword_path": self.hotword_path_var.get(),
-                },
-                "ui": {
-                    "language": self.lang_manager.current_lang,
-                },
-                "protocol": {
-                    "server_type": "auto",  # 迁移时使用默认值
-                    "preferred_mode": "offline",  # 迁移时使用默认值
-                    "auto_probe_on_start": True,
-                    "auto_probe_on_switch": True,
-                    "probe_level": "offline_light",
-                    "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
-                },
-                "sensevoice": {
-                    "svs_lang": "auto",
-                    "svs_itn": True,
-                },
-                "cache": {
-                    "last_probe_result": None,
-                    "last_probe_time": None,
-                },
-                "presets": {
-                    "public_cloud": {
-                        "ip": "www.funasr.com",
-                        "port": "10096",
-                        "use_ssl": True,
-                        "description": "FunASR公网测试服务",
-                    }
-                },
-            }
-            
-            # P1修复：保留原配置中的未知字段（用户自定义的内容）
-            # 已知的 V2/V3 标准字段
-            known_keys = {
-                "config_version", "_comment_compat", "_comment_v3",
-                "ip", "port", "use_itn", "use_ssl", "language", "hotword_path",
-                "connection_test_timeout",
-                "server", "options", "ui", "protocol", "sensevoice", "cache", "presets"
-            }
-            for key, value in original_config.items():
-                if key not in known_keys:
-                    v3_config[key] = value
-                    logging.debug(f"调试信息: 保留用户自定义字段: {key}")
-            
-            # 合并原有的 presets（保留用户自定义的预设）
-            if "presets" in original_config and isinstance(original_config["presets"], dict):
-                for preset_name, preset_value in original_config["presets"].items():
-                    if preset_name not in v3_config["presets"]:
-                        v3_config["presets"][preset_name] = preset_value
-                        logging.debug(f"调试信息: 保留用户自定义预设: {preset_name}")
-            
-            # 更新内存配置
-            self.config = v3_config
-            
-            # 保存到文件
-            with open(self.config_file, "w", encoding="utf-8") as f:
-                json.dump(v3_config, f, ensure_ascii=False, indent=4)
-            
-            logging.info(f"系统事件: 配置迁移完成，已保存 V3 格式到 {self.config_file}")
-            
-        except Exception as e:
-            logging.error(f"系统错误: 配置迁移失败: {e}", exc_info=True)
+            },
+            "ui": {"language": self.lang_manager.current_lang},
+            "protocol": protocol,
+            "sensevoice": {
+                "svs_lang": getattr(self, "svs_lang_var", tk.StringVar(value="auto")).get(),
+                "svs_itn": bool(getattr(self, "svs_itn_var", tk.IntVar(value=1)).get()),
+            },
+            "cache": cache,
+            "presets": presets,
+        }
+
+        return config
+
+    def _write_config_json_safely(self, config: dict, silent: bool = False) -> None:
+        """安全写入配置：合并未知字段 + 原子写入 + V2 备份兜底。"""
+        if not isinstance(config, dict):
+            return
+
+        on_disk = read_json_file(self.config_file)
+        # Bug修复[P2]: config_version 可能是字符串（手工编辑/历史遗留），需要安全转换为整数
+        raw_version = on_disk.get("config_version", 1) if isinstance(on_disk, dict) else 1
+        try:
+            on_disk_version = int(raw_version)
+        except (ValueError, TypeError):
+            on_disk_version = 1  # 无法解析时视为旧版本
+        if on_disk_version < 3:
+            ensure_backup_file(self.config_file, backup_suffix=".v2.bak")
+
+        merged = merge_config_preserving_unknown(config, on_disk if isinstance(on_disk, dict) else {})
+        write_json_file_atomic(self.config_file, merged)
+        self.config = merged
 
     def _load_config_v3(self, config):
         """加载 V3 分组结构配置"""
@@ -2930,17 +2751,6 @@ class FunASRGUIClient(tk.Tk):
                 1 if protocol.get("auto_probe_on_switch", True) else 0
             )
         
-        # 探测级别配置
-        if hasattr(self, "probe_level_var"):
-            probe_level = protocol.get("probe_level", "offline_light")
-            self.probe_level_var.set(probe_level)
-            # 更新显示变量
-            if hasattr(self, "probe_level_display_var") and hasattr(self, "PROBE_LEVEL_VALUE_TO_DISPLAY"):
-                display_text = self.PROBE_LEVEL_VALUE_TO_DISPLAY.get(
-                    probe_level, self.lang_manager.get("probe_level_light")
-                )
-                self.probe_level_display_var.set(display_text)
-        
         # SenseVoice 配置
         sensevoice = config.get("sensevoice", {})
         if hasattr(self, "svs_lang_var"):
@@ -2988,65 +2798,9 @@ class FunASRGUIClient(tk.Tk):
     def save_config(self):
         """保存当前配置（V3 分组结构 + 向后兼容扁平键）"""
         try:
-            # 构建 V3 分组结构
-            config = {
-                "config_version": 3,
-                
-                # 向后兼容的扁平键
-                "_comment_compat": "以下扁平键为向后兼容保留，供旧测试脚本使用",
-                "ip": self.ip_var.get(),
-                "port": self.port_var.get(),
-                "use_itn": self.use_itn_var.get(),
-                "use_ssl": self.use_ssl_var.get(),
-                "language": self.lang_manager.current_lang,
-                "hotword_path": self.hotword_path_var.get(),
-                "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
-                
-                # V3 分组结构
-                "_comment_v3": "以下为 V3 分组结构，新代码优先使用",
-                "server": {
-                    "ip": self.ip_var.get(),
-                    "port": self.port_var.get(),
-                },
-                "options": {
-                    "use_itn": self.use_itn_var.get(),
-                    "use_ssl": self.use_ssl_var.get(),
-                    "hotword_path": self.hotword_path_var.get(),
-                },
-                "ui": {
-                    "language": self.lang_manager.current_lang,
-                },
-                "protocol": {
-                    "server_type": getattr(self, "server_type_value_var", tk.StringVar(value="auto")).get(),
-                    "preferred_mode": getattr(self, "recognition_mode_value_var", tk.StringVar(value="offline")).get(),
-                    "auto_probe_on_start": bool(getattr(self, "auto_probe_start_var", tk.IntVar(value=1)).get()),
-                    "auto_probe_on_switch": bool(getattr(self, "auto_probe_switch_var", tk.IntVar(value=1)).get()),
-                    "probe_level": self._get_current_probe_level(),  # 从变量或配置读取
-                    "connection_test_timeout": int(getattr(self, "connection_test_timeout", 10)),
-                },
-                "sensevoice": {
-                    "svs_lang": getattr(self, "svs_lang_var", tk.StringVar(value="auto")).get(),
-                    "svs_itn": bool(getattr(self, "svs_itn_var", tk.IntVar(value=1)).get()),
-                },
-                "cache": getattr(self, "config", {}).get("cache", {
-                    "last_probe_result": None,
-                    "last_probe_time": None,
-                }),
-                "presets": {
-                    "public_cloud": {
-                        "ip": "www.funasr.com",
-                        "port": "10096",
-                        "use_ssl": True,
-                        "description": "FunASR公网测试服务",
-                    }
-                },
-            }
-            
-            # 更新内存中的配置对象
-            self.config = config
-
-            with open(self.config_file, "w", encoding="utf-8") as f:
-                json.dump(config, f, ensure_ascii=False, indent=4)
+            base_v3 = self._build_config_v3_from_current_state(previous_config=getattr(self, "config", {}))
+            merged = merge_config_preserving_unknown(base_v3, getattr(self, "config", {}))
+            self._write_config_json_safely(merged, silent=False)
 
             # 使用StatusManager显示成功状态，3秒后自动恢复
             self.status_manager.set_success("已保存配置", temp_duration=3)
