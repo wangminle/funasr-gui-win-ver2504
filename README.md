@@ -147,7 +147,6 @@ funasr-client-python/
 
 ### In Progress 🟡
 *   **End-to-end Integration Testing**: Actual server environment testing
-*   **Documentation Update**: Architecture design, UI design document updates
 
 ### Planned ⏳
 *   **Log Cleanup Strategy**: Add automatic cleanup mechanism with "keep N days/max M MB" configuration
@@ -184,12 +183,19 @@ funasr-client-python/
     - Probe level persistence
     - Atomic config write protection ✅
 
-*   **Bug Fixes**: Fixed 13 issues total (4 P0, 4 P1, 3 P2, 2 P3)
+*   **Bug Fixes**: Fixed 18 issues total (5 P0, 6 P1, 4 P2, 3 P3)
+
+*   **Quality Improvements** (2026-01-28 Update):
+    - config_version tolerant conversion (supports string format)
+    - V2 config auto-upgrade with silent V3 writeback
+    - SVS parameter fallback retry mechanism (graceful degradation)
+    - Unified probe timeout error display strategy
+    - Repository cleanliness verification (.DS_Store/__pycache__ clean)
 
 ### Technical Achievements
 
 *   **New Modules**: `protocol_adapter.py`, `server_probe.py`, `websocket_compat.py`, `config_utils.py`
-*   **Test Coverage**: Core functionality tests passed, complete test reports
+*   **Test Coverage**: 316 unit tests passed, complete test reports
 *   **Code Quality**: Lint checks passed (black, isort, flake8, mypy), complete Chinese comments
 *   **Acceptance Criteria**: 100% passed (6/6)
 

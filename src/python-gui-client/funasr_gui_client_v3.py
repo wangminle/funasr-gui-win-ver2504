@@ -2293,6 +2293,17 @@ class FunASRGUIClient(tk.Tk):
         elif caps.inferred_server_type == "legacy":
             parts.append(self.lang_manager.get("probe_status_type_maybe_old"))
         
+        # [统一错误展示] 即使已连接，也展示探测过程中的错误/警告信息
+        if caps.error and caps.reachable:
+            # 在可连接状态下，将错误信息作为警告展示（如"探测超时"）
+            parts.append(f"⚠️ {caps.error}")
+        
+        # 展示重要的 probe_notes（如 2pass 探测超时等）
+        if caps.probe_notes:
+            important_notes = [note for note in caps.probe_notes if "超时" in note or "异常" in note]
+            if important_notes:
+                parts.append(f"({'; '.join(important_notes)})")
+        
         return " | ".join(parts)
 
     def _update_probe_result_error(self, error_msg):
@@ -2554,8 +2565,13 @@ class FunASRGUIClient(tk.Tk):
                 logging.info(self.lang_manager.get("config_loaded", self.config_file))
                 logging.debug(f"调试信息: 配置内容: {config}")
                 
-                # 检查配置版本
-                config_version = config.get("config_version", 1)
+                # 检查配置版本（宽容转换：支持字符串形式的版本号）
+                raw_version = config.get("config_version", 1)
+                try:
+                    config_version = int(raw_version)
+                except (ValueError, TypeError):
+                    config_version = 1  # 无法解析时视为旧版本
+                    logging.warning(f"系统警告: config_version 无法解析为整数: {raw_version}，使用默认值 1")
                 self._loaded_config_version = config_version
                 
                 # 关键修复：一旦检测到 V2 配置，立即备份，避免后续任何写回导致静默丢数据
@@ -2579,6 +2595,14 @@ class FunASRGUIClient(tk.Tk):
                 protocol = self.config.get("protocol", {})
                 if isinstance(protocol, dict):
                     self.probe_level_str = protocol.get("probe_level", self.probe_level_str) or self.probe_level_str
+                
+                # [文档5.3] V2 配置升级完成后静默写回 V3，确保升级一致可预期
+                if config_version < 3:
+                    try:
+                        write_json_file_atomic(self.config_file, self.config)
+                        logging.info("系统事件: V2 配置已升级为 V3 并静默写回")
+                    except Exception as write_err:
+                        logging.warning(f"系统警告: V2 升级 V3 静默写回失败: {write_err}")
                 
                 # 启动时尝试从缓存恢复探测结果（24h 有效）
                 self._restore_cached_probe_result_on_startup()

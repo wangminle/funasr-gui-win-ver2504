@@ -310,7 +310,34 @@ async def record_from_scp(chunk_begin: int, chunk_size: int) -> None:
 
         message = adapter.build_start_message(profile) if adapter else ""
         log(f"发送WebSocket: {message}", log_type="指令")
-        await websocket.send(message)
+        
+        # [风险兜底] SVS 参数降级重试机制：
+        # 如果发送带 svs_* 参数的消息失败，自动降级重试（不带 svs_* 参数）
+        try:
+            await websocket.send(message)
+        except Exception as send_err:
+            if profile.enable_svs_params:
+                log(f"发送消息失败，尝试降级重试（不带SVS参数）: {send_err}")
+                # 构建不带 SVS 参数的降级消息
+                fallback_profile = MessageProfile(
+                    server_type=adapter.server_type if adapter else ServerType.AUTO,
+                    mode=RecognitionMode(args.mode),
+                    wav_name=wav_name,
+                    wav_format=wav_format,
+                    audio_fs=sample_rate,
+                    use_itn=use_itn,
+                    hotwords=hotword_msg,
+                    enable_svs_params=False,  # 禁用 SVS 参数
+                    svs_lang="auto",
+                    svs_itn=False,
+                    chunk_size=args.chunk_size,
+                    chunk_interval=args.chunk_interval,
+                )
+                fallback_message = adapter.build_start_message(fallback_profile) if adapter else ""
+                log(f"发送降级WebSocket: {fallback_message}", log_type="指令")
+                await websocket.send(fallback_message)
+            else:
+                raise  # 非 SVS 相关错误，直接抛出
 
         # 发送音频数据
         await send_audio_data(audio_bytes, stride, chunk_num)
